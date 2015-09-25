@@ -1,0 +1,68 @@
+// ==================================================
+// 工具
+// ==================================================
+
+// 清除浮动
+// ------------------------------
+clearfix()
+  @extend $clearfix
+
+// 文本溢出截断
+// @param 容器宽度
+// ------------------------------
+truncate(width = 100%)
+  width width
+  overflow hidden
+  word-wrap normal
+  white-space nowrap
+  text-overflow ellipsis
+
+// 文本隐藏
+// ------------------------------
+hide-text()
+  overflow hidden
+  white-space normal
+  text-indent -9999px
+
+// 列表重置
+// ------------------------------
+reset-list()
+  list-style none
+  margin 0
+  padding 0
+
+// 小三角
+// @param 颜色
+// @param 尺寸
+// @param 方向
+// ------------------------------
+triangle(color = #000, size = 10px, direction = down)
+  size 0 0
+  font-size 0
+  overflow hidden
+  border-width (size/2)
+
+  if direction is up
+    border-style dashed dashed solid
+    border-color transparent transparent color
+  else if direction is right
+    border-style dashed dashed dashed solid
+    border-color transparent transparent transparent color
+  else if direction is down
+    border-style solid dashed dashed
+    border-color color transparent transparent
+  else if direction is left
+    border-style dashed solid dashed dashed
+    border-color transparent color transparent transparent
+  else if direction is up-left
+    border-style solid dashed dashed solid
+    border-color color transparent transparent color
+  else if direction is up-right
+    border-style solid solid dashed dashed
+    border-color color color transparent transparent
+  else if direction is down-left
+    border-style dashed dashed solid solid
+    border-color transparent transparent color color
+  else
+    border-style dashed solid solid dashed
+    border-color transparent color color transparent
