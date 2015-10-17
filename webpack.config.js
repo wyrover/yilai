@@ -1,7 +1,7 @@
 import path from 'path';
 import minimist from 'minimist';
 import vue from 'vue-loader';
-import nib from 'nib';
+import devip from 'dev-ip';
 import autoprefixer from 'autoprefixer';
 import webpack, { DefinePlugin } from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
@@ -16,9 +16,12 @@ const argv = minimist(process.argv.slice(2));
 // 指定命令行参数 --release 则为生产环境，否则为开发环境
 const DEBUG = !argv.release;
 
+// 资源服务域名
+const DOMAIN = devip()[0];
+
 // 资源服务端口
-// 如果默认端口8080被占用，可通过命令行参数 --port 手动指定
-const PORT = argv.port || 8080;
+// 如果默认端口9000被占用，可通过命令行参数 --port 手动指定
+const PORT = argv.port || 9000;
 
 // 样式表需要兼容的最低系统或浏览器版本
 const AUTOPREFIXER_BROWSERS = [
@@ -43,7 +46,7 @@ const GLOBALS = {
 // 传入 Jade 文件中的变量
 const MARKUP_LOCALS = {
   __DEV__: DEBUG,
-  basePath: DEBUG ? `http://localhost:${PORT}/dist/` : '',
+  basePath: DEBUG ? `http://${DOMAIN}:${PORT}/dist/` : '',
   siteName: 'XLink'
 };
 
@@ -59,6 +62,9 @@ const config = {
   // 基础目录
   dirs: dirs,
 
+  // 域名
+  domain: DOMAIN,
+
   // 端口
   port: PORT,
 
@@ -71,7 +77,9 @@ const config = {
   // 标记语言
   markup: {
     src: [
-      `./${dirs.src}/**/*.jade`,
+      `./${dirs.src}/**/*.jade`
+    ],
+    excluded: [
       '!**/_*.jade'
     ],
     dest: DEBUG ? `./${dirs.pub}` : `./${dirs.dist}`,
@@ -108,7 +116,7 @@ export default {
       `./${dirs.src}/main`
     ].concat(DEBUG ? [
       'webpack/hot/dev-server',
-      `webpack-dev-server/client?http://localhost:${PORT}`,
+      `webpack-dev-server/client?http://${DOMAIN}:${PORT}`,
     ] : [])
   },
 
@@ -116,7 +124,7 @@ export default {
   output: {
     filename: 'scripts/[name].js',
     path: path.join(__dirname, dirs.dist),
-    publicPath: `http://localhost:${PORT}/${dirs.dist}`
+    publicPath: DEBUG ? `http://${DOMAIN}:${PORT}/${dirs.dist}/` : '../'
   },
 
   resolve: {
@@ -129,11 +137,14 @@ export default {
     loaders: [{
       test: /\.vue$/,
       exclude: /node_modules/,
+      /*
       loader: vue.withLoaders({
         // 调试 Stylus 时允许 css-loader 启用 source map
         // !!!在生产环境中禁用 css-loader 的压缩功能，否则会导致单位转换出错等问题!!!!
-        stylus: DEBUG ? 'style!css?sourceMap!postcss!stylus' : ExtractTextPlugin.extract('css?-minimize!postcss!stylus')
+        stylus: DEBUG ? 'style!css?sourceMap' : ExtractTextPlugin.extract('css?-minimize')
       })
+      */
+      loader: 'vue-loader'
     }, {
       test: /\.(eot|ttf|woff|woff2|svg|otf)$/,
       loader: 'file?name=fonts/[name].[ext]'
@@ -149,17 +160,10 @@ export default {
     }]
   },
 
-  // 使用 Nib
-  stylus: {
-    use: nib()
-  },
-
-  // CSS 预处理
-  postcss: [autoprefixer(AUTOPREFIXER_BROWSERS)],
-
   // 如果是调试模式，则不打包库文件以加速编译速度
   externals: DEBUG ? [{
-    'vue': 'Vue'
+    'vue': 'Vue',
+    'lie': 'Promise'
   }] : [],
 
   plugins: [
@@ -176,7 +180,7 @@ export default {
     new webpack.NoErrorsPlugin()
   ] : [
     // 抽取 CSS 到独立的文件
-    new ExtractTextPlugin('styles/[name].css'),
+    // new ExtractTextPlugin('styles/[name].css'),
 
     // 合并相同
     new webpack.optimize.DedupePlugin(),

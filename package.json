@@ -21,8 +21,10 @@
   "license": "MIT",
   "dependencies": {
     "director": "^1.2.8",
+    "lie": "^3.0.1",
+    "lodash": "^3.10.1",
     "vue": "^0.12.14",
-    "vue-resource": "^0.1.16"
+    "zepto": "0.0.4"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.3",
@@ -39,7 +41,6 @@
     "gulp-data": "^1.2.0",
     "gulp-jade": "^1.1.0",
     "gulp-sequence": "^0.4.1",
-    "gulp-shell": "^0.4.3",
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.3.5",
     "html-loader": "^0.3.0",

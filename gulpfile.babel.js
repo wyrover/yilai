@@ -34,8 +34,8 @@ gulp.task('webpack-server', cb => {
     });
 
     // 资源伺服
-    webpackServer.listen(config.port, 'localhost', function () {
-      gutil.log(`Webpack-dev-server is running at port ${config.port}...`);
+    webpackServer.listen(config.port, config.domain, function () {
+      gutil.log(`Webpack-dev-server is serving files from http://${config.domain}:${config.port}...`);
     });
 
   }
@@ -67,7 +67,7 @@ gulp.task('json-server', function() {
 gulp.task('serve', () => {
   browserSync({
     server: {
-      baseDir: DEBUG ? [`./${config.dirs.pub}`, 'node_modules'] : [`./${config.dirs.dist}`]
+      baseDir: DEBUG ? [`./${config.dirs.pub}`, `./${config.dirs.src}/assets`, 'node_modules'] : [`./${config.dirs.dist}`]
     }
   });
 });
@@ -103,7 +103,7 @@ gulp.task('bundle', cb => {
 
 // 生成 HTML 文件
 gulp.task('markup', ['clean'], () => {
-  gulp.src(config.markup.src)
+  gulp.src(config.markup.src.concat(config.markup.excluded))
     .pipe(data(function(file) {
       var content = fm(String(file.contents));
       file.contents = new Buffer(content.body);
@@ -124,6 +124,12 @@ gulp.task('clean', cb => {
   rimraf(DEBUG ? `./${config.dirs.pub}` : `./${config.dirs.dist}`, cb);
 });
 
+// 资源
+gulp.task('assets', function() {
+  gulp.src(`./${config.dirs.src}/assets/**/*`)
+    .pipe(gulp.dest(`./${config.dirs.dist}`));
+});
+
 // 监听
 gulp.task('watch', () => {
   watch(config.markup.src, () => {
@@ -137,9 +143,9 @@ gulp.task('default', (cb) => {
     sequence('json-server', 'webpack-server', 'markup', 'serve', 'watch', cb);
   } else {
     if (config.preview) {
-      sequence('markup', 'bundle', 'serve', cb);
+      sequence('markup', 'bundle', 'assets', 'serve', cb);
     } else{
-      sequence('markup', 'bundle', cb);
+      sequence('markup', 'bundle', 'assets', cb);
     }
   }
 });

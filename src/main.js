@@ -1,19 +1,18 @@
-if (__DEV__) {
-  debug = require('./debug');
-}
 var Vue = require('vue');
-var resource = require('vue-resource');
+
+// https://github.com/flatiron/director
 var Router = require('director').Router;
+
 var appOptions = require('./app.vue');
 // 页面视图参数
 var homeOptions = require('./views/home.vue');
-var eventsOptions = require('./views/events.vue');
+var dateSettingsOptions = require('./views/date-settings.vue');
 
-var app, router, homeHandler, eventsHandler;
+var app, router, homeHandler, dateSettingsHandler;
 
 // 注册页面视图组件
 Vue.component('home', homeOptions);
-Vue.component('events', eventsOptions);
+Vue.component('date-settings', dateSettingsOptions);
 
 // 应用挂载到 DOM
 app = new Vue(appOptions).$mount('#app');
@@ -24,13 +23,13 @@ homeHandler = function () {
   app.currentView = 'home';
 };
 
-eventsHandler = function () {
-  app.currentView = 'events';
+dateSettingsHandler = function () {
+  app.currentView = 'date-settings';
 };
 
 // 路由
 router = new Router({
   '/': homeHandler,
-  '/events': eventsHandler
+  '/date-settings': dateSettingsHandler
 });
 router.init();

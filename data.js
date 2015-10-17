@@ -3,6 +3,7 @@ import faker from 'faker';
 
 let fakeData = { events: [] };
 
+// 格式化时间
 const formatDate = d => {
   let year = d.getFullYear();
   let month = d.getMonth();
@@ -17,7 +18,7 @@ const formatDate = d => {
   }
 
   return `${year}-${month}-${date}`;
-}
+};
 
 for (let i = 1; i <= 5; i++) {
   let date = faker.date.past();
