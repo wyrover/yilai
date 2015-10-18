@@ -16,22 +16,20 @@ section
     dl.fr
       dt(v-text="MESSAGES[lang].ui.timing")
       dd
-        span(v-text="timing.hours")
-        != " : "
-        span(v-text="timing.minutes")
+        span(v-text="timing")
   div
     // 模式选择
     h1.title(v-text="MESSAGES[lang].ui.functions")
     ul.func
-      li(v-on="click: sendCommand('autoClean')", v-class="autoCleaning ? 'checked' : ''")
+      li(v-on="click: autoClean", v-class="autoCleaning ? 'checked' : ''")
         label.trigger
           em.ico1
           span(v-text="MESSAGES[lang].ui.autoClean")
-      li(v-on="click: sendCommand('targetedClean')", v-class="targetedCleaning ? 'checked' : ''")
+      li(v-on="click: targetedClean", v-class="targetedCleaning ? 'checked' : ''")
         label.trigger
           em.ico2
           span(v-text="MESSAGES[lang].ui.targetedClean")
-      li(v-on="click: sendCommand('autoCharge')", v-class="autoCharging ? 'checked' : ''")
+      li(v-on="click: autoCharge", v-class="autoCharging ? 'checked' : ''")
         label.trigger
           em.ico3
           span(v-text="MESSAGES[lang].ui.autoCharge")
@@ -95,16 +93,10 @@ module.exports = {
     return {
       battery: 0,
       mode: 'stopped',
-      connected: 0,
       autoCleaning: 0,
       targetedCleaning: 0,
       autoCharging: 0,
-      interval: null,
-      devices: [{
-        deviceID: '1121121'
-      }, {
-        deviceID: '1121121'
-      }]
+      interval: null
     };
   },
 
@@ -127,16 +119,6 @@ module.exports = {
     //    └── 失败：错误处理
     // 5. 初始化设备状态
     this.init();
-
-    // 方向键长按事件绑定
-    $('#upButton, #rightButton, #downButton, #leftButton').on('touchstart', function (e) {
-      e.preventDefault();
-      _that.onHold(e);
-    }, false);
-
-    $('#upButton, #rightButton, #downButton, #leftButton').on('touchend', function (e) {
-      _that.touchEnd(e);
-    }, false);
 
     // 监听设备状态变更
     XJSObject.on('onXDeviceStateChange', function(r) {
@@ -195,7 +177,7 @@ module.exports = {
             case '52':
               params = data.slice(1);
               if (__DEV__) {
-                writeLog('执行指令对应操作：setBattery(' + params + ')');
+                writeLog('设备提交电量数据，执行指令对应操作：setBattery(' + params + ')');
               }
               _that.setBattery(params);
               break;
@@ -204,7 +186,7 @@ module.exports = {
             case '57':
               params = data.slice(1);
               if (__DEV__) {
-                writeLog('执行指令对应操作：setTiming(' + params + ')');
+                writeLog('设备提交预约数据，执行指令对应操作：setTiming(' + params + ')');
               }
               _that.setTiming(params);
               break;
@@ -213,17 +195,15 @@ module.exports = {
             default:
               for(key in _that.COMMAND_INFOS){
                 if (data[1].toString(16) === _that.COMMAND_INFOS[key].body[0].toString()) {
-                  if (__DEV__) {
-                    writeLog('执行指令对应操作：' + key);
-                  }
                   operate = _that[key];
                   break;
                 }
               }
 
-              if (data.length === 1) {
-                operate();
-              } else {
+              if (data.length > 2) {
+                if (__DEV__) {
+                  writeLog('设备提交数据，执行指令对应操作：' + key);
+                }
                 params = data.slice(2);
                 operate(params);
               }
@@ -232,6 +212,16 @@ module.exports = {
         });
       }
     });
+
+    // 方向键长按事件绑定
+    $('#upButton, #rightButton, #downButton, #leftButton').on('touchstart', function (e) {
+      e.preventDefault();
+      _that.onHold(e);
+    }, false);
+
+    $('#upButton, #rightButton, #downButton, #leftButton').on('touchend', function (e) {
+      _that.touchEnd(e);
+    }, false);
 
   },
 
@@ -303,12 +293,6 @@ module.exports = {
       }
     },
 
-    // 发送指令
-    sendCommand: function (commName) {
-      var command = Xlink.genCommand(this.COMMAND_INFOS[commName]);
-      Xlink.send(command);
-    },
-
     // 发送校时指令
     sendFixTimeCommand: function () {
       var msg = { size: 4, body: [], label: "校时" };
@@ -341,15 +325,27 @@ module.exports = {
       Xlink.send(command);
     },
 
+    // 自动清扫
+    autoClean: function () {
+      this.setStatus([1, 0, 0]);
+      this.sendCommand('autoClean');
+    },
+
+    // 定点清扫
+    targetedClean: function () {
+      this.setStatus([0, 1, 0]);
+      this.sendCommand('targetedClean');
+    },
+
+    // 自动回充
+    autoCharge: function () {
+      this.setStatus([0, 0, 1]);
+      this.sendCommand('autoCharge');
+    },
+
     // 设置电量
     setBattery: function (data) {
       this.battery = parseInt(data[0]);
-    },
-
-    // 设置预约时间
-    setTiming: function (data) {
-      this.timing.hours = data[1];
-      this.timing.minutes = data[2];
     },
 
     // 设置状态

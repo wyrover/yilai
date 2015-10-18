@@ -146,7 +146,6 @@ section,header{ width:100%; }
 .cf_zhouqi2 .trigger {cursor: pointer; position: relative;border-radius:8px; -moz-border-radius:8px; -webkit-border-radius:8px; border:1px solid #e4e4e4; display:block; width:90%; line-height:34px;  -webkit-transition:background .15s linear;transition:background .15s linear; text-align:center;margin:auto; }
 .cf_zhouqi2 .radio:checked + .trigger{ color:#fff; background:#0096d6;border:1px solid #0096d6;}
 .cf_zhouqi2 .radio:checked + .trigger em{display:block; background:url(../images/ico_gouxuan.png) no-repeat center; background-size:16px 16px;position:absolute; right:0; bottom:0; width:16px; height:16px;}
-.cf_zhouqi2 .radio:checked + .trigger em.ico_dg{display:block; background:url(../images/ico_gouxuan.png) no-repeat center; background-size:16px 16px;position:absolute; right:0; bottom:0; width:16px; height:16px;}
 
 .direction_box{ width:100%;  border-top:#d4d9de 1px solid; padding:2% 0;}
 .direction{ background:url(../images/Controlbg.png) no-repeat; background-size:100%;  position:relative; width:144px; height:144px;  margin:10px auto; }
@@ -231,7 +230,7 @@ section,header{ width:100%; }
 .already label{color:#3191dd}
 .already label.wm{color:#8f8f8f}
 .yutan{ width:100%; font-size:16px; height:50px; text-align:center;border-top:#c4c3c3 1px solid; position:fixed; bottom:0; overflow:hidden; z-index:99; box-shadow:#999 1px 1px 5px; background:#fff;}
-.yutan a{ display:block; width:50%; float:left; border-left:#d4d9de 1px solid; height:50px; line-height:50px; margin-left:-1px; background:#fff;}
+.yutan button{ display:block; width:50%; float:left; border:none; border-left:#d4d9de 1px solid; height:50px; line-height:50px; margin-left:-1px; background:#fff;}
 /*表单样式结束*/
 /*重复周期选择*/
 .cf_zhouqitit{width:94%;margin:15px auto 0;height:40px;line-height:40px;color:#666;font-size:16px}

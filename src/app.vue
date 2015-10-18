@@ -24,11 +24,9 @@ module.exports = {
   data: function () {
     var data = {
       currentView: 'home',
-      timing: {
-        days: [],
-        hours: '00',
-        minutes: '00'
-      },
+      connected: 0,
+      cycle: [0, 0, 0, 0, 0, 0, 0],
+      timing: '00:00',
       error: null,
       BATTERY_STATUS: ['d', 'c', 'b', 'a'],
       COMMAND_INFOS: {
@@ -49,6 +47,7 @@ module.exports = {
       MESSAGES: {
         'zh_cn': {
           ui: {
+            deviceName:       '扫地机器人',
             batteryLeft:      '剩余电量',
             currentMode:      '当前模式',
             connectingStatus: '连接状态',
@@ -59,8 +58,17 @@ module.exports = {
             autoCharge:       '自动回充',
             timingClean:      '预约清扫',
             ok:               '确认',
+            cancel:           '取消',
             stop:             '停止',
-            deviceName:       '扫地机器人'
+            apppoitment:      '预约时间',
+            repeatCycle:      '重复周期',
+            monday:           '周一',
+            tuesday:          '周二',
+            wednesday:        '周三',
+            thursday:         '周四',
+            friday:           '周五',
+            saturday:         '周六',
+            sunday:           '周日'
           },
           modes: {
             stopped:          '停止',
@@ -78,6 +86,7 @@ module.exports = {
         },
         'en': {
           ui: {
+            deviceName:       'Cleaning machine',
             batteryLeft:      'Battery',
             currentMode:      'Mode',
             connectingStatus: 'Status',
@@ -88,8 +97,17 @@ module.exports = {
             autoCharge:       'Charge',
             timingClean:      'Appoitment',
             ok:               'OK',
+            cancel:           'Cancel',
             stop:             'Stop',
-            deviceName:       'Cleaning machine'
+            apppoitment:      'Appoitment',
+            repeatCycle:      'Repeat cycle',
+            monday:           'Mon',
+            tuesday:          'Tue',
+            wednesday:        'Wed',
+            thursday:         'Thu',
+            friday:           'Fri',
+            saturday:         'Sat',
+            sunday:           'Sun'
           },
           modes: {
             stopped:          'Stopped',
@@ -122,6 +140,21 @@ module.exports = {
 
     if (lang) {
       this.lang = lang;
+    }
+
+  },
+
+  methods: {
+    // 发送指令
+    sendCommand: function (commName) {
+      var command = Xlink.genCommand(this.COMMAND_INFOS[commName]);
+      Xlink.send(command);
+    },
+
+    // 设置预约时间
+    setTiming: function (data) {
+      alert(data[0]);
+      this.timing = data[1] + ':' + data[2];
     }
   }
 };
