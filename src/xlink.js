@@ -6,6 +6,8 @@ var Xlink = {
 
   appId: '1234567',
 
+  openId: '',
+
   // test.xlink.cn
   tokenId: __DEV__ ? '07ec2954435c4b14afd9199590476b4f' : '6cc6e51fecda45dea7486f6a184ffddf',
 
@@ -14,6 +16,8 @@ var Xlink = {
   apiRoot: 'http://wx3.xlink.cn/',
 
   nonceStr: 'Wm3WZYTPz0wzccnW',
+
+  loaded: false,
 
   /**
    * 获取 OpenId
@@ -39,6 +43,10 @@ var Xlink = {
         return resolve('');
       }
 
+      if (_that.openId.length > 0) {
+        return resolve(_that.openId);
+      }
+
       $.ajax({
         type: 'GET',
         url: apiUrl,
@@ -50,6 +58,7 @@ var Xlink = {
             if (__DEV__) {
               writeLog('成功获取用户的 OpenId：' + data.openid);
             }
+            _that.openId = data.openid;
             resolve(data.openid);
           } else {
             if (__DEV__) {
@@ -80,7 +89,7 @@ var Xlink = {
     return this.fetchOpenId().then(function (openId) {
       var apiUrl = _that.apiRoot + 'wxgateway/wxDevicelist?devicelistCallback=?';
       var params = {
-        openId: openId,
+        openId: _that.openId,
         tokenId: _that.tokenId
       };
 
@@ -145,6 +154,10 @@ var Xlink = {
           _debug: __DEV__
         });
 
+        if (_that.loaded) {
+          resolve('JSSDK已加载');
+        }
+
         if (__DEV__) {
           writeLog('JSSDK加载中...');
         }
@@ -161,6 +174,7 @@ var Xlink = {
             if (__DEV__) {
               writeLog('JSSDK加载成功' + JSON.stringify(r));
             }
+            _that.loaded = true;
             resolve(r);
           } else {
             reject('JSSDK加载失败' + JSON.stringify(r));
@@ -244,7 +258,7 @@ var Xlink = {
   },
 
   hex2Int: function (hex) {
-    return parseInt('0X' + hex, 16);
+    return parseInt('0x' + hex, 16);
   },
 
   encode: function (data) {
@@ -259,8 +273,8 @@ var Xlink = {
 
     var outputArr = bytes.map(function (item) {
       var hex = item.toString(16);
-      if (item < 10) {
-        hex = '0' + item;
+      if (item < 16) {
+        hex = '0' + item.toString(16);
       }
       return hex;
     });

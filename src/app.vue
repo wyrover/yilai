@@ -1,6 +1,16 @@
 <template lang="jade">
 log(v-if="debug", logs="{{logs}}")
 <component is="{{currentView}}"></component>
+//- 蒙版
+.modal(v-class="hidden: connected")
+
+//- 提示对话框
+//-
+  .modal(v-class="hidden: !error")
+    .modal-dialog
+      .modal-body(v-text="error")
+      .modal-footer
+        button(v-on="click: hideError", v-text="MESSAGES[lang].ui.ok")
 </template>
 
 <script>
@@ -25,7 +35,13 @@ module.exports = {
     var data = {
       currentView: 'home',
       connected: 0,
-      cycle: [0, 0, 0, 0, 0, 0, 0],
+      battery: 0,
+      mode: 'stopped',
+      autoCleaning: 0,
+      targetedCleaning: 0,
+      autoCharging: 0,
+      notInAppoitment: true,
+      cycle: [false, false, false, false, false, false, false, false],
       timing: '00:00',
       error: null,
       BATTERY_STATUS: ['d', 'c', 'b', 'a'],
@@ -60,7 +76,7 @@ module.exports = {
             ok:               '确认',
             cancel:           '取消',
             stop:             '停止',
-            apppoitment:      '预约时间',
+            appointment:      '预约时间',
             repeatCycle:      '重复周期',
             monday:           '周一',
             tuesday:          '周二',
@@ -93,13 +109,13 @@ module.exports = {
             timing:           'Timing',
             functions:        'Functions',
             autoClean:        'Auto',
-            targetedClean:    'Targeted',
+            targetedClean:    'Spot',
             autoCharge:       'Charge',
-            timingClean:      'Appoitment',
+            timingClean:      'Appointment',
             ok:               'OK',
             cancel:           'Cancel',
             stop:             'Stop',
-            apppoitment:      'Appoitment',
+            appointment:      'Appointment',
             repeatCycle:      'Repeat cycle',
             monday:           'Mon',
             tuesday:          'Tue',
@@ -117,7 +133,7 @@ module.exports = {
             error4:           'E04',
             error5:           'E05',
             autoCleaning:     'Auto cleaning',
-            targetedCleaning: 'Targeted cleaning',
+            targetedCleaning: 'Spot cleaning',
             goCharging:       'Go charging',
             charging:         'Charging'
           },
@@ -153,8 +169,29 @@ module.exports = {
 
     // 设置预约时间
     setTiming: function (data) {
-      alert(data[0]);
+      var bin;
+      var today = new Date().getDay();
+      if (today === 0) {
+        today = 7;
+      }
+
+      bin = parseInt(data[0], 16).toString(2);
+
+      for(var i=0, len=7-bin.length; i<=len; i++) {
+        bin = '0' + bin;
+      }
+
+      this.cycle = bin.split('').reverse().map(function (item){
+        return Boolean(parseInt(item));
+      });
+
       this.timing = data[1] + ':' + data[2];
+
+      this.notInAppoitment = !this.cycle[today - 1];
+    },
+
+    hideError: function () {
+      this.error = null;
     }
   }
 };

@@ -23,6 +23,7 @@ section{ width:100%; position:relative;}
 .state dl dt{ font-size:16px;}
 .state dl dd{ padding:3% 0; color:#0096d6; text-align:center;}
 .state dl dd em { display:inline-block; background-repeat: no-repeat; background-size:100%; width:26px; height:12px; }
+.state dl dd .gray { color: #999; }
 .state dl dd .battery_a{ background-image:url(../images/dian01.png); }
 .state dl dd .battery_b{ background-image:url(../images/dian02.png); }
 .state dl dd .battery_c{ background-image:url(../images/dian03.png); }
@@ -203,17 +204,17 @@ section,header{ width:100%; }
 .func .radio:checked + .trigger em.ico3{background:url(../images/gn3_b.png) no-repeat center; background-size:80%}
 .func .radio:checked + .trigger em.ico4{background:url(../images/gn4_b.png) no-repeat center; background-size:80%}
 
-.direction{ background:url(../images/Controlbg.png) no-repeat; background-size:270px 270px;  position:relative; width:270px; height:270px;  margin:10px auto; }
+.direction{ background:url(../images/Controlbg.png) no-repeat; background-size:220px 220px;  position:relative; width:220px; height:220px;  margin:0 auto; }
 .direction .arrow{ display:inline-block; position:absolute; width:66px; height:66px; border:none;}
-.direction .jt1{ background:url(../images/jt1_a.png) no-repeat; position:absolute; background-size:66px 66px; left:102px; top:12px;}
+.direction .jt1{ background:url(../images/jt1_a.png) no-repeat; position:absolute; background-size:66px 66px; left:80px; top:4px;}
 .direction .jt1:hover{ background:url(../images/jt1_b.png) no-repeat; background-size:66px 66px; }
-.direction .jt4{ background:url(../images/jt4_a.png) no-repeat; position:absolute;background-size:66px 66px; top:102px; left:12px;}
+.direction .jt4{ background:url(../images/jt4_a.png) no-repeat; position:absolute;background-size:66px 66px; top:80px; left:4px;}
 .direction .jt4:hover{ background:url(../images/jt4_b.png) no-repeat;  background-size:66px 66px;}
-.direction .jt2{ background:url(../images/jt2_a.png) no-repeat; position:absolute;background-size:66px 66px; top:102px; right:12px;}
+.direction .jt2{ background:url(../images/jt2_a.png) no-repeat; position:absolute;background-size:66px 66px; top:80px; right:4px;}
 .direction .jt2:hover{ background:url(../images/jt2_b.png) no-repeat; background-size:66px 66px; }
-.direction .jt3{ background:url(../images/jt3_a.png) no-repeat; position:absolute;background-size:66px 66px; left:102px; bottom:12px;}
+.direction .jt3{ background:url(../images/jt3_a.png) no-repeat; position:absolute;background-size:66px 66px; left:80px; bottom:4px;}
 .direction .jt3:hover{ background:url(../images/jt3_b.png) no-repeat; background-size:66px 66px; }
-.direction .txtqr{display:inline-block;position:absolute; width:114px; height:66px; left:78px; top:102px; font-size:20px; border:none; background:none}
+.direction .txtqr{display:inline-block;position:absolute; width:114px; height:66px; left:56px; top:78px; font-size:20px; border:none; background:none}
 }
 
 /*表单样式开始*/
@@ -239,9 +240,9 @@ section,header{ width:100%; }
 .cf_zhouqi2 li em{display:block; background-size:16px 16px;position:absolute; right:0; bottom:0; width:16px; height:16px; }
 .cf_zhouqi2 .radio { display:none; }
 .cf_zhouqi2 .trigger {cursor: pointer; position: relative;border-radius:8px; -moz-border-radius:8px; -webkit-border-radius:8px; border:1px solid #e4e4e4; display:block; width:90%; line-height:34px;  -webkit-transition:background .15s linear;transition:background .15s linear; text-align:center;margin:auto; background:#fff; }
-.cf_zhouqi2 .radio:checked + .trigger{ color:#fff; background:#0096d6;border:1px solid #0096d6;}
-.cf_zhouqi2 .radio:checked + .trigger em{display:block; background:url(../images/ico_gouxuan.png) no-repeat center; background-size:16px 16px;position:absolute; right:0; bottom:0; width:16px; height:16px;}
-.cf_zhouqi2 .radio:checked + .trigger em.ico_dg{display:block; background:url(../images/ico_gouxuan.png) no-repeat center; background-size:16px 16px;position:absolute; right:0; bottom:0; width:16px; height:16px;}
+.cf_zhouqi2 .checked .radio + .trigger{ color:#fff; background:#0096d6;border:1px solid #0096d6;}
+.cf_zhouqi2 .checked .radio + .trigger em{display:block; background:url(../images/ico_gouxuan.png) no-repeat center; background-size:16px 16px;position:absolute; right:0; bottom:0; width:16px; height:16px;}
+.cf_zhouqi2 .checked .radio + .trigger em.ico_dg{display:block; background:url(../images/ico_gouxuan.png) no-repeat center; background-size:16px 16px;position:absolute; right:0; bottom:0; width:16px; height:16px;}
 
 /* Airkiss */
 .page-container { padding: 20px; font-size: 16px; }

@@ -16,7 +16,7 @@ section
     dl.fr
       dt(v-text="MESSAGES[lang].ui.timing")
       dd
-        span(v-text="timing")
+        span(v-text="timing", v-class="gray: notInAppoitment")
   div
     // 模式选择
     h1.title(v-text="MESSAGES[lang].ui.functions")
@@ -47,16 +47,6 @@ section
         button.txtqr(v-text="MESSAGES[lang].ui.ok")
 .footbut
   button(v-on="click: sendCommand('stop')", v-text="MESSAGES[lang].ui.stop")
-
-//- 蒙版
-.modal(v-class="hidden: connected")
-
-//- 提示对话框
-.modal(v-class="hidden: !error")
-  .modal-dialog
-    .modal-body(v-text="error")
-    .modal-footer
-      button(v-on="click: hideError", v-text="MESSAGES[lang].ui.ok")
 
 //- 设备列表选择
 //-
@@ -91,11 +81,6 @@ module.exports = {
 
   data: function () {
     return {
-      battery: 0,
-      mode: 'stopped',
-      autoCleaning: 0,
-      targetedCleaning: 0,
-      autoCharging: 0,
       interval: null
     };
   },
@@ -251,7 +236,14 @@ module.exports = {
     // 重新连接
     reconnect: function () {
       Xlink.connectDevice().then(function (data) {
-        // body...
+        // 更改连接状态
+        _that.connected = 1;
+
+        // 发送一次电量查询指令
+        _that.sendCommand('queryBattery');
+
+        // 发送一次预约查询指令
+        _that.sendCommand('queryTiming');
       }).catch(function (error) {
         _that.error = JSON.stringify(error);
       });
@@ -399,12 +391,7 @@ module.exports = {
           this.setStatus([0, 0, 0]);
           break;
       }
-    },
-
-    hideError: function () {
-      this.error = null;
     }
-
   }
 };
 </script>
