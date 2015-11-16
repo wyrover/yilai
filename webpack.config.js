@@ -1,30 +1,37 @@
-import path from 'path';
-import minimist from 'minimist';
-import vue from 'vue-loader';
-import devip from 'dev-ip';
-import autoprefixer from 'autoprefixer';
-import webpack, { DefinePlugin } from 'webpack';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+var path = require('path');
+var minimist = require('minimist');
+var vue = require('vue-loader');
+var devip = require('dev-ip');
+var autoprefixer = require('autoprefixer');
+var webpack = require('webpack');
+var DefinePlugin = require('webpack').DefinePlugin;
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 // 获取命令行参数
-// --release 生产模式
-// --port X 指定端口为 X
-// --preview 是否开启预览，开发环境默认开启
-const argv = minimist(process.argv.slice(2));
+// --debug 输出日志
+// --release 发布到生产环境
+// --port 指定端口
+var argv = minimist(process.argv.slice(2));
 
-// 调试模式开关
-// 指定命令行参数 --release 则为生产环境，否则为开发环境
-const DEBUG = !argv.release;
+// 调试日志开关
+var DEBUG = !!argv.debug;
 
-// 资源服务域名
-const DOMAIN = devip()[0];
+// 开发环境与生产环境切换开关
+var DEV = !argv.release;
+
+// 获取命令行中指定的app
+var APP = argv.app;
+
+// 资源服务IP
+// 该IP地址用于开发时供页面引用资源
+var DEV_IP = devip()[0];
 
 // 资源服务端口
-// 如果默认端口9000被占用，可通过命令行参数 --port 手动指定
-const PORT = argv.port || 9000;
+// 如果默认端口8090被占用，可通过命令行参数 --port 指定
+var PORT = argv.port || 8090;
 
 // 样式表需要兼容的最低系统或浏览器版本
-const AUTOPREFIXER_BROWSERS = [
+var AUTOPREFIXER_BROWSERS = [
   // 'Android 2.3',
   'Android >= 4',
   'Chrome >= 36',
@@ -33,98 +40,97 @@ const AUTOPREFIXER_BROWSERS = [
   'Safari >= 7'
 ];
 
-// 当图片大小小于 2K 时转换为 BASE64，否则直接使用文件
-const BASE64_LIMIT = 2048;
+// 指定图片转换成BASE64的最大比特数
+// 当图片大小小于指定比特数时转换为BASE64以减少请求数，否则直接使用图片文件
+var BASE64_LIMIT = 2048;
 
-// 调试模式下的全局变量
-// 形如 `if(__DEV__) { ... } ` 的调试代码会在发布到生产环境时自动被丢弃
-const GLOBALS = {
-  'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
-  '__DEV__': DEBUG
+// 基础目录
+var dirs = {
+  src: 'src',     // 源文档目录
+  pub: 'public',  // 开发调试临时目录
+  dist: 'dist',   // 代码发布目录
+  test: 'test'    // 代码测试目录
+};
+
+// 传递到脚本文件中的全局变量
+// 形如 `if(__DEBUG__) { ... }` 的调试代码会在不指定命令行`--debug`参数时自动被丢弃
+var GLOBALS = {
+  'process.env.NODE_ENV': DEV ? '"development"' : '"production"',
+  '__DEBUG__': DEBUG,
+  '__APP__': APP
 };
 
 // 传入 Jade 文件中的变量
-const MARKUP_LOCALS = {
-  __DEV__: DEBUG,
-  basePath: DEBUG ? `http://${DOMAIN}:${PORT}/dist/` : '',
-  siteName: 'XLink'
+var MARKUP_LOCALS = {
+  __DEV__: DEV,
+  basePath: DEV ? 'http://' + DEV_IP + ':' + PORT + '/' + dirs.dist + '/' + APP + '/' : ''
 };
 
-// 基础目录
-const dirs = {
-  src: 'src',     // 源文档目录
-  pub: 'public',  // 开发调试临时目录
-  dist: 'dist'    // 代码发布目录
-};
-
-// 基本设置
-const config = {
+// 基本配置
+var config = {
   // 基础目录
   dirs: dirs,
 
+  // 当前 app
+  app: APP,
+
   // 域名
-  domain: DOMAIN,
+  devIP: DEV_IP,
 
   // 端口
   port: PORT,
 
-  // 详细的日志输出
-  verbose: !!argv.verbose,
-
-  // 是否开启预览
-  preview: argv.preview,
+  // 详细日志输出
+  verbose: DEV,
 
   // 标记语言
   markup: {
     src: [
-      `./${dirs.src}/**/*.jade`
+      './' + dirs.src + '/' + APP + '/**/*.jade'
     ],
-    excluded: [
-      '!**/_*.jade'
-    ],
-    dest: DEBUG ? `./${dirs.pub}` : `./${dirs.dist}`,
+    dest: DEV ? './' + dirs.pub + '/' + APP: './' + dirs.dist + '/' + APP,
     locals: MARKUP_LOCALS
   },
 
   // 测试
   test: {
     dir: [
-      `./${dirs.test}/**/*.js`
+      './' + dirs.test + '/**/*.js'
     ]
   }
 };
 
-export { config };
-
-export default {
+var webpackConfig = {
   // 开发环境启用 source-map
-  devtool: DEBUG ? 'source-map' : false,
+  devtool: DEV ? 'source-map' : false,
 
-  cache: DEBUG,
-  debug: DEBUG,
+  cache: DEV,
+  debug: DEV,
 
   // 高亮 webpack 输出
   stats: {
     color: true,
-    reasons: DEBUG
+    reasons: DEV
+  },
+
+  node: {
+    fs: 'empty'
   },
 
   // 入口文件
-  // 调试模式启用 webpack-dev-server
-  entry: {
+  entry : {
     app: [
-      `./${dirs.src}/main`
-    ].concat(DEBUG ? [
+      './' + dirs.src + '/' + APP + '/main'
+    ].concat(DEV ? [
       'webpack/hot/dev-server',
-      `webpack-dev-server/client?http://${DOMAIN}:${PORT}`,
+      'webpack-dev-server/client?http://' + DEV_IP + ':' + PORT,
     ] : [])
   },
 
-  // 输出
   output: {
     filename: 'scripts/[name].js',
-    path: path.join(__dirname, dirs.dist),
-    publicPath: DEBUG ? `http://${DOMAIN}:${PORT}/${dirs.dist}/` : '../'
+    path: path.join(__dirname, 'dist', APP),
+    publicPath: DEV ? 'http://' + DEV_IP + ':' + PORT + '/' + dirs.dist + '/' + APP + '/': '../../'
   },
 
   resolve: {
@@ -137,42 +143,52 @@ export default {
     loaders: [{
       test: /\.vue$/,
       exclude: /node_modules/,
-      /*
-      loader: vue.withLoaders({
-        // 调试 Stylus 时允许 css-loader 启用 source map
-        // !!!在生产环境中禁用 css-loader 的压缩功能，否则会导致单位转换出错等问题!!!!
-        stylus: DEBUG ? 'style!css?sourceMap' : ExtractTextPlugin.extract('css?-minimize')
-      })
-      */
-      loader: 'vue-loader'
+      loader: 'vue'
     }, {
-      test: /\.(eot|ttf|woff|woff2|svg|otf)$/,
-      loader: 'file?name=fonts/[name].[ext]'
+      test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=application/font-woff&prefix=fonts'
+    }, {
+      test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=application/octet-stream&prefix=fonts'
+    }, {
+      test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=application/vnd.ms-fontobject&prefix=fonts'
+    }, {
+      test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=image/svg+xml&prefix=fonts'
     }, {
       test: /\.png/,
-      loader: `url?name=images/[name]_[hash:6].[ext]&limit=${BASE64_LIMIT}&mimetype=image/png`
+      loader: 'url?name=images/[name]_[hash:6].[ext]&limit=' + BASE64_LIMIT + '&mimetype=image/png'
     }, {
       test: /\.jpg/,
-      loader: `url?name=images/[name]_[hash:6].[ext]&limit=${BASE64_LIMIT}&mimetype=image/jpg`
+      loader: 'url?name=images/[name]_[hash:6].[ext]&limit=' + BASE64_LIMIT + '&mimetype=image/jpg'
     }, {
       test: /\.gif/,
-      loader: `url?name=images/[name]_[hash:6].[ext]&limit=${BASE64_LIMIT}&mimetype=image/gif`
+      loader: 'url?name=images/[name]_[hash:6].[ext]&limit=' + BASE64_LIMIT + '&mimetype=image/gif'
     }]
   },
 
+  vue: {
+    loaders: {
+      css: DEV ? 'style!css?sourceMap!postcss' : ExtractTextPlugin.extract('css!postcss'),
+      stylus: DEV ? 'style!css?sourceMap!postcss!stylus' : ExtractTextPlugin.extract('css!postcss!stylus')
+    }
+  },
+
+  postcss: [autoprefixer(AUTOPREFIXER_BROWSERS)],
+
   // 如果是调试模式，则不打包库文件以加速编译速度
-  externals: DEBUG ? [{
-    'vue': 'Vue',
-    'lie': 'Promise'
+  externals: DEV ? [{
+    'vue': 'Vue'
   }] : [],
 
-  plugins: [
+  plugins:[
     // 优化模块加载顺序
     new webpack.optimize.OccurenceOrderPlugin(true),
 
     // 变量定义，以便在开发阶段使用
     new DefinePlugin(GLOBALS)
-  ].concat(DEBUG ? [
+  ].concat(DEV ? [
     // 代码热替换
     new webpack.HotModuleReplacementPlugin(),
 
@@ -180,7 +196,7 @@ export default {
     new webpack.NoErrorsPlugin()
   ] : [
     // 抽取 CSS 到独立的文件
-    // new ExtractTextPlugin('styles/[name].css'),
+    new ExtractTextPlugin('styles/[name].css'),
 
     // 合并相同
     new webpack.optimize.DedupePlugin(),
@@ -196,3 +212,6 @@ export default {
     new webpack.optimize.AggressiveMergingPlugin()
   ])
 };
+
+exports.config = config;
+exports.webpackConfig = webpackConfig;

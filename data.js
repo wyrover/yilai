@@ -1,13 +1,18 @@
 // https://github.com/Marak/faker.js
-import faker from 'faker';
+var faker = require('faker');
 
-let fakeData = { events: [] };
+var fakeData = {
+  app: {
+    firstAccess: false
+  },
+  events: []
+};
 
 // 格式化时间
-const formatDate = d => {
-  let year = d.getFullYear();
-  let month = d.getMonth();
-  let date = d.getDate();
+var formatDate = function (d) {
+  var year = d.getFullYear();
+  var month = d.getMonth();
+  var date = d.getDate();
 
   if (month < 10) {
     month = '0' + month;
@@ -17,11 +22,11 @@ const formatDate = d => {
     date = '0' + date;
   }
 
-  return `${year}-${month}-${date}`;
+  return year + '-' + month + '-' + date;
 };
 
-for (let i = 1; i <= 5; i++) {
-  let date = faker.date.past();
+for (var i = 1; i <= 5; i++) {
+  var date = faker.date.past();
   // 格式化时间
   date = formatDate(date);
   fakeData.events.push({
@@ -32,4 +37,4 @@ for (let i = 1; i <= 5; i++) {
   });
 }
 
-export default fakeData;
+module.exports = fakeData;
