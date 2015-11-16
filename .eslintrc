@@ -7,7 +7,8 @@
   "ecmaFeatures": {
   },
   "globals": {
-    "__DEBUG__": true
+    "__DEBUG__": true,
+    "__DEV__": true
   },
   "rules": {
     "strict": [2, "never"],
