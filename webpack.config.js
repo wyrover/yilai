@@ -102,7 +102,7 @@ var config = {
 
 var webpackConfig = {
   // 开发环境启用 source-map
-  devtool: DEV ? 'source-map' : false,
+  devtool: DEV ? 'inline-source-map' : false,
 
   cache: DEV,
   debug: DEV,
@@ -170,12 +170,16 @@ var webpackConfig = {
 
   vue: {
     loaders: {
-      css: DEV ? 'style!css?sourceMap!postcss' : ExtractTextPlugin.extract('css!postcss'),
-      stylus: DEV ? 'style!css?sourceMap!postcss!stylus' : ExtractTextPlugin.extract('css!postcss!stylus')
+      //css: DEV ? 'style!css?sourceMap!postcss' : ExtractTextPlugin.extract('css!postcss'),
+      //stylus: DEV ? 'style!css?sourceMap!postcss!stylus' : ExtractTextPlugin.extract('css!postcss!stylus')
+      css: DEV ? 'style!css?sourceMap' : ExtractTextPlugin.extract('css'),
+      stylus: DEV ? 'style!css?sourceMap!stylus' : ExtractTextPlugin.extract('css!stylus')
     }
   },
 
-  postcss: [autoprefixer(AUTOPREFIXER_BROWSERS)],
+  // postcss: function () {
+  //   return [autoprefixer(AUTOPREFIXER_BROWSERS)];
+  // },
 
   // 如果是调试模式，则不打包库文件以加速编译速度
   externals: DEV ? [{

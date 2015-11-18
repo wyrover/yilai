@@ -57,7 +57,7 @@ gulp.task('json-server', function() {
   server.use(jsonServer.defaults());
   server.use(router);
 
-  server.listen(3000);
+  server.listen(9090);
 });
 
 // HTTP 服务器
@@ -133,7 +133,7 @@ gulp.task('watch', function () {
 // 默认任务
 gulp.task('default', function(cb) {
   if (DEV) {
-    sequence('json-server', 'webpack-server', 'markup', 'serve', 'watch', cb);
+    sequence('webpack-server', 'markup', 'serve', 'watch', cb);
   } else {
     sequence('markup', 'bundle', 'assets', cb);
   }
