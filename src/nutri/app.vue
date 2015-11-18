@@ -3,7 +3,7 @@
   .loading(v-show="firstAccessChecking")
     p 正在检查是否第一次访问...
     p {{firstAccessChecking}}
-  router-view.view(transition="page", transition-mode="out-in")
+  router-view.view(transition="view", transition-mode="out-in")
   modal
     .modal-footer
       button(@click="hide") 确定
@@ -11,15 +11,6 @@
 
 <style lang="stylus">
 @import '../shared/assets/stylus/base'
-
-/* 页面切换 */
-.view
-  transition all .5s ease
-
-.page-enter,
-.page-leave
-  opacity 0
-  transform translate3d(10px, 0, 0)
 
 /* Vue 初始化赋值 */
 [v-cloak]

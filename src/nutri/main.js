@@ -16,4 +16,4 @@ router = new VueRouter({
 
 configRouter(router);
 
-router.start(App, '#app');;
+router.start(App, '#app');

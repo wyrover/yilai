@@ -1,39 +1,23 @@
 // https://github.com/Marak/faker.js
 var faker = require('faker');
+var format = require('date-format');
 
 var fakeData = {
   app: {
     firstAccess: false
   },
-  events: []
-};
-
-// 格式化时间
-var formatDate = function (d) {
-  var year = d.getFullYear();
-  var month = d.getMonth();
-  var date = d.getDate();
-
-  if (month < 10) {
-    month = '0' + month;
-  }
-
-  if (date < 10) {
-    date = '0' + date;
-  }
-
-  return year + '-' + month + '-' + date;
+  devices: []
 };
 
 for (var i = 1; i <= 5; i++) {
   var date = faker.date.past();
   // 格式化时间
-  date = formatDate(date);
-  fakeData.events.push({
+  date = format('yyyy-MM-dd hh:mm:ss', date);
+
+  fakeData.devices.push({
     id: i,
-    name: faker.commerce.productName(),
-    description: faker.lorem.sentence(),
-    date: date
+    name: faker.lorem.words(),
+    mac: faker.random.uuid()
   });
 }
 
