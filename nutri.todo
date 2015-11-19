@@ -3,7 +3,7 @@
   添加设备:
     首次进入添加设备引导提示页，否则进入设备列表页
     ☐ 添加设备引导提示 /guide
-      ☐ UI 视图：[](./src/nutri/views/guide.vue)
+      ✔ UI 视图：[](./src/nutri/views/guide.vue) @done (15-11-19 11:47)
       ☐ 交互
         ☐ 点击“下一步”按钮，验证手机蓝牙是否打开：
           ☐ Y 跳转至：/devices/add，视图：[](./src/nutri/views/device/add.vue)
@@ -32,7 +32,7 @@
         ☐ 点击“保存”按钮，将当前数据添加至历史记录
     ☐ 食材选择
       ☐ 食材列表 /foods/select
-        ☐ UI 视图：[](./src/nutri/views/food/select.vue)
+        ✔ UI 视图：[](./src/nutri/views/food/select.vue) @done (15-11-19 17:26)
           ☐ 搜索框
           ☐ 食材列表
         ☐ 交互
@@ -89,9 +89,9 @@
     ☐ 更多
       ☐ 设备
         ☐ 设备列表 /devices
-          ☐ UI 视图：[](./src/nutri/views/device/list.vue)
+          ✔ UI 视图：[](./src/nutri/views/device/list.vue) @done (15-11-19 11:48)
             ☐ 设备列表组件
-            ☐ “新增”链接入口
+            ✔ “新增”链接入口 @done (15-11-19 11:48)
           ☐ 交互
             ☐ 链接跳转
               ☐ 点击“新增”链接，跳转至：/devices/add，视图：[](./src/nutri/views/device/add.vue)

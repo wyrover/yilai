@@ -1,14 +1,15 @@
 <template lang="jade">
 .main-content
-  h1 设备列表
+  //- h1 设备列表
   .device-list
-    a.device-actions-add(type="button") 新增
-    .device-list-item(v-for="device in devices")
+    .device-actions-add(v-show="!adding", v-on:click="this.adding = !this.adding") 新增
+    .device-list-item(v-for="device in devices | filterBy !adding in 'binded'")
       span.thumb
       .info
         h3.name {{device.name}}
         span.mac {{device.mac}}
-      button.unbind(type="button") 解绑
+      button.unbind(type="button", v-show="!adding") 解绑
+      button.bind(type="button", v-show="adding", v-on:click="bindDevice(device)") 绑定
 </template>
 
 <style lang="stylus">
@@ -20,34 +21,36 @@
   width 100%
   border-top 1px solid #000
 
-/* 设备新增按钮 */
+  /* 设备新增按钮 */
   .device-actions-add
-    fixed right 0 top 0
+    fixed right top
     display inline-block
     size rem(150) rem(70)
     text-align center
     background #f99
+    z-index 999
     border-top-left-radius rem(35)
     border-bottom-left-radius rem(35)
 
-/* 设备列表项 */
+  /* 设备列表项 */
   .device-list-item
+    position relative
     size 100% rem(200)
     background #fff
     border-bottom 1px solid #000
     clearfix()
-    overflow hidden
+    //transform translateX(-4rem)
 
 
-/* 设备图片 */
+    /* 设备图片 */
     .thumb
-      float left
+      display inline-block
       size 25% rem(200)
       background #999
 
-/* 设备信息 */
+    /* 设备信息 */
     .info
-      float left
+      absolute left 25% top
       size 75% rem(200)
 
       .name
@@ -59,15 +62,22 @@
         font-size rem(16)
         color #999
 
-/* 解绑按钮 */
+    /* 解绑按钮 */
     .unbind
-      float left
-      size rem(150)
+      absolute left 100% top
+      size 4rem rem(200)
       background #f00
       color #fff
+      border none
 
+    /* 绑定按钮 */
+    .bind
+      absolute right top
+      size 4rem rem(200)
+      background #f00
+      color #fff
+      border none
 </style>
-
 
 <script>
 var Promise = require('promise');
@@ -85,6 +95,7 @@ module.exports = {
   data: function () {
     return {
       devices: [],
+      adding: false
     };
   },
 
@@ -105,9 +116,9 @@ module.exports = {
       if (__DEBUG__) {
         return new Promise(function (resolve, reject) {
           resolve([{
-            name: 'aa',
+            name: 'AA',
             mac: '1213rfadfadfa',
-            binded: false
+            binded: true
           }, {
             name: 'bbb',
             mac: '1213rfadfadfaasdfsdfasd',
@@ -119,6 +130,11 @@ module.exports = {
         url: '',
         type: 'get'
       }));
+    },
+    bindDevice: function (device) {
+      this.adding = !this.adding;
+      this.device = device;
+      device.binded = true;
     }
   }
 };

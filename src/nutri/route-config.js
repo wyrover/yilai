@@ -29,6 +29,15 @@ var configRouter = function (router) {
     '/foods/add': {
       component: require('./views/food/add.vue')
     },
+    '/foods/select': {
+      component: require('./views/food/select.vue')
+    },
+    '/foods/list': {
+      component: require('./views/food/list.vue')
+    },
+    '/foods/edit': {
+      component: require('./views/food/edit.vue')
+    },
 
     // 历史记录
     '/records': {
