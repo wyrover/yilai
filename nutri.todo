@@ -11,8 +11,8 @@
 
   营养称:
     ☐ 设备控制界面 /devices/:deviceId
-      ☐ UI [](./src/nutri/views/device/details.vue)
-        ☐ 控制界面
+      ✔ UI [](./src/nutri/views/device/details.vue) @done (15-11-20 17:05)
+        ✔ 控制界面 @done (15-11-20 17:05)
       ☐ 交互
         ☐ 进入控制界面，初始化页面显示，并检测设备是否已连接：
           ☐ N 显示“连接中”状态，发送连接请求接收到回调数据后，检验是否连接：
