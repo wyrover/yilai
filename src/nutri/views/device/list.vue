@@ -1,6 +1,5 @@
 <template lang="jade">
 .main-content
-  //- h1 设备列表
   .device-list
     .device-actions-add(v-show="!adding", v-on:click="this.adding = !this.adding") 新增
     .device-list-item(v-for="device in devices | filterBy !adding in 'binded'")

@@ -1,5 +1,5 @@
 <template lang="jade">
-.main-content
+.main-content.with-foot-actions
   .welcome
     p Hi~欢迎，在添加营养称前，
     p 确保您是否已经进行以下两个步骤
