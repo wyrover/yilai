@@ -50,8 +50,8 @@
               ☐ N 显示无搜索结果提示，引导用户添加食材，“立即添加食材”链接跳转至：/foods/add，视图：[](./src/nutri/views/food/add.vue)
               ☐ Y 显示搜索结果，按照字母表A-Z 排序
       ☐ 食材添加 /foods/add
-        ☐ UI 视图：[](./src/nutri/views/food/add.vue)
-          ☐ 食材添加表单
+        ✔ UI 视图：[](./src/nutri/views/food/add.vue) @done (15-11-20 19:07)
+          ✔ 食材添加表单 @done (15-11-20 19:07)
         ☐ 交互
           ☐ 点击各项进入编辑状态（输入框代替值显示），并验证当前值是否为空：
             ☐ Y 隐藏删除图标

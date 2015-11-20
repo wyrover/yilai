@@ -1,13 +1,14 @@
 <template lang="jade">
 .main-content
   .foods-search-bar
-    .search-bar(v-bind:class="{'bar-inline': editingStatu && !isEmpty(foodName)}")
-      input.search-input(placeholder="搜索", v-model="foodName",@focus="editingStatu=true")
-    btn.search-btn(v-show="!isEmpty(foodName) && editingStatu", @click="foodName=''") 取消
-  .foods-search-tips.tip-hot-food(v-show="editingStatu && isEmpty(foodName)") 热门食材
+    .search-bar(v-bind:class="{'bar-inline': searchingStatu && !isEmpty(foodName)}")
+      input.search-input(placeholder="搜索", v-model="foodName",@focus="searchingStatu=true,firstTime=false")
+    btn.search-btn(v-show="!isEmpty(foodName) && searchingStatu", @touchstart="foodName=''") 取消
+  .foods-search-tips.tip-hot-food(v-show="searchingStatu && isEmpty(foodName)") 热门食材
   .foods-search-tips.tip-search-result(v-show="!isEmpty(foodName)") 搜索结果
-  food-list(v-show="!canSee", :foods="foods | limitBy 5")
-
+  food-list(v-show="firstTime", :foods="foods | wrap searchingStatu foodName")
+    p aaa
+  food-list(v-show="searchingStatu && !isEmpty(foodName)", :foods="foods | filterBy foodName in 'name'")
 </template>
 
 <style lang="stylus">
@@ -89,9 +90,10 @@ module.exports = {
   // 视图初始化数据
   data: function () {
     return {
-      editingStatu: false,
+      firstTime: true,
+      searchingStatu: false,
       isInline: false,
-      canSee: true,
+      canSee: false,
       foodName: '',
       foods: [],
       filteredFoods: []
@@ -133,6 +135,12 @@ module.exports = {
 
     inputBlur: function(e){
       this.foodName = '';
+    }
+  },
+
+  filters: {
+    wrap: function (value, searching, foodName) {
+      return value
     }
   }
 }

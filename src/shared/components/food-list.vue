@@ -1,12 +1,9 @@
 <template lang="jade">
-  ul.food-list
-    li(v-for="item in foods")
-      a(v-link="item.id") {{item.name}}
-      button 删除
-  slot
-    .none-search-result(v-show="canSee")
-      .tip-none-result 暂未搜索结果!
-      a(href="#") 立即添加食材>
+  .food-list
+    ul
+      li(v-for="item in foods")
+        a(v-link="item.id") {{item.name}}
+        button 删除
 </template>
 
 <style lang="stylus">
