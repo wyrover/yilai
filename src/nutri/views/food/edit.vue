@@ -5,39 +5,39 @@
         li
           span 名称
           input(v-model="name", @focus="editingName=true", @blur="editingName=false")
-          button(v-show="!isEmpty(name) && editingName", @touchstart="name=''") X
+          button(v-show="!isEmpty(name) && editingName", @mousedown="name=''") X
         li
           span 重量
           input(v-model="weight", @focus="editingWeight=true", @blur="editingWeight=false")
-          button(v-show="!isEmpty(weight) && editingWeight", @touchstart="weight=''") X
+          button(v-show="!isEmpty(weight) && editingWeight", @mousedown="weight=''") X
         li
           span 热量
           input(v-model="heat", @focus="editingHeat=true", @blur="editingHeat=false")
-          button(v-show="!isEmpty(heat) && editingHeat", @touchstart="heat=''") X
+          button(v-show="!isEmpty(heat) && editingHeat", @mousedown="heat=''") X
         li
           span 蛋白质
           input(v-model="protein", @focus="editingProtein=true", @blur="editingProtein=false")
-          button(v-show="!isEmpty(protein) && editingProtein", @touchstart="protein=''") X
+          button(v-show="!isEmpty(protein) && editingProtein", @mousedown="protein=''") X
         li
           span 脂肪
           input(v-model="fat", @focus="editingFat=true", @blur="editingFat=false")
-          button(v-show="!isEmpty(fat) && editingFat", @touchstart="fat=''") X
+          button(v-show="!isEmpty(fat) && editingFat", @mousedown="fat=''") X
         li
           span 胆固醇
           input(v-model="chol", @focus="editingChol=true", @blur="editingChol=false")
-          button(v-show="!isEmpty(chol) && editingChol", @touchstart="chol=''") X
+          button(v-show="!isEmpty(chol) && editingChol", @mousedown="chol=''") X
         li
           span 糖类
           input(v-model="sugar", @focus="editingSugar=true", @blur="editingSugar=false")
-          button(v-show="!isEmpty(sugar) && editingSugar", @touchstart="sugar=''") X
+          button(v-show="!isEmpty(sugar) && editingSugar", @mousedown="sugar=''") X
         li
           span 纤维素
           input(v-model="fibrin", @focus="editingFibrin=true", @blur="editingFibrin=false")
-          button(v-show="!isEmpty(fibrin) && editingFibrin", @touchstart="fibrin=''") X
+          button(v-show="!isEmpty(fibrin) && editingFibrin", @mousedown="fibrin=''") X
         li
           span 钠
           input(v-model="natrium", @focus="editingNatrium=true", @blur="editingNatrium=false")
-          button(v-show="!isEmpty(natrium) && editingNatrium", @touchstart="natrium=''") X
+          button(v-show="!isEmpty(natrium) && editingNatrium", @mousedown="natrium=''") X
     .foot-actions
       button.btn-block(type="button") 保存
 </template>

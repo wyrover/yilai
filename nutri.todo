@@ -24,11 +24,11 @@
               最大值为20kg，分度值为1g，对应分度盘可以模糊对应，指针根据测量值实时指向对应值
             ☐ 点击食材名称，跳转至食材选择页选择对应的食材：/foods/select，视图：[](./src/nutri/views/food/select.vue)
             ☐ 根据测量值与选择的食材同步计算各属性值
-        ☐ 点击“更多设置”图标：
-          ☐ 弹出下拉菜单：
-            ☐ 点击“设备”，跳转至设备列表页：/devices，视图：[](./src/nutri/views/device/list.vue)
-            ☐ 点击“个人食材”，跳转至个人食材页：/foods，视图：[](./src/nutri/views/food/list.vue)
-        ☐ 点击“历史纪录”图标：跳转至历史纪录页：/records，视图：[](./src/nutri/views/record/index.vue)
+        ✔ 点击“更多设置”图标： @done (15-11-20 17:08)
+          ✔ 弹出下拉菜单： @done (15-11-20 17:08)
+            ✔ 点击“设备”，跳转至设备列表页：/devices，视图：[](./src/nutri/views/device/list.vue) @done (15-11-20 17:08)
+            ✔ 点击“个人食材”，跳转至个人食材页：/foods，视图：[](./src/nutri/views/food/list.vue) @done (15-11-20 17:08)
+        ✔ 点击“历史纪录”图标：跳转至历史纪录页：/records，视图：[](./src/nutri/views/record/index.vue) @done (15-11-20 17:08)
         ☐ 点击“保存”按钮，将当前数据添加至历史记录
     ☐ 食材选择
       ☐ 食材列表 /foods/select

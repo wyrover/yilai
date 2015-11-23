@@ -15,10 +15,6 @@
 /* Vue 初始化赋值 */
 [v-cloak]
   display none
-
-/* 容器 */
-.page-container
-  size 100%
 </style>
 
 <script>

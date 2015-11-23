@@ -145,6 +145,9 @@ var webpackConfig = {
       exclude: /node_modules/,
       loader: 'vue'
     }, {
+      test: /\.json$/,
+      loader: 'json'
+    }, {
       test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
       loader: 'url?limit=10000&mimetype=application/font-woff&prefix=fonts'
     }, {

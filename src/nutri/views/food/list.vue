@@ -1,56 +1,76 @@
 <template lang="jade">
-.main-content
-food-list(:foods="foods")
+  .main-content
+    food-list(:foods="foods | orderBy 'nameInPinyin'", :removable="true")
 </template>
 
 <script>
-var Promise = require('promise');
-var Modal = require('../../../shared/components/modal.vue');
-var appStore = require('../../../shared/stores/app');
-var locales = require('../../../shared/consts/locales');
-var FoodList = require('../../../shared/components/food-list.vue');
+  var Promise = require('promise');
+  var han = require('han');
+  var FoodList = require('../../../shared/components/food-list.vue');
 
-module.exports = {
-  components: {
-    'food-list': FoodList
-  },
+  module.exports = {
+    components: {
+      'food-list': FoodList
+    },
 
-  // 视图初始化数据
-  data: function () {
-    return {
-      foods: [],
-      isSearchable: false
-    }
-  },
-
-  route: {
-    data: function (transition) {
+    // 视图初始化数据
+    data: function () {
       return {
-        foods: this.fetchFoods()
+        foods: []
       }
-    }
-  },
+    },
 
-  methods: {
-    fetchFoods: function () {
-      if(__DEBUG__) {
-        return new Promise(function (resolve, reject) {
-          resolve([
-            {name: 'Jack'},
-            {name: 'Anna'},
-            {name: 'Zero'},
-            {name: 'Yon'},
-            {name: '李三'},
-            {name: '张四'},
-            {name: '陈五'}
-            ]);
-        });
+    route: {
+      data: function (transition) {
+        return {
+          foods: this.fetchFoods()
+        }
       }
-      return Promise.resolve($.ajax({
-        url: '',
-        type: 'get'
-      }));
+    },
+
+    methods: {
+      fetchFoods: function () {
+        if(__DEBUG__) {
+          return new Promise(function (resolve, reject) {
+            var foods = [{
+              id: '1',
+              name: '面包',
+              weight: 100,
+              heat: 1000,
+              protein: 20.2,
+              fat: 0.5,
+              chol: 0.8,
+              sugar: 50,
+              fibrin: 103.5,
+              natrium: 0.5,
+              times: 5
+            }, {
+              id: '2',
+              name: '玉米',
+              weight: 200,
+              heat: 800,
+              protein: 30.8,
+              fat: 1.2,
+              chol: 1.2,
+              sugar: 22,
+              fibrin: 99.4,
+              natrium: 0.2,
+              times: 10
+            }];
+
+            // 为每个食材添加一个拼音名称字段，以用于排序操作
+            foods.map(function (food) {
+              food.nameInPinyin = han.letter(food.name);
+            });
+
+            resolve(foods);
+          });
+        }
+        return Promise.resolve($.ajax({
+          url: '',
+          type: 'get'
+        }));
+      }
     }
   }
-}
 </script>

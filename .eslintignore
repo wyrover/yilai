@@ -4,3 +4,4 @@ node_modules/
 # Generated files
 dist
 dist/
+svn/

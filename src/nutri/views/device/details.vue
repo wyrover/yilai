@@ -3,22 +3,25 @@
     //- 营养称仪表界面
     .scale-dashboard
       //- 蓝牙状态
-      .bluetooth-status 已连接
+      .bluetooth-status
+        span(v-if="state.status==='disconnected'") 未连接
+        span(v-if="state.status==='connecting'") 连接中
+        span(v-if="state.status==='connected'") 已连接
 
       //- 历史纪录
       a.link-records(v-link="{path: '/records'}")
 
       //- 更多设置
-      .more-settings
-        button.trigger(@click="showMenu=!showMenu", @blur="showMenu=false")
-        .dropdown-menu(v-show="showMenu")
+      .more-settings(:class="{'open':showMenu}")
+        button.trigger(@click="toggleDropdown", @blur="closeDropdown")
+        .dropdown-menu
           ul
-            li(@touchstart="redirectTo('/devices')") 设备
-            li(@touchstart="redirectTo('/foods')") 个人食材
+            li(@mousedown="redirectTo('/devices', $event)") 设备
+            li(@mousedown="redirectTo('/foods', $event)") 个人食材
 
       //- 实时结果
       .result
-        em.num 90
+        em.num {{state.weight}}
         span.unit g
 
       //- 表盘
@@ -28,7 +31,7 @@
 
     //- 食材选择
     .food-select
-      a(v-link="{path: '/foods/select'}") 白面包
+      a(v-link="{path: '/foods/select'}", v-text="state.food.name || '选择食材'")
 
     //- 食材营养列表
     .nutri-list
@@ -36,42 +39,42 @@
         li.icon-heat
           .label 热量
           .value
-            em.num 34.01
+            em.num(v-text="record.heat")
             span.unit kcal
         li.icon-protein
           .label 蛋白质
           .value
-            em.num 804.01
+            em.num(v-text="record.protein")
             span.unit g
         li.icon-fat
           .label 脂肪
           .value
-            em.num 104.01
+            em.num(v-text="record.fat")
             span.unit g
         li.icon-chol
           .label 胆固醇
           .value
-            em.num 64.01
+            em.num(v-text="record.chol")
             span.unit mg
         li.icon-sugar
           .label 糖类
           .value
-            em.num 14.01
+            em.num(v-text="record.sugar")
             span.unit g
         li.icon-fibrin
           .label 纤维素
           .value
-            em.num 84.01
+            em.num(v-text="record.fibrin")
             span.unit g
         li.icon-natrium
           .label 钠
           .value
-            em.num 30.01
+            em.num(v-text="record.natrium")
             span.unit mg
 
     //- 操作
     .foot-actions
-      button.btn-block(type="button") 保存
+      button.btn.btn-block(@click="saveRecord") 保存
 </template>
 
 <style lang="stylus">
@@ -112,6 +115,7 @@
         outline none
 
       .dropdown-menu
+        display none
         absolute right top rem(60)
         width rem(160)
         background #FFF
@@ -119,6 +123,10 @@
 
         li
           padding rem(10) rem(20)
+
+      &.open
+        .dropdown-menu
+          display block
 
     //- 实时结果
     .result
@@ -174,16 +182,67 @@
 </style>
 
 <script>
+  var deviceStore = require('../../stores/device');
+  var NUTRIS = require('../../consts/nutris');
+
   module.exports = {
     data: function () {
       return {
-        showMenu: false
+        showMenu: false,
+        state: deviceStore.state
       }
     },
 
+    computed: {
+      record: function () {
+        var self = this;
+        var ret = {};
+
+        //console.log(this.state.food.name);
+
+        NUTRIS.forEach(function(nutri, index){
+          // 这里不能直接用self.state.food.length来获取对象的长度
+          if (Object.keys(self.state.food).length) {
+            ret[nutri] = self.state.weight * self.state.food[nutri] / self.state.food.weight;
+          } else {
+            ret[nutri] = 0;
+          }
+        });
+
+        return ret;
+      }
+    },
+
+    ready: function () {
+      var self = this;
+
+      // TODO: 模拟称重，待删除
+      window.setTimeout(function () {
+        deviceStore.setWeight(90);
+      }, 5000);
+    },
+
     methods: {
-      redirectTo: function (url) {
+      redirectTo: function (url, evt) {
+        evt.stopPropagation();
         this.$route.router.go(url);
+      },
+
+      saveRecord: function () {
+        if (this.state.food.name !== undefined && this.state.weight !== 0) {
+          this.record.name = this.state.food.name;
+          this.record.date = new Date().toLocaleDateString();
+          // TODO: 提交数据
+          alert(JSON.stringify(this.record));
+        }
+      },
+
+      toggleDropdown: function () {
+        this.showMenu = !this.showMenu;
+      },
+
+      closeDropdown: function () {
+        this.showMenu = false;
       }
     }
   };
