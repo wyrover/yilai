@@ -69,6 +69,10 @@
         return filters[this.visibility](this.foods);
       },
 
+      translatedFoodName: function () {
+        return han.letter(this.foodName);
+      },
+
       searchResultTitle: function () {
         if (this.visibility === 'hot') {
           return '热门食材';
@@ -109,6 +113,18 @@
             }, {
               id: '2',
               name: '玉米',
+              weight: 200,
+              heat: 800,
+              protein: 30.8,
+              fat: 1.2,
+              chol: 1.2,
+              sugar: 22,
+              fibrin: 99.4,
+              natrium: 0.2,
+              times: 10
+            }, {
+              id: '3',
+              name: 'apple',
               weight: 200,
               heat: 800,
               protein: 30.8,

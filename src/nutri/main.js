@@ -4,7 +4,10 @@ var VueRouter = require('vue-router');
 var App = Vue.extend(require('./app.vue'));
 var configRouter = require('./route-config');
 var router;
+var vueForm = require('vue-form');
 
+// 表单验证插件
+Vue.use(vueForm);
 // 加载路由插件
 Vue.use(VueRouter);
 
