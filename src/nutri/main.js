@@ -6,10 +6,12 @@ var configRouter = require('./route-config');
 var router;
 var vueForm = require('vue-form');
 
-// 表单验证插件
-Vue.use(vueForm);
+
 // 加载路由插件
 Vue.use(VueRouter);
+
+// 表单验证插件
+Vue.use(vueForm);
 
 // 路由
 router = new VueRouter({

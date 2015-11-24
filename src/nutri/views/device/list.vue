@@ -15,7 +15,7 @@
 
     //- 右侧按钮
     .side-actions
-      button.add-device(v-show="visibility==='binded'", @click="setVisibility('unbinded')") 新增
+      button.btn-side(v-show="visibility==='binded'", @click="setVisibility('unbinded')") 新增
 
     //- 底栏
     .foot-actions(v-if="visibility==='unbinded'")
@@ -25,22 +25,11 @@
 <style lang="stylus">
   @import '../../../shared/assets/stylus/common'
 
+  /* 右侧容器 */
   .side-actions
     fixed right top
+    width rem(150)
     z-index 100
-
-    /* 设备新增按钮 */
-    .add-device
-      display inline-block
-      size rem(150) rem(70)
-      text-align center
-      background #f99
-      font-size rem(30)
-      z-index 999
-      border none
-      appearance none
-      border-top-left-radius rem(35)
-      border-bottom-left-radius rem(35)
 
   /* 设备列表 */
   .device-list
@@ -169,7 +158,7 @@
       },
 
       bindDevice: function (device, event) {
-        // 阻止点击时间冒泡
+        // 阻止点击事件冒泡
         event.stopPropagation();
         device.binded = true;
         this.setVisibility('binded');
