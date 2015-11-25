@@ -132,9 +132,16 @@
 
     methods: {
       fetchDevices: function () {
+        var self = this;
+
         if (__DEBUG__) {
           return new Promise(function (resolve, reject) {
-            resolve([{
+            self.$http.get(url, function (data, status, request) {
+              resolve(data);
+            }).error(function  (data, status, request) {
+              reject(error);
+            })
+/*            resolve([{
               id: 1,
               name: 'AA',
               mac: '1213rfadfadfa',
@@ -144,7 +151,7 @@
               name: 'bbb',
               mac: '1213rfadfadfaasdfsdfasd',
               binded: false
-            }]);
+            }]);*/
           });
         }
         return Promise.resolve($.ajax({
