@@ -25,7 +25,7 @@
     "vue-router": "^0.7.7"
   },
   "devDependencies": {
-    "autoprefixer": "^6.0.3",
+    "autoprefixer": "^6.1.1",
     "babel-core": "^6.1.21",
     "babel-loader": "^6.2.0",
     "babel-plugin-transform-runtime": "^6.1.18",
@@ -43,7 +43,7 @@
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.3.5",
     "jade": "^1.11.0",
-    "json-loader": "^0.5.3",
+    "json-loader": "^0.5.4",
     "json-server": "^0.8.2",
     "lodash": "^3.10.1",
     "minimist": "^1.2.0",
@@ -55,6 +55,6 @@
     "vue-html-loader": "^1.0.0",
     "vue-loader": "^7.1.2",
     "webpack": "^1.12.9",
-    "webpack-dev-server": "^1.12.1"
+    "webpack-dev-server": "^1.14.0"
   }
 }
