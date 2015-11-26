@@ -1,11 +1,12 @@
 <template lang="jade">
   .main-content
-    .food-edit-list(v-form, name="foodEditForm", @submit="onSubmit")
-      ul
-        li
-          span 名称
-          input(v-model="food.name", v-form-ctrl, required, name="name", @focus="editingName=true", @blur="editingName=false")
-          button(v-show="!isEmpty(food.name) && editingName", @mousedown="food.name=''") X
+    .food-edit-list
+      //- form(v-form, name="foodEditForm", @submit="onSubmit")
+      //- ul
+      //-   li
+      //-     span 名称
+      //-     input(v-model="food.name", v-form-ctrl, required, name="name", @focus="editingName=true", @blur="editingName=false")
+      //-     button(v-show="!isEmpty(food.name) && editingName", @mousedown="food.name=''") X
         //- li
         //-   span 重量
         //-   input(v-model="weight", @focus="editingWeight=true", @blur="editingWeight=false")
@@ -38,10 +39,10 @@
         //-   span 钠
         //-   input(v-model="natrium", @focus="editingNatrium=true", @blur="editingNatrium=false")
         //-   button(v-show="!isEmpty(natrium) && editingNatrium", @mousedown="natrium=''") X
-    .errors(v-if="foodEditForm.$submitted")
-      p(v-if="foodEditForm.name.$error.required") 请输入用户名
-    .foot-actions
-      button.btn-block(type="button") 保存
+    //- .errors(v-if="foodEditForm.$submitted")
+    //-   p(v-if="foodEditForm.name.$error.required") 请输入用户名
+    //- .foot-actions
+    //-   button.btn-block(type="button") 保存
 </template>
 
 <style lang="stylus">

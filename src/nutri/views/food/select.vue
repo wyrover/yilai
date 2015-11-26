@@ -14,12 +14,9 @@
     size 100% rem(60)
     line-height rem(60)
     padding 0 5%
-    background #f5f5f5
-    color #999
+    color #FFF
     font-weight normal
     font-size rem(24)
-    border-top 1px solid #999
-    border-bottom 1px solid #999
     box-sizing border-box
 </style>
 

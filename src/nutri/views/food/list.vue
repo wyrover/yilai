@@ -1,6 +1,6 @@
 <template lang="jade">
   .main-content
-    food-list(:foods="foods | orderBy 'nameInPinyin'", :removable="true")
+    food-list(:foods="foods | orderBy 'nameInPinyin'", :removable="true", @food-click="viewFood(food)")
 </template>
 
 <script>
@@ -29,6 +29,10 @@
     },
 
     methods: {
+      viewFood: function (food) {
+        console.log(food);
+      },
+
       fetchFoods: function () {
         if(__DEBUG__) {
           return new Promise(function (resolve, reject) {

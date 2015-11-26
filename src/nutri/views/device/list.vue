@@ -11,7 +11,7 @@
         button.bind(type="button", v-show="visibility==='unbinded'", @click="bindDevice(device, $event)") 绑定
     //- 无未绑定设备
     .tips-null(v-if="!filteredDevices.length")
-      p 搜索不到未绑定设备
+      p 搜索不到未绑定的设备
 
     //- 右侧按钮
     .side-actions
@@ -19,7 +19,7 @@
 
     //- 底栏
     .foot-actions(v-if="visibility==='unbinded'")
-      button.btn.btn-block(@click="setVisibility('binded')") 取消
+      button.btn.btn-primary(@click="setVisibility('binded')") 取消
 </template>
 
 <style lang="stylus">
@@ -40,47 +40,60 @@
     /* 设备列表项 */
     .device-list-item
       position relative
-      size 100% rem(200)
+      size 95% rem(142)
+      margin-left 5%
       background #fff
-      border-bottom 1px solid #000
+      border-bottom 1px solid #FFF
       clearfix()
       //transform translateX(-4rem)
+
+      &:first-child
+        border-top 1px solid #FFF
 
       /* 设备图片 */
       .thumb
         display inline-block
-        size 25% rem(200)
+        size 25% rem(142)
         background #999
 
       /* 设备信息 */
       .info
         absolute left 25% top
-        size 75% rem(200)
+        size 75% rem(142)
 
         .name
-          font-size rem(36)
+          font-size rem(30)
           color #000
           font-weight bold
+          margin 0
 
         .mac
-          font-size rem(24)
+          font-size rem(20)
           color #999
+          margin 0
 
       /* 解绑按钮 */
       .unbind
         absolute left 100% top
-        size 4rem rem(200)
+        size 4rem rem(142)
         background #f00
         color #fff
         border none
+        font-size rem(30)
 
       /* 绑定按钮 */
       .bind
         absolute right top
-        size 4rem rem(200)
+        size 4rem rem(142)
         background #f00
         color #fff
         border none
+        font-size rem(30)
+
+  /* 无捆绑设备 */
+  .tips-null
+    p
+      margin 0
 </style>
 
 <script>
@@ -136,12 +149,12 @@
 
         if (__DEBUG__) {
           return new Promise(function (resolve, reject) {
-            self.$http.get(url, function (data, status, request) {
+            self.$http.get('http://localhost:9090/devices', function (data, status, request) {
               resolve(data);
             }).error(function  (data, status, request) {
-              reject(error);
-            })
-/*            resolve([{
+              reject(data);
+            });/*
+            resolve([{
               id: 1,
               name: 'AA',
               mac: '1213rfadfadfa',
@@ -169,6 +182,10 @@
         event.stopPropagation();
         device.binded = true;
         this.setVisibility('binded');
+        this.$http.get('http://localhost:9090/devices', function (data, status, request) {
+          console.log(data);
+        }).error(function  (data, status, request) {
+        });
       }
     }
   };

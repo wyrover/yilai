@@ -49,7 +49,7 @@ var recordDetail = require('../../../shared/components/record-detail.vue')
         if (__DEBUG__) {
           return new Promise(function (resolve, reject) {
             resolve([{
-              day: '2015-11-24',
+              day: '2015-11-26',
               time: '15:26',
               name: 'Beer',
               weight: 2,
@@ -62,9 +62,9 @@ var recordDetail = require('../../../shared/components/record-detail.vue')
               natrium: 0.5,
               times: 5
             }, {
-              day: '2015-11-23',
+              day: '2015-11-25',
               time: '11:26',
-              name: 'apple',
+              name: 'Apple',
               weight: 2,
               heat: 1000,
               protein: 30.8,
@@ -75,9 +75,9 @@ var recordDetail = require('../../../shared/components/record-detail.vue')
               natrium: 0.5,
               times: 5
             }, {
-              day: '2015-11-22',
+              day: 'Nov 8th',
               time: '11:26',
-              name: 'pear',
+              name: 'Pear',
               weight: 2,
               heat: 1000,
               protein: 30.8,

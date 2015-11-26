@@ -1,7 +1,7 @@
 <template lang="jade">
   .food-list
-    .food-list-item(v-for="food in foods", track-by="$index", transition="staggered", stagger="100", @click.stop.prevent="handleClick(food, $event)")
-      span {{food.name}}
+    .food-list-item(v-for="food in foods", track-by="$index", transition="staggered", stagger="100")
+      span(@click="handleClick(food, $event)") {{food.name}}
       button.del(v-if="removable") 删除
 </template>
 
@@ -11,21 +11,29 @@
   /* 食材列表 */
   .food-list
     width 100%
+    margin-top rem(20)
+    border-top 1px solid #FFF
+    border-bottom 1px solid #FFF
 
     .food-list-item
       position relative
-      size 100% rem(80)
-      border-bottom 1px solid #999
+      size 90% rem(108)
+      margin-left 10%
       overflow hidden
+      border-top 1px solid #FFF
+
+      &:first-child
+        border-top none
 
       span
         absolute left top
         padding 0 5%
-        size 100% rem(80)
-        background #FFF
+        size 100% rem(108)
         box-sizing border-box
-        line-height rem(80)
+        line-height rem(108)
         z-index 2
+        color #FFF
+        font-size rem(30)
         //transform translateX(rem(-88))
 
       .del

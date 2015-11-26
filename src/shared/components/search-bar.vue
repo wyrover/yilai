@@ -1,7 +1,7 @@
 <template lang="jade">
   .search-bar(:class="{'active': active}")
     .search-box
-      input.search-input(placeholder="搜索", v-model="key", @focus="handleFocus(key)", @blur="handleBlur(key)", @input="handleInput(key)")
+      input.search-input(v-model="key", @focus="handleFocus(key)", @blur="handleBlur(key)", @input="handleInput(key)")
     button.btn-cancel(@click="handleCancelClick") 取消
 </template>
 
@@ -9,9 +9,9 @@
   @import '../assets/stylus/common'
 
   .search-bar
-    size 90% rem(80)
-    padding rem(20) 5% rem(20) 5%
-    background #f5f5f5
+    size rem(524) rem(74)
+    margin 0 auto
+    padding rem(20) 0 rem(20) 0
     overflow hidden
 
     .search-box
@@ -20,24 +20,25 @@
       width 100%
       height rem(80)
       padding 0 rem(80)
-      border 1px solid #999
+      border rem(4) solid #FFF
       border-radius rem(40)
-      background #f5f5f5
       box-sizing border-box
       transition width .2s ease-in-out
 
       &::before
-        absolute left .5rem top .5rem
+        absolute left .5rem top .2rem
         content ''
-        size rem(40)
-        background red
+        size rem(46) rem(50)
+        background url('../assets/images/bg/icon_search.png') no-repeat 0 0
+        background-size rem(46) rem(50)
 
       .search-input
         padding 0
-        size 100% rem(75)
+        size 100% rem(70)
         outline none
         border none
         font-size rem(30)
+        background transparent
 
     .btn-cancel
       absolute right -20% top .5rem
@@ -45,13 +46,15 @@
       size 18% rem(80)
       font-size rem(30)
       border none
-      background red
       transition right .2s ease-in-out
       outline none
+      background transparent
+      text-align left
+      color #FFF
 
     &.active
       .search-box
-        width 80%
+        width rem(440)
 
       .btn-cancel
         right 0

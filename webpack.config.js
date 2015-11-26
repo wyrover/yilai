@@ -56,6 +56,7 @@ var dirs = {
 // 形如 `if(__DEBUG__) { ... }` 的调试代码会在不指定命令行`--debug`参数时自动被丢弃
 var GLOBALS = {
   'process.env.NODE_ENV': DEV ? '"development"' : '"production"',
+  'apiRoot': 'http://localhost:9090',
   '__DEBUG__': DEBUG,
   '__APP__': APP
 };

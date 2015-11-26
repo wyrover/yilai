@@ -35,7 +35,7 @@ var configRouter = function (router) {
     '/foods/list': {
       component: require('./views/food/list.vue')
     },
-    '/foods/edit': {
+    '/foods/:id/edit': {
       component: require('./views/food/edit.vue')
     },
 

@@ -19,7 +19,8 @@ for (var i = 1; i <= 5; i++) {
   fakeData.devices.push({
     id: i,
     name: faker.lorem.words().join(' '),
-    mac: faker.internet.mac()
+    mac: faker.internet.mac(),
+    binded: false
   });
 }
 

@@ -4,20 +4,22 @@
     .scale-dashboard
       //- 蓝牙状态
       .bluetooth-status
-        span(v-if="state.status==='disconnected'") 未连接
-        span(v-if="state.status==='connecting'") 连接中
-        span(v-if="state.status==='connected'") 已连接
+        span(v-if="state.status==='disconnected'") {{ $t("status.disconnected") }}
+        span(v-if="state.status==='connecting'") {{ $t("status.connecting") }}
+        span(v-if="state.status==='connected'") {{ $t("status.connected") }}
 
       //- 历史纪录
-      a.link-records(v-link="{path: '/records'}")
+      //- a.link-records(v-link="{path: '/records'}")
 
       //- 更多设置
-      .more-settings(:class="{'open':showMenu}")
+      .more-settings(:class="{'open': showMenu}")
         button.trigger(@click="toggleDropdown", @blur="closeDropdown")
         .dropdown-menu
+          span.triangle
           ul
             li(@mousedown="redirectTo('/devices', $event)") 设备
             li(@mousedown="redirectTo('/foods', $event)") 个人食材
+            li(@mousedown="redirectTo('/records', $event)") 历史记录
 
       //- 实时结果
       .result
@@ -27,7 +29,6 @@
       //- 表盘
       .meter
         .scale-mark
-        .cursor
 
     //- 食材选择
     .food-select
@@ -74,7 +75,7 @@
 
     //- 操作
     .foot-actions
-      button.btn.btn-block(@click="saveRecord") 保存
+      button.btn.btn-primary(@click="saveRecord") 保存
 </template>
 
 <style lang="stylus">
@@ -82,18 +83,17 @@
 
   //- 营养称仪表界面
   .scale-dashboard
-    background gray-light
-    size 100% rem(460)
+    size 100% rem(450)
     overflow hidden
     position relative
-    border-bottom 1px solid #DDD
 
     //- 蓝牙状态
     .bluetooth-status
       absolute left 25% top rem(10)
       width 50%
       text-align center
-      font-size rem(28)
+      font-size rem(34)
+      color #fff
 
     //- 历史纪录
     .link-records
@@ -104,12 +104,14 @@
     //- 更多设置
     .more-settings
       absolute right rem(10) top rem(10)
-      size rem(60)
+      size rem(50)
       z-index 1
+      margin-right rem(20)
 
       .trigger
-        size rem(60)
-        background red
+        size rem(50)
+        background url('../../../shared/assets/images/bg/icon_more.png') no-repeat 0 0
+        background-size 100% 100%
         border none
         appearance none
         outline none
@@ -117,12 +119,23 @@
       .dropdown-menu
         display none
         absolute right top rem(60)
-        width rem(160)
-        background #FFF
-        font-size rem(28)
+        min-width rem(180)
+        font-size rem(24)
+        color #ffa96f
+        text-align center
+
+        .triangle
+          absolute right rem(10) top rem(-29rem)
+          triangle(#fff, rem(30), up)
 
         li
-          padding rem(10) rem(20)
+          padding rem(24)
+          background #fff
+          white-space nowrap
+          border-bottom 1px solid #ccc
+
+          &:last-child
+            border-bottom none
 
       &.open
         .dropdown-menu
@@ -147,38 +160,84 @@
       margin-left rem(-250)
 
       .scale-mark
-        absolute left top
-        size rem(500)
+        absolute left 50% top
+        size rem(250)
         background #FFF
         border-radius rem(300)
+        margin-left rem(-125)
 
-      .cursor
-        absolute left 50% top
-        margin-left rem(-10)
-        background red
-        size rem(20) rem(250)
 
   //- 食材选择
   .food-select
-    border-bottom 1px solid #DDD
+    margin rem(20) 0 rem(30) 0
+    text-align center
 
     a
       display block
-      font-size rem(28)
-      text-align center
-      line-height rem(80)
+      width rem(300)
+      margin 0 auto
+      font-size rem(24)
+      line-height rem(60)
+      color #FFF
+      border-bottom 1px solid #FFF
+      background url('../../../shared/assets/images/bg/icon_rightArrow.png') no-repeat right center
+      background-size rem(16) rem(25)
 
   // 食材营养列表
   .nutri-list
     ul
+      width 94%
+      margin 0 auto
+      box-sizing border-box
       font-size 0
 
     li
       display inline-block
       font-size rem(28)
-      width 33.3%
-      padding rem(30) rem(10) rem(30) rem(80)
+      width 26.3%
+      margin-left 7%
+      padding-left rem(50)
+      margin-bottom rem(50)
       box-sizing border-box
+      color #FFF
+      // border 1px solid #FFF
+
+    .label
+      font-size rem(20)
+
+    .num
+      font-size rem(30)
+
+    .unit
+      font-size rem(24)
+
+    .icon-heat
+      background url('../../../shared/assets/images/bg/icon_heat.png') no-repeat left center
+      background-size rem(30) rem(30)
+
+    .icon-protein
+      background url('../../../shared/assets/images/bg/icon_protein.png') no-repeat left center
+      background-size rem(30) rem(30)
+
+    .icon-fat
+      background url('../../../shared/assets/images/bg/icon_fat.png') no-repeat left center
+      background-size rem(30) rem(30)
+
+    .icon-chol
+      background url('../../../shared/assets/images/bg/icon_chol.png') no-repeat left center
+      background-size rem(30) rem(30)
+
+    .icon-sugar
+      background url('../../../shared/assets/images/bg/icon_sugar.png') no-repeat left center
+      background-size rem(30) rem(30)
+
+    .icon-fibrin
+      background url('../../../shared/assets/images/bg/icon_fibrin.png') no-repeat left center
+      background-size rem(30) rem(30)
+
+    .icon-natrium
+      background url('../../../shared/assets/images/bg/icon_natrium.png') no-repeat left center
+      background-size rem(30) rem(30)
 </style>
 
 <script>
