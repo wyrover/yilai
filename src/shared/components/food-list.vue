@@ -1,8 +1,8 @@
 <template lang="jade">
   .food-list
-    .food-list-item(v-for="food in foods", track-by="$index", transition="staggered", stagger="100")
+    .food-list-item.editing(v-for="food in foods", track-by="$index", transition="staggered", stagger="100")
       span(@click="handleClick(food, $event)") {{food.name}}
-      button.del(v-if="removable") 删除
+      button.del(v-if="removable") DELETE
 </template>
 
 <style lang="stylus">
@@ -12,13 +12,14 @@
   .food-list
     width 100%
     border-bottom 1px solid #FFF
+    border-top 1px solid #FFF
 
     .food-list-item
       position relative
       size 90% rem(108)
       margin-left 10%
-      overflow hidden
       border-top 1px solid #FFF
+      //transform translateX(rem(-110))
 
       &:first-child
         border-top none
@@ -32,21 +33,24 @@
         z-index 2
         color #FFF
         font-size rem(30)
-        //transform translateX(rem(-88))
+        background url('../../shared/assets/images/bg/icon_rightArrow.png') no-repeat right rem(50) center
+        background-size rem(16) rem(25)
+
 
       .del
-        absolute right top
+        absolute right rem(-110) top
         padding 0
         font-size rem(24)
-        size rem(80)
+        size rem(110) rem(110)
         border none
         appearance none
         background red
         color #FFF
-        z-index 1
-
-      &.editing
-        transform translateX(rem(-80))
+        text-align center
+        z-index 3
+        border-bottom rem(2) solid #FFF
+        border-left 1px solid #FFF
+        box-sizing border-box
 </style>
 
 <script>

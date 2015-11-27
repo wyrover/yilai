@@ -1,7 +1,15 @@
 <template lang="jade">
-  .main-content
+  .main-content.gap-top
     food-list(:foods="foods | orderBy 'nameInPinyin'", :removable="true", @food-click="viewFood(food)")
 </template>
+
+<style lang="stylus">
+  @import '../../../shared/assets/stylus/common'
+
+  /* 内边间隙 */
+  .gap-top
+    padding-top rem(40)
+</style>
 
 <script>
   var Promise = require('promise');

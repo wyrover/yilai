@@ -6,7 +6,7 @@
         .info
           h3.name {{device.name}}
           span.mac {{device.mac}}
-        button.unbind(type="button") 解绑
+        button.unbind(type="button") UNBIND
         button.btn.btn-secondary.bind(type="button", v-show="visibility==='unbinded'", @click="bindDevice(device, $event)") 绑定
     //- 无未绑定设备
     .tips-null(v-if="!filteredDevices.length")
@@ -67,7 +67,7 @@
       padding-right 5%
       border-bottom 1px solid #FFF
       clearfix()
-      //transform translateX(-4rem)
+      //transform translateX(rem(-150))
 
       &:first-child
         border-top 1px solid #FFF
