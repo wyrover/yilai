@@ -3,19 +3,19 @@
     //- 设备列表
     .device-list(v-if="filteredDevices.length")
       .device-list-item(v-for="device in filteredDevices", @click="$route.router.go('/devices/' + device.id)")
-        .thumb
         .info
           h3.name {{device.name}}
           span.mac {{device.mac}}
-        button.unbind(type="button", v-show="visibility==='binded'") 解绑
-        button.bind(type="button", v-show="visibility==='unbinded'", @click="bindDevice(device, $event)") 绑定
+        button.unbind(type="button") 解绑
+        button.btn.btn-secondary.bind(type="button", v-show="visibility==='unbinded'", @click="bindDevice(device, $event)") 绑定
     //- 无未绑定设备
     .tips-null(v-if="!filteredDevices.length")
       p 搜索不到未绑定的设备
 
     //- 右侧按钮
     .side-actions
-      button.btn-side(v-show="visibility==='binded'", @click="setVisibility('unbinded')") 新增
+      button.btn-guide(v-show="visibility==='binded'", v-bind:class="{'btn-guide-show': isShow}", @click="test")
+      button.btn-side.btn-add(v-bind:class="{'btn-add-show': isShow}", @click="setVisibility('unbinded')") ADD
 
     //- 底栏
     .foot-actions(v-if="visibility==='unbinded'")
@@ -31,6 +31,28 @@
     width rem(150)
     z-index 100
 
+  /* 引导按钮 */
+  .btn-guide
+    absolute right top
+    size rem(24) rem(50)
+    background url('../../../shared/assets/images/bg/icon_guide.png') no-repeat 0 0
+    background-size 100% 100%
+    border none
+    transition right .5s ease
+
+  /* 出现引导按钮 */
+  .btn-guide-show
+    absolute right rem(-24) top
+
+  /* 新增按钮 */
+  .btn-add
+    absolute right rem(-100) top
+    transition right .5s ease
+
+  /* 出现新增按钮 */
+  .btn-add-show
+    absolute right top
+
   /* 设备列表 */
   .device-list
     position relative
@@ -40,9 +62,9 @@
     /* 设备列表项 */
     .device-list-item
       position relative
-      size 95% rem(142)
+      width 90%
       margin-left 5%
-      background #fff
+      padding-right 5%
       border-bottom 1px solid #FFF
       clearfix()
       //transform translateX(-4rem)
@@ -53,47 +75,54 @@
       /* 设备图片 */
       .thumb
         display inline-block
-        size 25% rem(142)
-        background #999
+        size rem(100) rem(142)
+
 
       /* 设备信息 */
       .info
-        absolute left 25% top
-        size 75% rem(142)
+        margin rem(22) 0
+        display inline-block
+        padding-left rem(100)
+        background url('../../../shared/assets/images/bg/icon_device.png') no-repeat left center
+        background-size rem(50)
 
         .name
           font-size rem(30)
-          color #000
+          color #FFF
           font-weight bold
           margin 0
 
         .mac
           font-size rem(20)
-          color #999
+          color #FFF
           margin 0
 
       /* 解绑按钮 */
       .unbind
         absolute left 100% top
-        size 4rem rem(142)
-        background #f00
-        color #fff
-        border none
+        size rem(150)
+        background #fd3830
         font-size rem(30)
+        border 1px solid #FFF
+        border-top none
+        padding 0
+        color #FFF
+
+        &:first-child
+          background #000
 
       /* 绑定按钮 */
       .bind
-        absolute right top
-        size 4rem rem(142)
-        background #f00
+        absolute right 5% top 50%
         color #fff
-        border none
         font-size rem(30)
+        margin-top rem(-25)
 
   /* 无捆绑设备 */
   .tips-null
     p
       margin 0
+
 </style>
 
 <script>
@@ -121,7 +150,8 @@
     data: function () {
       return {
         devices: [],
-        visibility: 'binded'
+        visibility: 'binded',
+        isShow: false
       };
     },
 
@@ -186,6 +216,14 @@
           console.log(data);
         }).error(function  (data, status, request) {
         });
+      },
+
+      test: function () {
+        this.isShow =true;
+        var self = this;
+        var timer = setTimeout(function () {
+          self.isShow = false;
+        }, 3000);
       }
     }
   };

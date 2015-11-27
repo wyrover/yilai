@@ -49,7 +49,7 @@
       font-size rem(20)
 
   .bluetooth-tip
-    padding-top rem(170)
+    padding-top rem(190)
     text-align center
     background url('../../shared/assets/images/blue-tooth.png') no-repeat center top
     background-size rem(278) rem(150)
@@ -57,7 +57,7 @@
 
 
   .scale-tip
-    padding-top rem(150)
+    padding-top rem(170)
     text-align center
     background url('../../shared/assets/images/scale-swtich.png') no-repeat center top
     background-size rem(130) rem(130)
@@ -67,10 +67,11 @@
   .scale-tip
     span
       display inline-block
+      size rem(550) rem(50)
+      line-height rem(50)
       color #FFF
       font-size rem(30)
-      padding rem(10) rem(20)
-      text-align left
+      text-align center
       border 1px solid #FFF
 </style>
 

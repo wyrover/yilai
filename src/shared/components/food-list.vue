@@ -11,8 +11,6 @@
   /* 食材列表 */
   .food-list
     width 100%
-    margin-top rem(20)
-    border-top 1px solid #FFF
     border-bottom 1px solid #FFF
 
     .food-list-item
