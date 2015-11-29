@@ -1,6 +1,12 @@
 <template lang="jade">
   .main-content
     .food-edit-list
+      form(v-form, name="foodEditForm", @submit="onSubmit")
+        ul
+          li
+            span 名称
+            input(v-model="food.name", v-form-ctrl, required, name="name", @focus="editingName=true", @blur="editingName=false")
+            button(v-show="!isEmpty(food.name) && editingName", @mousedown="food.name=''") X
       //- form(v-form, name="foodEditForm", @submit="onSubmit")
       //- ul
       //-   li
