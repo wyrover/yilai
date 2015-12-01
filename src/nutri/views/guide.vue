@@ -34,13 +34,13 @@
     &::before
       size rem(50) rem(2)
       background #FFF
-      absolute left rem(20) top rem(70)
+      absolute left rem(50) top rem(80)
       content ''
 
     &::after
       size rem(50) rem(2)
       background #FFF
-      absolute right rem(20) top rem(70)
+      absolute right rem(50) top rem(80)
       content ''
 
     p

@@ -13,9 +13,9 @@
       p 搜索不到未绑定的设备
 
     //- 右侧按钮
-    .side-actions
-      button.btn-guide(v-show="visibility==='binded'", v-bind:class="{'btn-guide-show': isShow}", @click="test")
-      button.btn-side.btn-add(v-bind:class="{'btn-add-show': isShow}", @click="setVisibility('unbinded')") ADD
+    side-action(:isShowSideAction="false")
+      div.btn-actions
+        button.btn-side.btn-add ADD
 
     //- 底栏
     .foot-actions(v-if="visibility==='unbinded'")
@@ -24,34 +24,6 @@
 
 <style lang="stylus">
   @import '../../../shared/assets/stylus/common'
-
-  /* 右侧容器 */
-  .side-actions
-    fixed right top
-    width rem(150)
-    z-index 100
-
-  /* 引导按钮 */
-  .btn-guide
-    absolute right top
-    size rem(24) rem(50)
-    background url('../../../shared/assets/images/bg/icon_guide.png') no-repeat 0 0
-    background-size 100% 100%
-    border none
-    transition right .5s ease
-
-  /* 出现引导按钮 */
-  .btn-guide-show
-    absolute right rem(-24) top
-
-  /* 新增按钮 */
-  .btn-add
-    absolute right rem(-100) top
-    transition right .5s ease
-
-  /* 出现新增按钮 */
-  .btn-add-show
-    absolute right top
 
   /* 设备列表 */
   .device-list
@@ -76,7 +48,6 @@
       .thumb
         display inline-block
         size rem(100) rem(142)
-
 
       /* 设备信息 */
       .info
@@ -126,6 +97,7 @@
 </style>
 
 <script>
+  var sideAction = require('../../../shared/components/side-action.vue')
   var Promise = require('promise');
   var filters = {
     all: function (devices) {
@@ -146,12 +118,16 @@
   };
 
   module.exports = {
+    components: {
+      'side-action': sideAction
+    },
+
     // 视图初始化数据
     data: function () {
       return {
         devices: [],
         visibility: 'binded',
-        isShow: false
+        isShowSideAction: false
       };
     },
 

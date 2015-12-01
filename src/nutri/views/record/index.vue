@@ -1,16 +1,17 @@
 <template lang="jade">
 .main-content.with-foot-actions
     // 历史记录列表
-    record-detail(:records="records", :expand="true")
+    record-detail(:records="records")
 
     // 没有历史记录
     .record-null(v-show="false")
       p 没有历史记录
 
     // 右侧按钮
-    .side-actions
-      button.btn-side.date-choice 日期
-      button.btn-side.date-total 累计
+    side-action(:isShowSideAction="false")
+      div.btn-actions
+        button.btn-side.btn-add Total
+        button.btn-side.btn-add Date
 </template>
 
 <style lang="stylus">
@@ -18,16 +19,19 @@
 </style>
 
 <script>
-var recordDetail = require('../../../shared/components/record-detail.vue')
+  var recordDetail = require('../../../shared/components/record-detail.vue')
+  var sideAction = require('../../../shared/components/side-action.vue')
   module.exports = {
     components: {
-      'record-detail': recordDetail
+      'record-detail': recordDetail,
+      'side-action': sideAction
     },
 
     data: function () {
       return {
         records: [],
-        expand: false
+        expand: false,
+        isShowSideAction: false
       }
     },
 
@@ -75,7 +79,7 @@ var recordDetail = require('../../../shared/components/record-detail.vue')
               natrium: 0.5,
               times: 5
             }, {
-              day: 'Nov 8th',
+              day: '2015-12-01',
               time: '11:26',
               name: 'Pear',
               weight: 2,
@@ -95,6 +99,7 @@ var recordDetail = require('../../../shared/components/record-detail.vue')
           type: 'get'
         }));
       }
+
     }
   }
 </script>
