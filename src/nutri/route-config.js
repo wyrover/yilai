@@ -26,18 +26,7 @@ var configRouter = function (router) {
     '/foods': {
       component: require('./views/food/list.vue')
     },
-    '/foods/add': {
-      component: require('./views/food/add.vue')
-    },
-    '/foods/select': {
-      component: require('./views/food/select.vue')
-    },
-    '/foods/list': {
-      component: require('./views/food/list.vue')
-    },
-    '/foods/:id/edit': {
-      component: require('./views/food/edit.vue')
-    },
+
 
     // 历史记录
     '/records': {
