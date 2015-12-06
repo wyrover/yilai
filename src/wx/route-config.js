@@ -15,6 +15,28 @@ var configRouter = function (router) {
     '/setting': {
       component: require('./views/setting/index.vue')
     },
+    // 设置页面-个人信息
+    '/setting/information': {
+      component: require('./views/setting/information.vue')
+    },
+    // 设置页面-设备管理
+    '/setting/equipment': {
+      component: require('./views/setting/equipment/list.vue')
+    },
+    // 设置页面-详情
+    '/setting/equipment/details': {
+      component: require('./views/setting/equipment/details.vue')
+    },
+    // 设置页面-历史记录
+    '/setting/history': {
+      component: require('./views/setting/history.vue')
+    },
+
+
+
+
+
+
     // 设备列表
     '/devices': {
       component: require('./views/device/list.vue')
