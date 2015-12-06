@@ -1,18 +1,45 @@
 <template lang="jade">
   .main-content
-    .user_msg
-      .user_faces
-        img
-      .user_nackname 微信昵称
-    .entrance.personal_information
-      a(v-link="{path: '/setting/information'}") 个人信息
-      i >
-    .entrance.equipment
-      a(v-link="{path: '/setting'}") 设备管理
-      i >
-    .entrance.entrance_last.history
-      a(v-link="{path: '/setting'}") 历史记录
-      i >
+    ul
+      li.date_msg
+        .data_number 今天
+        ul
+          li.time_msg
+            .time_number 15:26
+            .thistime_information
+              span 体重75.0kg
+              span BMI 24.1
+              i >
+              .weight_percent
+              span 脂肪 24.1%
+              span 水分 67.2%
+              span 骨骼 7.9kg
+              span 肌肉 34.1%
+      li.date_msg
+        .data_number 今天
+        ul
+          li.time_msg
+            .time_number 15:26
+            .thistime_information
+              span 体重75.0kg
+              span BMI 24.1
+              i >
+              .weight_percent
+              span 脂肪 24.1%
+              span 水分 67.2%
+              span 骨骼 7.9kg
+              span 肌肉 34.1%
+          li.time_msg
+            .time_number 15:26
+            .thistime_information
+              span 体重75.0kg
+              span BMI 24.1
+              i >
+              .weight_percent
+              span 脂肪 24.1%
+              span 水分 67.2%
+              span 骨骼 7.9kg
+              span 肌肉 34.1%
 
 
 </template>

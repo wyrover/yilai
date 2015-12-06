@@ -4,7 +4,7 @@
       li
         .entrance
           //a(v-link="{path: '/setting/'+equipment-id}")
-          a
+          a(v-link="{path: '/setting/equipment/details'}")
             .equipment_img
               img
             span.equipment_name 亿莱脂肪秤

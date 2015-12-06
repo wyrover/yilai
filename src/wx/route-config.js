@@ -27,6 +27,14 @@ var configRouter = function (router) {
     '/setting/equipment/details': {
       component: require('./views/setting/equipment/details.vue')
     },
+    // 设置页面-详情-用户
+    '/setting/equipment/details/users': {
+      component: require('./views/setting/equipment/users.vue')
+    },
+    // 设置页面-详情-帮助
+    '/setting/equipment/details/help': {
+      component: require('./views/setting/equipment/help.vue')
+    },
     // 设置页面-历史记录
     '/setting/history': {
       component: require('./views/setting/history.vue')

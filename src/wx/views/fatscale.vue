@@ -105,7 +105,7 @@
         width 260px
         height 20px
         border-radius 50px
-        background -webkit-gradient(linear, 0 0, 100% 100%, from(green), to(red))
+        background -webkit-gradient(linear, 0 0, 100% 0, from(green), to(red),color-stop(0.25,black),color-stop(0.75,blue))
         position absolute
         top 20%
         left 50%
@@ -160,7 +160,7 @@
         position relative
         overflow hidden
         color #fff
-
+        border 0
         .logo
           width 45px
           height 45px
@@ -169,15 +169,15 @@
           top 50%
           margin-top -22px
         .text
-          height 80px
+          height 60px
           float left
           position absolute
           left 48px
           top 50%
-          margin-top -40px
+          margin-top -30px
           span
             font-size 16px
-            line-height 40px
+            line-height 30px
             display inherit
           .constitutes_title
             font-size 20px
