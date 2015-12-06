@@ -11,7 +11,10 @@ var configRouter = function (router) {
     '/fatscale': {
       component: require('./views/fatscale.vue')
     },
-
+    // 设置页面
+    '/setting': {
+      component: require('./views/setting/index.vue')
+    },
     // 设备列表
     '/devices': {
       component: require('./views/device/list.vue')
