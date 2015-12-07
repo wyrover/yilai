@@ -1,5 +1,5 @@
 <template lang="jade">
-  .main-content
+  .main-content.history
     ul
       li.date_msg
         .data_number 今天
@@ -47,16 +47,19 @@
 <style lang="stylus">
   @import '../../../shared/assets/stylus/common'
 
-
-  ul
-    li.date_msg
-      width:100%
-      height 30px
-      //overflow hidden
-      .data_number
-        width 100%
-        text-align center
-        border-bottom 1px solid #fff
+  .history
+    padding-top 20px
+    color #fff
+    ul
+      li.date_msg
+        width:100%
+        height 60px
+        line-height 60px
+        //overflow hidden
+        .data_number
+          width 100%
+          text-align center
+          border-bottom 1px solid #fff
 
 
 </style>

@@ -1,8 +1,9 @@
 <template lang="jade">
-  .main-content
+  .main-content.white
     .user_msg
       .user_faces
         img
+      .sex
       .user_nackname 微信昵称
     .entrance.user_birthday
       span.user_msg_title 出生年月日
@@ -31,7 +32,7 @@
         position absolute
       .user_msg_title
         width 100px
-
       .user_msg_value
-        left 135px
+        left 115px
+        color #ffad71
 </style>

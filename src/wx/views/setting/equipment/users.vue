@@ -1,58 +1,78 @@
 <template lang="jade">
-  .main-content
+  .main-content.users.white
     .self_msg
       .user_img
         img
       span.user_name 拉取微信昵称
     ul
       li.user_list
+        .user_img
+          img
         span.equipment_name 拉取微信昵称
-        input.deleteuser_button(value="删除",type="button",@click.prevent.stop="reconfirm")
+        input.deleteuser_button(value="DELETE",type="button",@click.prevent.stop="reconfirm")
 </template>
 
 <style lang="stylus">
   @import '../../../../shared/assets/stylus/common'
 
-  .main-content
+  .users
+    background #f1f1f1
+    padding-top 20px
     .self_msg
       width 100%
-      height 100px
-      line-height 80px
-      color #fff
+      height 80px
+      line-height 60px
+      color #000
       padding-left 10px
-      border-bottom 1px solid #fff
+      background #fff
+      border-top 1px solid #ccc
       .user_img
         display inline-block
-        width 80px
-        height 80px
+        width 60px
+        height 60px
         border-radius 50%
         background blue
         margin 10px
       .user_name
         display inline-block
-        height 80px
+        height 60px
+        font-size 16px
     ul
       li.user_list
+        background #fff
         position relative
         height 80px
+        line-height 60px
         width 100%
-        border-bottom 1px solid #fff
-        color #fff
+        border-bottom 1px solid #ccc
+        color #000
+        padding-left 10px
+        &:first-child
+          border-top 1px solid #ccc
+        .user_img
+          display inline-block
+          width 60px
+          height 60px
+          border-radius 50%
+          background blue
+          margin 10px
         .equipment_name
           display inline-block
           height 80px
           line-height 80px
-          padding-left 10px
+          font-size 16px
         .deleteuser_button
           width 80px
           height 82px
           line-height 82px
           position absolute
           top -1px
-          right 0
-          background red
+          right 10px
+          background #fd3830
           border 0
           text-align center
+          color #fff
+          font-size 10px
 
 </style>
 <script>
