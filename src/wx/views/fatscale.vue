@@ -88,7 +88,7 @@
     .chart
       size rem(60) rem(60)
       absolute left rem(30) top rem(50)
-      background-image url("../../assets/images/logo/chart.png")
+      background-image url("../assets/images/logo/chart.png")
       background-size 100% 100%
       background-position center center
       a.chart_a
@@ -99,7 +99,7 @@
 
     .setting
       size rem(60) rem(60)
-      background-image url("../../assets/images/logo/setting.png")
+      background-image url("../assets/images/logo/setting.png")
       background-size 100% 100%
       background-position center center
       absolute right rem(30) top rem(51)
@@ -156,7 +156,7 @@
         height 15px
         //border-radius 10px
         //background -webkit-gradient(linear, 0 0, 100% 0, from(green), to(red),color-stop(0.25,black),color-stop(0.75,blue))
-        background-image url("../../assets/images/setiao.jpg")
+        background-image url("../assets/images/setiao.jpg")
         background-size 100% 100%
         position absolute
         top 50px
@@ -206,23 +206,23 @@
           margin-top -10px
           background-size 100% 100%
         .fatlogo
-          background-image url("../../assets/images/logo/zhifang.png")
+          background-image url("../assets/images/logo/zhifang.png")
         .moisturelogo
-          background-image url("../../assets/images/logo/shuifen.png")
+          background-image url("../assets/images/logo/shuifen.png")
         .bonelogo
-          background-image url("../../assets/images/logo/guge.png")
+          background-image url("../assets/images/logo/guge.png")
         .musclelogo
-          background-image url("../../assets/images/logo/jirou.png")
+          background-image url("../assets/images/logo/jirou.png")
         .weightlogo
-          background-image url("../../assets/images/logo/tizhong.png")
+          background-image url("../assets/images/logo/tizhong.png")
         .bmilogo
-          background-image url("../../assets/images/logo/BMI.png")
+          background-image url("../assets/images/logo/BMI.png")
         .organslogo
-          background-image url("../../assets/images/logo/neizang.png")
+          background-image url("../assets/images/logo/neizang.png")
         .internalagelogo
-          background-image url("../../assets/images/logo/tineinianling.png")
+          background-image url("../assets/images/logo/tineinianling.png")
         .basal_metabolism_logo
-          background-image url("../../assets/images/logo/jichudaixie.png")
+          background-image url("../assets/images/logo/jichudaixie.png")
         .text
           height 60px
           float left

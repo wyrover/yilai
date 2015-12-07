@@ -20,9 +20,7 @@
 <style lang="stylus">
   @import '../../../shared/assets/stylus/common'
 
-  .main-content
-    width 100%
-    height 100%
+
     .user_msg
       width 100%
       height 200px
@@ -34,7 +32,9 @@
         background blue
         border-radius 50%
         overflow hidden
-        margin 20px auto
+        position absolute
+        left 10px
+        top 10px
         //img
       .user_nackname
         color #eee
