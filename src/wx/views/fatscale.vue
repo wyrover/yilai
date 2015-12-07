@@ -110,7 +110,7 @@
 
     .current_weight
       width 100%
-      height 220px
+      height 225px
       position relative
       overflow hidden
       .weight_time
@@ -170,12 +170,13 @@
         padding-top 15px
         text-overflow ellipsis
         transform translateX(-50%)
+        color red
         .triangle
           width 0
           height 0
           border-left 6px solid transparent
           border-right 6px solid transparent
-          border-bottom 6px solid #fff
+          border-top 6px solid #fff //随着数值变化跟着变化颜色
           position absolute
           bottom 0
           left 50%

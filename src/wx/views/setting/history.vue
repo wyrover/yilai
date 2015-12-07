@@ -1,7 +1,7 @@
 <template lang="jade">
   .main-content.history_box
     ul.first_ul
-      li.date_msg
+      li.date_msg(v-on:click="openthis(0)")
         span.data_number 今天
         ul.sed_ul
           li.time_msg
@@ -15,7 +15,7 @@
               span 水分 67.2%
               span 骨骼 7.9kg
               span 肌肉 34.1%
-      li.date_msg
+      li.date_msg(v-on:click="openthis(1)")
         span.data_number 昨天
         ul.sed_ul
           li.time_msg
@@ -29,7 +29,7 @@
               span 水分 67.2%
               span 骨骼 7.9kg
               span 肌肉 34.1%
-      li.date_msg
+      li.date_msg(v-on:click="openthis(2)")
         span.data_number 11月18日
         ul.sed_ul
           li.time_msg
@@ -103,6 +103,45 @@
                right 15px
                transition all ease 0.3s
                transform rotate(0deg) //点击变成90deg
+            [data-open="true"]
+               height auto
+               .more
+                 transform rotate(90deg)
+
 
 
 </style>
+<script>
+
+  module.exports = {
+
+    data: function () {
+      return {
+        showModal:true
+      }
+    },
+
+
+    methods:{
+
+      openthis:function(num){
+        var test = document.getElementsByClassName("thistime_information")[num];
+        if(test.attributes["data-open"]){
+          if(test.getAttribute("data-open")=="true"){
+            test.setAttribute("data-open",false);
+          }else{
+            test.setAttribute("data-open",true);
+          }
+        }else{
+          test.setAttribute("data-open",true);
+        }
+      }
+
+    }
+
+
+
+
+  }
+
+</script>
