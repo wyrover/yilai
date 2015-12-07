@@ -48,5 +48,15 @@
   @import '../../../shared/assets/stylus/common'
 
 
+  ul
+    li.date_msg
+      width:100%
+      height 30px
+      //overflow hidden
+      .data_number
+        width 100%
+        text-align center
+        border-bottom 1px solid #fff
+
 
 </style>

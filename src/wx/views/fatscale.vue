@@ -2,9 +2,13 @@
   .main-content.with-foot-actions
     .userweight
       .current_weight
+        .weight_time 测量时间 12.04 下午 14：38
         .weight_number
           | 73.2
           span.weight_unit kg
+        .target_weight
+          span.target_weight_span 目标
+          span.target_weight_munber 75.5kg
       .chart
         a(href="#") 图表
       .setting
@@ -14,9 +18,7 @@
         .bmi_pointer
           | BMI 24.1
           i.triangle
-      .target_weight
-        span.target_weight_span 目标体重
-        span.target_weight_munber 75.5kg
+
     .constitutes
       ul
         li.constitutes_li.fat
@@ -52,7 +54,7 @@
 
   .userweight
     width 100%
-    height 60%
+    height 320px
     margin 0 auto
     font-size rem(24)
     text-align center
@@ -76,19 +78,24 @@
 
     .current_weight
       width 100%
-      height 60%
+      height 220px
       position relative
       overflow hidden
-      //position relative
+      .weight_time
+        width 100%
+        font-size 0.7rem
+        position absolute
+        top 25px
+        text-align center
       .weight_number
         width 100%
-        height 80px
-        line-height 80px
+        height 90px
+        line-height 90px
         margin 0 auto
-        font-size 80px
+        font-size 90px
         font-family import
         position absolute
-        bottom 0
+        top 100px
         .weight_unit
           position absolute
           font-size 1.5rem
@@ -96,16 +103,26 @@
           height 1.5rem
           bottom 0
           padding 10px
+      .target_weight
+        width 100%
+        font-size 0.7rem
+        position absolute
+        top 200px
+        text-align center
+        font-size 0.7ren
+        .target_weight_span
+          margin-right 10px
     .current_bmi
       width 100%
-      height 30%
+      height 80px
       position relative
       overflow hidden
       .bmi_colorstrip
-        width 260px
+        width 100%
         height 20px
         border-radius 50px
-        background -webkit-gradient(linear, 0 0, 100% 0, from(green), to(red),color-stop(0.25,black),color-stop(0.75,blue))
+        //background -webkit-gradient(linear, 0 0, 100% 0, from(green), to(red),color-stop(0.25,black),color-stop(0.75,blue))
+        background-image url("../../../assets/images/setiao.jpg")
         position absolute
         top 20%
         left 50%
@@ -128,27 +145,12 @@
           top 0
           left 50%
           transform translateX(-50%)
-
-    .target_weight
-      width 100%
-      height 10%
-      background rgba(0,0,0,0.5)
-      position relative
-      overflow hidden
-      span
-        display block
-        height 100%
-        vertical-align middle
-        float left
-        font-size 0.8rem
-        padding 1.2% 10px
       .target_weight_span
         float left
       .target_weight_munber
         float right
   .constitutes
     width 100%
-    height 60%
     ul
       padding 5px 0
       .constitutes_li
