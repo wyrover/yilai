@@ -15,6 +15,7 @@
   .page-container
     background url('../shared/assets/images/bg/wx_bg.jpg') no-repeat 0 0
     background-size 100% 100%
+    overflow auto
 
 /* Vue 初始化赋值 */
 [v-cloak]

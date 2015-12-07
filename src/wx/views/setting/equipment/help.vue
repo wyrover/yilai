@@ -1,6 +1,7 @@
 <template lang="jade">
-  .main-content
-    .help
+  .main-content.help
+    .help_box
+      h2 使用帮助
       p
         |1、体脂肪率等这些事怎么计算出来的？<br>
         | 采用生物电阻法（BIA），将非常微弱的交流电流导入人体，然后根据人体情况测量得出人体阻抗。通过专用计算法计算出人体内各项参数的指标。<br>
@@ -68,7 +69,13 @@
 <style lang="stylus">
   @import '../../../../shared/assets/stylus/common'
 
-
+  .help
+    width 100%
+    height 100%
+    margin-top -25px
+    padding 5px
+    .help_box
+      overflow auto
 </style>
 
 
