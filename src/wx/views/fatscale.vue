@@ -10,13 +10,13 @@
           span.target_weight_span 目标
           span.target_weight_munber 75.5kg
       .chart
-        a(href="#") 图表
+        a.chart_a(href="#")
       .setting
-        a(v-link="{path: '/setting'}") 设置
+        a.setting_a(v-link="{path: '/setting'}")
       .current_bmi
         .bmi_colorstrip
         .bmi_pointer
-          | BMI 24.1
+          span BMI 24.1
           i.triangle
 
     .constitutes
@@ -62,19 +62,27 @@
     overflow hidden
 
     .chart
-      size rem(80) rem(80)
-      background #000
+      size rem(60) rem(60)
       absolute left rem(30) top rem(30)
-      a
+      background-image url("../../assets/images/logo/chart.png")
+      background-size 100% 100%
+      background-position center center
+      a.chart_a
         display block
         width 100%
         height 100%
-        //background (url(../../../assets/images/logo/chart.png) no-repeat center center)
+        //background ("url(../../assets/images/logo/chart.png") no-repeat center center)
 
     .setting
-      size rem(80) rem(80)
-      background #000
-      absolute right rem(30) top rem(30)
+      size rem(60) rem(60)
+      background-image url("../../assets/images/logo/setting.png")
+      background-size 100% 100%
+      background-position center center
+      absolute right rem(30) top rem(31)
+      a.setting_a
+        display block
+        width 100%
+        height 100%
 
     .current_weight
       width 100%
@@ -116,25 +124,26 @@
       width 100%
       height 80px
       position relative
-      overflow hidden
+      margin 0 auto
       .bmi_colorstrip
         width 100%
-        height 20px
-        border-radius 50px
+        height 15px
+        //border-radius 10px
         //background -webkit-gradient(linear, 0 0, 100% 0, from(green), to(red),color-stop(0.25,black),color-stop(0.75,blue))
-        background-image url("../../../assets/images/setiao.jpg")
+        background-image url("../../assets/images/setiao.jpg")
+        background-size 100% 100%
         position absolute
-        top 20%
+        top 50px
         left 50%
         transform translateX(-50%)
       .bmi_pointer
+        height 35px
         position absolute
-        top 20%
-        left 50%
-        margin-left -155px
-        margin-top 25px
-        padding-top 5px
-        transform translateX(0px)
+        left 25%
+        font-size 0.8rem
+        padding-top 15px
+        text-overflow ellipsis
+        transform translateX(-50%)
         .triangle
           width 0
           height 0
@@ -142,7 +151,7 @@
           border-right 6px solid transparent
           border-bottom 6px solid #fff
           position absolute
-          top 0
+          bottom 0
           left 50%
           transform translateX(-50%)
       .target_weight_span
