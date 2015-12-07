@@ -13,7 +13,7 @@
 @import '../shared/assets/stylus/base'
 
   .page-container
-    background url('../shared/assets/images/bg/device_bg.png') no-repeat 0 0
+    background url('../shared/assets/images/bg/wx_bg.jpg') no-repeat 0 0
     background-size 100% 100%
 
 /* Vue 初始化赋值 */

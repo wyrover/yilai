@@ -24,24 +24,48 @@
         li.constitutes_li.fat
           .logo.fatlogo
           .text
-            span.constitutes_title 脂肪
+            span.constitutes_title 脂肪率
             span 34.1%
         li.constitutes_li.moisture
           .logo.moisturelogo
           .text
-            span.constitutes_title 水分
+            span.constitutes_title 水分率
             span 34.1%
         li.constitutes_li.bone
           .logo.bonelogo
           .text
-            span.constitutes_title 骨骼
+            span.constitutes_title 骨量
             span 34.1%
         li.constitutes_li.muscle
           .logo.musclelogo
           .text
-            span.constitutes_title 肌肉
+            span.constitutes_title 肌肉率
             span 34.1%
-
+        li.constitutes_li.weight_li
+          .logo.weightlogo
+          .text
+            span.constitutes_title 体重
+            span 34.1%
+        li.constitutes_li.bmi_li
+          .logo.bmilogo
+          .text
+            span.constitutes_title BMI
+            span 65.2
+        li.constitutes_li.organs_li
+          .logo.organslogo
+          .text
+            span.constitutes_title 内脏脂肪
+            span 34.1g
+        li.constitutes_li.internalage_li
+          .logo.internalagelogo
+          .text
+            span.constitutes_title 体内年龄
+            span 25岁
+        li.constitutes_li.basal_metabolism_li
+          .logo.basal_metabolism_logo
+          .text
+            span.constitutes_title 基础代谢
+            span 65.2%
 
   //- modal
   //-   .modal-footer
@@ -54,7 +78,7 @@
 
   .userweight
     width 100%
-    height 320px
+    height 290px
     margin 0 auto
     font-size rem(24)
     text-align center
@@ -63,7 +87,7 @@
 
     .chart
       size rem(60) rem(60)
-      absolute left rem(30) top rem(30)
+      absolute left rem(30) top rem(50)
       background-image url("../../assets/images/logo/chart.png")
       background-size 100% 100%
       background-position center center
@@ -78,7 +102,7 @@
       background-image url("../../assets/images/logo/setting.png")
       background-size 100% 100%
       background-position center center
-      absolute right rem(30) top rem(31)
+      absolute right rem(30) top rem(51)
       a.setting_a
         display block
         width 100%
@@ -93,9 +117,10 @@
         width 100%
         font-size 0.7rem
         position absolute
-        top 25px
+        top 35px
         text-align center
       .weight_number
+        text-shadow 2px 2px rgba(0,0,0,0.3)
         width 100%
         height 90px
         line-height 90px
@@ -105,6 +130,7 @@
         position absolute
         top 100px
         .weight_unit
+          text-shadow 1px 1px rgba(0,0,0,0.1)
           position absolute
           font-size 1.5rem
           line-height 1.5rem
@@ -122,7 +148,7 @@
           margin-right 10px
     .current_bmi
       width 100%
-      height 80px
+      height 70px
       position relative
       margin 0 auto
       .bmi_colorstrip
@@ -165,7 +191,7 @@
       .constitutes_li
         display inline-block
         width 30%
-        height 100px
+        height 70px
         margin 0 1.5%
         padding 0
         position relative
@@ -173,25 +199,43 @@
         color #fff
         border 0
         .logo
-          width 45px
-          height 45px
-          background red
+          width 30px
+          height 30px
           position absolute
           top 50%
-          margin-top -22px
+          margin-top -10px
+          background-size 100% 100%
+        .fatlogo
+          background-image url("../../assets/images/logo/zhifang.png")
+        .moisturelogo
+          background-image url("../../assets/images/logo/shuifen.png")
+        .bonelogo
+          background-image url("../../assets/images/logo/guge.png")
+        .musclelogo
+          background-image url("../../assets/images/logo/jirou.png")
+        .weightlogo
+          background-image url("../../assets/images/logo/tizhong.png")
+        .bmilogo
+          background-image url("../../assets/images/logo/BMI.png")
+        .organslogo
+          background-image url("../../assets/images/logo/neizang.png")
+        .internalagelogo
+          background-image url("../../assets/images/logo/tineinianling.png")
+        .basal_metabolism_logo
+          background-image url("../../assets/images/logo/jichudaixie.png")
         .text
           height 60px
           float left
           position absolute
-          left 48px
+          left 33px
           top 50%
-          margin-top -30px
+          margin-top -20px
           span
             font-size 16px
-            line-height 30px
+            line-height 25px
             display inherit
           .constitutes_title
-            font-size 20px
+            font-size 14px
 
 
 </style>
