@@ -39,6 +39,10 @@ var configRouter = function (router) {
     '/setting/history': {
       component: require('./views/setting/history.vue')
     },
+    // 图表页面
+    '/chart': {
+      component: require('./views/chart/index.vue')
+    },
 
 
 

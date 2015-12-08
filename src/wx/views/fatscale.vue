@@ -2,11 +2,9 @@
   .main-content.with-foot-actions
     .userweight
       .current_weight
-        .weight_time 测量时间
-          br
-          {{closestState.date.split(" ")[0].split("-")[1]}}月{{closestState.date.split(" ")[0].split("-")[2]}}日
-          br
-          | {{closestState.date.split(" ")[1]}}
+        .weight_time
+          span.time_num.day_date{{closestState.date.split(" ")[0].split("-")[1]}}-{{closestState.date.split(" ")[0].split("-")[2]}}
+          span.time_num.time_date{{closestState.date.split(" ")[1].slice(0,5)}}
         .weight_number
           | {{closestState.weight}}
           span.weight_unit kg
@@ -14,7 +12,7 @@
           span.target_weight_span 目标
           span.target_weight_munber 75.5kg
       .chart
-        a.chart_a(href="#")
+        a.chart_a(v-link="{path: '/chart'}")
       .setting
         a.setting_a(v-link="{path: '/setting'}")
       .current_bmi
@@ -85,7 +83,7 @@
 
   .userweight
     width 100%
-    height 290px
+    height 275px
     margin 0 auto
     font-size rem(24)
     text-align center
@@ -117,52 +115,55 @@
 
     .current_weight
       width 100%
-      height 225px
+      height 212px
       position relative
       overflow hidden
       .weight_time
         width 100%
         font-size 0.7rem
         position absolute
-        top 15px
+        top 30px
         text-align center
+        .time_num
+          padding 0 3px
       .weight_number
         text-shadow 2px 2px rgba(0,0,0,0.3)
         width 100%
-        height 90px
-        line-height 90px
+        height 120px
+        line-height 120px
         margin 0 auto
-        font-size 90px
-        font-family import
+        font-size 95px
+        font-family Impact,Euphemia
         position absolute
-        top 100px
+        top 70px
         .weight_unit
           text-shadow 1px 1px rgba(0,0,0,0.1)
           position absolute
-          font-size 1.5rem
+          font-size 1rem
           line-height 1.5rem
           height 1.5rem
-          bottom 0
-          padding 10px
+          bottom 5px
+          padding 10px 5px
+          font-family 'Microsoft YaHei'
       .target_weight
         width 100%
-        font-size 0.7rem
+        font-size 0.65rem
         position absolute
-        top 200px
+        top 190px
         text-align center
         font-size 0.7ren
         .target_weight_span
           margin-right 10px
     .current_bmi
       width 100%
-      height 70px
+      height 60px
       position relative
       margin 0 auto
       .bmi_colorstrip
         width 100%
-        height 15px
+        height 10px
         //border-radius 10px
-        background -webkit-gradient(linear, 0 0, 100% 0, from(#8cfeff), to(#ff9d9c),color-stop(0.44,#91fea1),color-stop(0.53,#ffe286))
+        background -webkit-gradient(linear, 0 0, 100% 0, from(#8cfeff), to(#ff9d9c),color-stop(0.48,#91fea1),color-stop(0.55,#ffe286))
         //background-image url("../assets/images/setiao.jpg")
         background-size 100% 100%
         position absolute
@@ -268,8 +269,8 @@
           "date":"2015-11-11 12:00:00",
           "age":30,
           "height":178,
-          "weight":80.0,
-          "bmi":48,
+          "weight":80.12,
+          "bmi":35,
           "fat":10,
           "moisture":11,
           "muscle":12,
