@@ -1,48 +1,22 @@
 <template lang="jade">
   .main-content.history_box
-    ul.first_ul
-      li.date_msg(v-on:click="openthis(0)")
-        span.data_number 今天
-        ul.sed_ul
+    ul.first_ul{{test}}
+      li.date_msg(v-for="statistic in statistics")
+        //span.data_number(v-if="istoday($statistic.date) == true") 今天
+        //span.data_number(v-else) {{statistic.date.split(" ")[0].split("-")[1]}}月{{statistic.date.split(" ")[0].split("-")[2]}}日
+        span.data_number {{statistic.date.split(" ")[0].split("-")[1]}}月{{statistic.date.split(" ")[0].split("-")[2]}}日
+        ul.sed_ul(v-on:click="openthis($index)")
           li.time_msg
-            .time_number 15:26
-            .thistime_information
-              span 体重75.0kg
-              span BMI 24.1
-              i.more >
+            .time_number {{statistic.date.split(" ")[1].slice(0,5)}}
+            .thistime_information(v-bind:data-open="0")
+              span 体重 {{statistic.weight}}kg
+              span BMI {{statistic.bmi}}
+              i.more &gt;
               .weight_percent
-              span 脂肪 24.1%
-              span 水分 67.2%
-              span 骨骼 7.9kg
-              span 肌肉 34.1%
-      li.date_msg(v-on:click="openthis(1)")
-        span.data_number 昨天
-        ul.sed_ul
-          li.time_msg
-            .time_number 15:26
-            .thistime_information
-              span 体重75.0kg
-              span BMI 24.1
-              i.more >
-              .weight_percent
-              span 脂肪 24.1%
-              span 水分 67.2%
-              span 骨骼 7.9kg
-              span 肌肉 34.1%
-      li.date_msg(v-on:click="openthis(2)")
-        span.data_number 11月18日
-        ul.sed_ul
-          li.time_msg
-            .time_number 15:26
-            .thistime_information
-              span 体重75.0kg
-              span BMI 24.1
-              i.more >
-              .weight_percent
-              span 脂肪 24.1%
-              span 水分 67.2%
-              span 骨骼 7.9kg
-              span 肌肉 34.1%
+              span 脂肪 {{statistic.fat}}%
+              span 水分 {{statistic.moisture}}%
+              span 骨骼 {{statistic.bone}}%
+              span 肌肉 {{statistic.muscle}}%
 
 
 </template>
@@ -103,7 +77,7 @@
                right 15px
                transition all ease 0.3s
                transform rotate(0deg) //点击变成90deg
-            [data-open="true"]
+            [data-open="1"]
                height auto
                .more
                  transform rotate(90deg)
@@ -117,7 +91,153 @@
 
     data: function () {
       return {
-        showModal:true
+        showModal:true,
+        statistics:[
+          {
+          "date":"2015-12-8 12:34:56",
+          "age":30,
+          "height":178,
+          "weight":80.0,
+          "bmi":240,
+          "fat":10,
+          "moisture":11,
+          "muscle":12,
+          "bone":13,
+          "metabolism":14
+          },
+          {
+          "date":"2015-11-05 13:00:00",
+          "age":30,
+          "height":178,
+          "weight":81.0,
+          "bmi":241,
+          "fat":9,
+          "moisture":10,
+          "muscle":11,
+          "bone":12,
+          "metabolism":13
+          },
+          {
+          "date":"2015-11-05 13:00:00",
+          "age":30,
+          "height":178,
+          "weight":81.0,
+          "bmi":241,
+          "fat":9,
+          "moisture":10,
+          "muscle":11,
+          "bone":12,
+          "metabolism":13
+          },
+          {
+          "date":"2015-11-05 13:00:00",
+          "age":30,
+          "height":178,
+          "weight":81.0,
+          "bmi":241,
+          "fat":9,
+          "moisture":10,
+          "muscle":11,
+          "bone":12,
+          "metabolism":13
+          },
+          {
+          "date":"2015-11-05 13:00:00",
+          "age":30,
+          "height":178,
+          "weight":81.0,
+          "bmi":241,
+          "fat":9,
+          "moisture":10,
+          "muscle":11,
+          "bone":12,
+          "metabolism":13
+          },
+          {
+          "date":"2015-11-05 13:00:00",
+          "age":30,
+          "height":178,
+          "weight":81.0,
+          "bmi":241,
+          "fat":9,
+          "moisture":10,
+          "muscle":11,
+          "bone":12,
+          "metabolism":13
+          },
+          {
+          "date":"2015-11-05 13:00:00",
+          "age":30,
+          "height":178,
+          "weight":81.0,
+          "bmi":241,
+          "fat":9,
+          "moisture":10,
+          "muscle":11,
+          "bone":12,
+          "metabolism":13
+          },
+          {
+          "date":"2015-11-05 13:00:00",
+          "age":30,
+          "height":178,
+          "weight":81.0,
+          "bmi":241,
+          "fat":9,
+          "moisture":10,
+          "muscle":11,
+          "bone":12,
+          "metabolism":13
+          },
+          {
+          "date":"2015-11-05 13:00:00",
+          "age":30,
+          "height":178,
+          "weight":81.0,
+          "bmi":241,
+          "fat":9,
+          "moisture":10,
+          "muscle":11,
+          "bone":12,
+          "metabolism":13
+          },
+          {
+          "date":"2015-11-05 13:00:00",
+          "age":30,
+          "height":178,
+          "weight":81.0,
+          "bmi":241,
+          "fat":9,
+          "moisture":10,
+          "muscle":11,
+          "bone":12,
+          "metabolism":13
+          },
+          {
+          "date":"2015-11-05 13:00:00",
+          "age":30,
+          "height":178,
+          "weight":81.0,
+          "bmi":241,
+          "fat":9,
+          "moisture":10,
+          "muscle":11,
+          "bone":12,
+          "metabolism":13
+          },
+          {
+          "date":"2015-11-05 13:00:00",
+          "age":30,
+          "height":178,
+          "weight":81.0,
+          "bmi":241,
+          "fat":9,
+          "moisture":10,
+          "muscle":11,
+          "bone":12,
+          "metabolism":13
+          }
+        ]
       }
     },
 
@@ -126,14 +246,17 @@
 
       openthis:function(num){
         var test = document.getElementsByClassName("thistime_information")[num];
-        if(test.attributes["data-open"]){
-          if(test.getAttribute("data-open")=="true"){
-            test.setAttribute("data-open",false);
-          }else{
-            test.setAttribute("data-open",true);
-          }
+        if(test.getAttribute("data-open")=="1"){
+          test.setAttribute("data-open","0");
         }else{
-          test.setAttribute("data-open",true);
+          test.setAttribute("data-open","1");
+        }
+      },
+      istoday:function(date){
+        if (new Date(date).toDateString() === new Date().toDateString()) {
+          return true
+        }else{
+          return false
         }
       }
 

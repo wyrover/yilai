@@ -74,20 +74,10 @@ var configRouter = function (router) {
 
   router.beforeEach(function (transition) {
     if (transition.to.path === '/') {
-      if (appStore.state.firstAccessChecked) {
-        // 已作初访校验，直接跳转到设备列表页
-        router.go('/devices');
-      } else {
-        // 未作初访校验，应先作一次校验，并根据校验的结果进入相应流程
-        JSSDK.getXSystemInfo().then(function (info) {
+      JSSDK.getXSystemInfo().then(function (info) {
           appStore.markFirstAccessChecked();
-          if (info.firstAccess) {
-            router.go('/fatscale');
-          } else {
-            router.go('/devices');
-          }
+          router.go('/fatscale');
         });
-      }
     } else {
       transition.next();
     }

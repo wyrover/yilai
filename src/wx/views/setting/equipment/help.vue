@@ -76,6 +76,11 @@
     padding 5px
     .help_box
       overflow auto
+      h2
+        font-size 18px
+      p
+        font-size 16px
+
 </style>
 
 

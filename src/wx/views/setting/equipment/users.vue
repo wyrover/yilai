@@ -63,10 +63,10 @@
           font-size 16px
         .deleteuser_button
           width 80px
-          height 82px
+          height 80px
           line-height 82px
           position absolute
-          top -1px
+          top 0px
           right 10px
           background #fd3830
           border 0
@@ -86,7 +86,7 @@
     },
     methods:{
       reconfirm:function(){
-        if(confirm("确定删除该设备吗?")){
+        if(confirm("确定删除该用户吗?")){
           console.log(123);
         }
       }

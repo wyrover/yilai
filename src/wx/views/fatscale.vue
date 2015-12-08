@@ -2,9 +2,13 @@
   .main-content.with-foot-actions
     .userweight
       .current_weight
-        .weight_time 测量时间 12.04 下午 14：38
+        .weight_time 测量时间
+          br
+          {{closestState.date.split(" ")[0].split("-")[1]}}月{{closestState.date.split(" ")[0].split("-")[2]}}日
+          br
+          | {{closestState.date.split(" ")[1]}}
         .weight_number
-          | 73.2
+          | {{closestState.weight}}
           span.weight_unit kg
         .target_weight
           span.target_weight_span 目标
@@ -15,9 +19,22 @@
         a.setting_a(v-link="{path: '/setting'}")
       .current_bmi
         .bmi_colorstrip
-        .bmi_pointer
-          span BMI 24.1
-          i.triangle
+
+        .bmi_pointer(v-if="closestState.bmi>0&closestState.bmi<18.5",v-bind:style="{left:closestState.bmi*2+'%'}")
+          span(v-bind:style="{color:bmicolor.color1}") BMI {{closestState.bmi}} 过轻
+          i.triangle(v-bind:style="{borderTopColor:bmicolor.color1}")
+        .bmi_pointer(v-if="closestState.bmi>=18.5&&closestState.bmi<=24.99",v-bind:style="{left:closestState.bmi*2+'%'}")
+          span(v-bind:style="{color:bmicolor.color2}") BMI {{closestState.bmi}} 正常
+          i.triangle(v-bind:style="{borderTopColor:bmicolor.color2}")
+        .bmi_pointer(v-if="closestState.bmi>24.99&&closestState.bmi<=32",v-bind:style="{left:closestState.bmi*2+'%'}")
+          span(v-bind:style="{color:bmicolor.color3}") BMI {{closestState.bmi}} 过重
+          i.triangle(v-bind:style="{borderTopColor:bmicolor.color3}")
+        .bmi_pointer(v-if="closestState.bmi>32&&closestState.bmi<=42.5",v-bind:style="{left:closestState.bmi*2+'%'}")
+          span(v-bind:style="{color:bmicolor.color4}") BMI {{closestState.bmi}} 肥胖
+          i.triangle(v-bind:style="{borderTopColor:bmicolor.color4}")
+        .bmi_pointer(v-if="closestState.bmi>43",v-bind:style="{left:'85%'}")
+          span(v-bind:style="{color:bmicolor.color4}") BMI {{closestState.bmi}} 肥胖
+          i.triangle(v-bind:style="{borderTopColor:bmicolor.color4}")
 
     .constitutes
       ul
@@ -25,47 +42,37 @@
           .logo.fatlogo
           .text
             span.constitutes_title 脂肪率
-            span 34.1%
+            span {{closestState.fat}}%
         li.constitutes_li.moisture
           .logo.moisturelogo
           .text
             span.constitutes_title 水分率
-            span 34.1%
+            span {{closestState.moisture}}%
         li.constitutes_li.bone
           .logo.bonelogo
           .text
             span.constitutes_title 骨量
-            span 34.1%
+            span {{closestState.bone}}%
         li.constitutes_li.muscle
           .logo.musclelogo
           .text
             span.constitutes_title 肌肉率
-            span 34.1%
-        li.constitutes_li.weight_li
-          .logo.weightlogo
-          .text
-            span.constitutes_title 体重
-            span 34.1%
-        li.constitutes_li.bmi_li
-          .logo.bmilogo
-          .text
-            span.constitutes_title BMI
-            span 65.2
+            span {{closestState.muscle}}%
         li.constitutes_li.organs_li
           .logo.organslogo
           .text
             span.constitutes_title 内脏脂肪
-            span 34.1g
+            span ??%
         li.constitutes_li.internalage_li
           .logo.internalagelogo
           .text
             span.constitutes_title 体内年龄
-            span 25岁
+            span ??岁
         li.constitutes_li.basal_metabolism_li
           .logo.basal_metabolism_logo
           .text
             span.constitutes_title 基础代谢
-            span 65.2%
+            span {{closestState.metabolism}}%
 
   //- modal
   //-   .modal-footer
@@ -117,7 +124,7 @@
         width 100%
         font-size 0.7rem
         position absolute
-        top 35px
+        top 15px
         text-align center
       .weight_number
         text-shadow 2px 2px rgba(0,0,0,0.3)
@@ -155,8 +162,8 @@
         width 100%
         height 15px
         //border-radius 10px
-        //background -webkit-gradient(linear, 0 0, 100% 0, from(green), to(red),color-stop(0.25,black),color-stop(0.75,blue))
-        background-image url("../assets/images/setiao.jpg")
+        background -webkit-gradient(linear, 0 0, 100% 0, from(#8cfeff), to(#ff9d9c),color-stop(0.44,#91fea1),color-stop(0.53,#ffe286))
+        //background-image url("../assets/images/setiao.jpg")
         background-size 100% 100%
         position absolute
         top 50px
@@ -251,7 +258,24 @@
 
     data: function () {
       return {
-
+        'bmicolor':{
+          "color1":"#8cfeff",
+          "color2":"#91fea1",
+          "color3":"#ffe286",
+          "color4":"#ff9d9c"
+        },
+        closestState:{
+          "date":"2015-11-11 12:00:00",
+          "age":30,
+          "height":178,
+          "weight":80.0,
+          "bmi":48,
+          "fat":10,
+          "moisture":11,
+          "muscle":12,
+          "bone":13,
+          "metabolism":14
+        }
       };
     }
   };
