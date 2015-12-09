@@ -1,5 +1,5 @@
 <template lang="jade">
-  .main-content.help
+  .main-content.helppage
     .help_box
       h2 使用帮助
       p.question
@@ -85,10 +85,9 @@
 <style lang="stylus">
   @import '../../../../shared/assets/stylus/common'
 
-  .help
+  .helppage
     width 100%
     height 100%
-    margin-top -25px
     padding 5px
     .help_box
       overflow auto

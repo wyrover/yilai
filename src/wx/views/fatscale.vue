@@ -80,7 +80,12 @@
 
 <style lang="stylus">
   @import '../../shared/assets/stylus/common'
-
+.main-content
+  width 100%
+  height 100%
+  overflow-x hidden
+  overflow-y auto
+  padding-bottom 0
   .userweight
     width 100%
     height 275px
@@ -132,7 +137,7 @@
         height 120px
         line-height 120px
         margin 0 auto
-        font-size 95px
+        font-size 92px
         font-family Impact,Euphemia
         position absolute
         top 70px
@@ -195,6 +200,8 @@
         float right
   .constitutes
     width 100%
+    height 230px
+    overflow hidden
     ul
       padding 5px 0
       .constitutes_li
@@ -269,7 +276,7 @@
           "date":"2015-11-11 12:00:00",
           "age":30,
           "height":178,
-          "weight":80.12,
+          "weight":802.12,
           "bmi":35,
           "fat":10,
           "moisture":11,
