@@ -7,10 +7,10 @@
     .list
       .entrance.personal_information
         a(v-link="{path: '/setting/equipment/details/users'}") 用 户
-        i.more 2人 >
+        i.more 2人 &gt;
       .entrance.equipment
         a(v-link="{path: '/setting/equipment/details/help'}") 使用帮助
-        i.more >
+        i.more &gt;
     .delete_device
       input.delete_button(value="删除设备",type="button",@click.prevent.stop="reconfirm")
       //.reconfirm(v-show="showModal")

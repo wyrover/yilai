@@ -93,7 +93,7 @@
     .chart
       size rem(60) rem(60)
       absolute left rem(30) top rem(50)
-      background-image url("../assets/images/logo/chart.png")
+      background-image url("../assets/images/icon/chart.png")
       background-size 100% 100%
       background-position center center
       a.chart_a
@@ -104,7 +104,7 @@
 
     .setting
       size rem(60) rem(60)
-      background-image url("../assets/images/logo/setting.png")
+      background-image url("../assets/images/icon/setting.png")
       background-size 100% 100%
       background-position center center
       absolute right rem(30) top rem(51)
@@ -215,23 +215,23 @@
           margin-top -10px
           background-size 100% 100%
         .fatlogo
-          background-image url("../assets/images/logo/zhifang.png")
+          background-image url("../assets/images/icon/zhifang.png")
         .moisturelogo
-          background-image url("../assets/images/logo/shuifen.png")
+          background-image url("../assets/images/icon/shuifen.png")
         .bonelogo
-          background-image url("../assets/images/logo/guge.png")
+          background-image url("../assets/images/icon/guge.png")
         .musclelogo
-          background-image url("../assets/images/logo/jirou.png")
+          background-image url("../assets/images/icon/jirou.png")
         .weightlogo
-          background-image url("../assets/images/logo/tizhong.png")
+          background-image url("../assets/images/icon/tizhong.png")
         .bmilogo
-          background-image url("../assets/images/logo/BMI.png")
+          background-image url("../assets/images/icon/BMI.png")
         .organslogo
-          background-image url("../assets/images/logo/neizang.png")
+          background-image url("../assets/images/icon/neizang.png")
         .internalagelogo
-          background-image url("../assets/images/logo/tineinianling.png")
+          background-image url("../assets/images/icon/tineinianling.png")
         .basal_metabolism_logo
-          background-image url("../assets/images/logo/jichudaixie.png")
+          background-image url("../assets/images/icon/jichudaixie.png")
         .text
           height 60px
           float left

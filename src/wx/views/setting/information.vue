@@ -6,17 +6,18 @@
       .sex
       .user_nackname 微信昵称
     .entrance.user_birthday
-      span.user_msg_title 出生年月日
-      span.user_msg_value 1991年12月1日
+      span.user_msg_title 出生日期
+      input.setmsg.user_msg_value(type="date" value="1991-12-25")
+
     .entrance.user_height
-      span.user_msg_title 身高
-      span.user_msg_value 178cm
+      span.user_msg_title 身高(cm)
+      input.setmsg.user_msg_value(type="number" value="178")
     .entrance.user_weight
-      span.user_msg_title 体重
-      span.user_msg_value 88kg
+      span.user_msg_title 体重(kg)
+      span.user_msg_value 88
     .entrance.entrance_last.target_weight
-      span.user_msg_title 目标体重
-      span.user_msg_value 78kg
+      span.user_msg_title 目标体重(kg)
+      input.setmsg.user_msg_value(type="number" value="60")
 
 
 </template>
@@ -31,8 +32,15 @@
         overflow hidden
         position absolute
       .user_msg_title
-        width 100px
+        width 90px
       .user_msg_value
-        left 115px
+        position relative
+        left 105px
         color #ffad71
+        border 0
+        min-width 180px
+      input[type="date"]
+        &::-webkit-inner-spin-button
+          visibility hidden
+          width 1px
 </style>

@@ -7,13 +7,13 @@
       span.user_nackname 微信昵称
     .entrance.personal_information
       a(v-link="{path: '/setting/information'}") 个人信息
-      i.more >
+      i.more &gt;
     .entrance.equipment
       a(v-link="{path: '/setting/equipment'}") 设备管理
-      i.more >
+      i.more &gt;
     .entrance.entrance_last.history
       a(v-link="{path: '/setting/history'}") 历史记录
-      i.more >
+      i.more &gt;
 
 
 </template>
