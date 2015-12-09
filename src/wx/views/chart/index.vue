@@ -3,7 +3,7 @@
     .date_switch
       .fir_datetype
         .datetype_box.week 周
-        .datetype_box.month.selected 月
+        .datetype_box.month.selected1 月
         .datetype_box.year 年
       .sed_datetype
         i.pointer_left &lt;
@@ -13,12 +13,22 @@
         .chart_canvas
           |画布
         .coordinate
-          |坐标
+          span.coordinate_date 15~21
+          span.coordinate_date 15~21
+          span.coordinate_date 15~21
+          span.coordinate_date 15~21
+          span.coordinate_date 15~21
     .type_switch
       ul.type_switch_ul
-        li.date_type.weight 体重
-        li.date_type.bmi BMI
-        li.date_type.fat 脂肪率
+        li.date_type.weight.selected2
+          .divbotton.weighticon
+            span 体重
+        li.date_type.bmi
+          .divbotton.bmiicon
+            span BMI
+        li.date_type.fat
+          .divbotton.faticon
+            span 脂肪率
 
 
 </template>
@@ -53,7 +63,7 @@
           border-radius 5px 0 0 5px
         .year
           border-radius 0 5px 5px 0
-        .selected
+        .selected1
           background #fff
           color #03b1c4
       .sed_datetype
@@ -82,6 +92,50 @@
           height 30px
           border-top 1px solid #fff
           border-bottom 1px solid #fff
+          .coordinate_date
+            display inline-block
+            height 30px
+            line-height 30px
+            text-align center
+            font-size 12px
+            width 20%
+    .type_switch
+      width 100%
+      .type_switch_ul
+        .date_type
+          display inline-block
+          width 24%
+          height 75px
+          margin-left 7%
+          margin-top 20px
+          border-radius 10px
+          overflow hidden
+          .divbotton
+            width 100%
+            height 100%
+            border-radius 10px
+            background red
+            text-align center
+            span
+              position relative
+              top 45px
+          .weighticon
+            background url("../../assets/images/logo/tizhong.png") no-repeat center 10px
+          .bmiicon
+            background url("../../assets/images/logo/bmi.png") no-repeat center 10px
+          .faticon
+            background url("../../assets/images/logo/zhifang.png") no-repeat center 10px
+        .selected2
+          background #fff
+          color #41b8a1
+          .weighticon
+            background url("../../assets/images/logo/tizhong_selected.png") no-repeat center 10px
+          .bmiicon
+            background url("../../assets/images/logo/bmi_selected.png") no-repeat center 10px
+          .faticon
+            background url("../../assets/images/logo/zhifang_selected.png") no-repeat center 10px
+
+
 
 
 
