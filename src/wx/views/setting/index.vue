@@ -3,7 +3,7 @@
     .user_msg
       .user_faces
         img
-      .sex(v-bind:sex="man")
+      .sex(v-bind:data-sex="'male'")
       span.user_nackname 微信昵称
     .entrance.personal_information
       a(v-link="{path: '/setting/information'}") 个人信息
@@ -42,19 +42,18 @@
         top 85px
         //img
       .sex
-        width 30px
-        height 30px
-        background pink
+        width 22px
+        height 22px
         position absolute
-        left 128px
-        top 136px
+        left 132px
+        top 139px
         color #000
         background-size 100% 100%
         background-repeat no-repeat
-      [data-sex="man"]
-        background url("../../assets/images/icon/sex_man.png")
-      [data-sex="woman"]
-        background url("../../assets/images/icon/sex_woman.png")
+      [data-sex="male"]
+        background-image url("../../assets/images/icon/sex_man.png")
+      [data-sex="female"]
+        background-image url("../../assets/images/icon/sex_woman.png")
       .user_nackname
         position absolute
         left 160px

@@ -3,7 +3,7 @@
     .user_msg
       .user_faces
         img
-      .sex
+      .sex(v-bind:data-sex="'male'")
       .user_nackname 微信昵称
     .entrance.user_birthday
       span.user_msg_title 出生日期

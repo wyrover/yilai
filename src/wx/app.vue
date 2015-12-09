@@ -1,10 +1,10 @@
 <template lang="jade">
 .page-container
-  .loading(v-show="firstAccessChecking")
+  //.loading(v-show="firstAccessChecking")
     p 正在检查是否第一次访问...
     p {{firstAccessChecking}}
   router-view.view(transition="view", transition-mode="out-in")
-  modal
+  //modal
     .modal-footer
       button(@click="hide") 确定
 </template>

@@ -120,20 +120,20 @@
               position relative
               top 45px
           .weighticon
-            background url("../../assets/images/logo/tizhong.png") no-repeat center 10px
+            background url("../../assets/images/icon/tizhong.png") no-repeat center 10px
           .bmiicon
-            background url("../../assets/images/logo/bmi.png") no-repeat center 10px
+            background url("../../assets/images/icon/BMI.png") no-repeat center 10px
           .faticon
-            background url("../../assets/images/logo/zhifang.png") no-repeat center 10px
+            background url("../../assets/images/icon/zhifang.png") no-repeat center 10px
         .selected2
           background #fff
           color #41b8a1
           .weighticon
-            background url("../../assets/images/logo/tizhong_selected.png") no-repeat center 10px
+            background url("../../assets/images/icon/tizhong_selected.png") no-repeat center 10px
           .bmiicon
-            background url("../../assets/images/logo/bmi_selected.png") no-repeat center 10px
+            background url("../../assets/images/icon/BMI_selected.png") no-repeat center 10px
           .faticon
-            background url("../../assets/images/logo/zhifang_selected.png") no-repeat center 10px
+            background url("../../assets/images/icon/zhifang_selected.png") no-repeat center 10px
 
 
 

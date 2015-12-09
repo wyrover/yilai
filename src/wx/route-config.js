@@ -48,27 +48,6 @@ var configRouter = function (router) {
 
 
 
-
-    // 设备列表
-    '/devices': {
-      component: require('./views/device/list.vue')
-    },
-
-    // 设备控制界面
-    '/devices/:deviceId': {
-      component: require('./views/device/details.vue')
-    },
-
-    // 食物
-    '/foods': {
-      component: require('./views/food/list.vue')
-    },
-
-
-    // 历史记录
-    '/records': {
-      component: require('./views/record/index.vue')
-    }
   });
 
   // 重定向
