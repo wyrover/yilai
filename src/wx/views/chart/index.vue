@@ -10,14 +10,29 @@
         |10月15日~18日
         i.pointer_right &gt;
       .chart_box
+        //y坐标轴
+        //.coordinateY
+          li.coordinateYli(v-for="coordinateYtext in coordinateYtexts | orderBy 'coordinateYtext' -1")
+            span.coordinateYtext {{coordinateYtext}}
+            i.line
+
         .chart_canvas
-          |画布
-        .coordinate
-          span.coordinate_date 15~21
-          span.coordinate_date 15~21
-          span.coordinate_date 15~21
-          span.coordinate_date 15~21
-          span.coordinate_date 15~21
+          //svg.svg#svg(v-bind:width="'100%'",v-bind:height="'180px'",v-bind:viewBox="'0 0 375 180'")
+          svg.svg#svg(v-bind:width="'100%'",v-bind:height="'180px'")
+            defs
+              linearGradient#linearGradient-1(v-bind:x1="'0%'",v-bind:y1="'100%'",v-bind:x2="'100%'",v-bind:y2="'100%'")
+                stop(v-bind:stop-color="'#2090F8'",v-bind:offset="'0%'")
+                stop(v-bind:stop-color="'#01FCE4'",v-bind:offset="'40%'")
+                stop(v-bind:stop-color="'#0BFF8C'",v-bind:offset="'78%'")
+                stop(v-bind:stop-color="'#51FF00'",v-bind:offset="'100%'")
+            g#Page-1(stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage")
+              path#points_path.path(v-bind:d="d",v-bind:stroke="'url(#linearGradient-1)'",v-bind:stroke-width="4",v-bind:sketch:type="'MSShapeGroup'")
+        .coordinateX
+          span.coordinateX_date 15~21
+          span.coordinateX_date 15~21
+          span.coordinateX_date 15~21
+          span.coordinateX_date 15~21
+          span.coordinateX_date 15~21
     .type_switch
       ul.type_switch_ul
         li.date_type.weight.selected#weightbutton(v-on:click.prevent.stop="selectedtype('weightbutton')")
@@ -84,16 +99,53 @@
         width 100%
         height 252px
         overflow hidden
+        .coordinateY
+          width 100%
+          height 220px
+          position absolute
+          overflow hidden
+          z-index 0
+          .coordinateYli
+            height 20%
+            width 100%
+            list-style none
+            position relative
+            top 10px
+            .coordinateYtext
+              display inline-block
+              width 25px
+              height 100%
+              font-size 12px
+              text-align center
+              position relative
+            i.line
+              height 0
+              width 100%
+              margin-left 25px
+              display inline-block
+              border-bottom 1px solid #fff
+              position relative
+              top -50px
+              opacity 0.2
         .chart_canvas
           width 100%
           height 220px
-          background red
-        .coordinate
+          position relative
+          .svg
+            //background rgba(255,0,0,0.3)
+            margin-top 20px
+            .path
+              stroke-dasharray 1000
+              stroke-dashoffset 1000;
+              animation dash 2s ease-in forwards
+              animation-iteration-count 1
+              animation-delay 0s
+        .coordinateX
           width 100%
           height 30px
           border-top 1px solid #fff
           border-bottom 1px solid #fff
-          .coordinate_date
+          .coordinateX_date
             display inline-block
             height 30px
             line-height 30px
@@ -137,7 +189,12 @@
           .faticon
             background url("../../assets/images/icon/zhifang_selected.png") no-repeat center 10px
 
+@keyframes dash {
 
+  to {
+    stroke-dashoffset: 0;
+  }
+}
 </style>
 <script>
 
@@ -145,12 +202,42 @@
 
     data: function () {
       return {
-        showModal:true
+        d:"",
+        point:["0","90","60","50","20"],
+        coordinateYtexts:["1kg","7kg","3kg","4kg","5kg"],
+        post_daydate:{
+          "end_date":"2015-11-11",
+          "days":7,
+          "avg":true
+        },
+        post_monthdate:{
+           "end_date":"2015-11-11",
+           "days":30,
+           "avg_days":5
+        },
+        post_yeardate:{
+            "year":"2015"
+        }
+
 
       }
     },
 
     ready:function(){
+      var self = this;
+      self.d=pointToD(self.point)
+
+
+
+      function pointToD(pointarr){
+        var coordinateXlength = 5
+        var windowWidth = window.innerWidth;
+        var result= "M"+windowWidth/coordinateXlength/2+","+(-pointarr[0]+180);
+        for(var i=1;i<pointarr.length;i++){
+          result +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-pointarr[i]+180)
+        }
+        return result;
+      }
     },
 
     route:{
@@ -165,15 +252,14 @@
         removeClass(parentbox.getElementsByClassName("selected")[0],"selected");
         addClass(selectedbox,"selected");
 
+
+
         function addClass( elements,cName ){
           elements.className += " " + cName;
         };
         function removeClass( elements,cName ){
           elements.className = elements.className.replace( new RegExp( "(\\s|^)" + cName + "(\\s|$)" )," " ); // replace方法是替换
         };
-      },
-      scrollbottom:function(){
-
       }
 
     }
