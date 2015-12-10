@@ -2,9 +2,9 @@
   .main-content.chart_page
     .date_switch
       .fir_datetype
-        .datetype_box.week 周
-        .datetype_box.month.selected1 月
-        .datetype_box.year 年
+        .datetype_box.week#weekbox(v-on:click.prevent.stop="selectedtype('weekbox')") 周
+        .datetype_box.month#monthbox.selected(v-on:click.prevent.stop="selectedtype('monthbox')") 月
+        .datetype_box.year#yearbox(v-on:click.prevent.stop="selectedtype('yearbox')") 年
       .sed_datetype
         i.pointer_left &lt;
         |10月15日~18日
@@ -20,13 +20,13 @@
           span.coordinate_date 15~21
     .type_switch
       ul.type_switch_ul
-        li.date_type.weight.selected2
+        li.date_type.weight.selected#weightbutton(v-on:click.prevent.stop="selectedtype('weightbutton')")
           .divbotton.weighticon
             span 体重
-        li.date_type.bmi
+        li.date_type.bmi#bmibutton(v-on:click.prevent.stop="selectedtype('bmibutton')")
           .divbotton.bmiicon
             span BMI
-        li.date_type.fat
+        li.date_type.fat#fatbutton(v-on:click.prevent.stop="selectedtype('fatbutton')")
           .divbotton.faticon
             span 脂肪率
 
@@ -59,11 +59,12 @@
           background transparent
           text-align center
           border 1px solid #fff
+          transition all ease 0.3s
         .week
           border-radius 5px 0 0 5px
         .year
           border-radius 0 5px 5px 0
-        .selected1
+        .selected
           background #fff
           color #03b1c4
       .sed_datetype
@@ -110,6 +111,7 @@
           margin-top 20px
           border-radius 10px
           overflow hidden
+          transition all ease 0.3s
           .divbotton
             width 100%
             height 100%
@@ -125,7 +127,7 @@
             background url("../../assets/images/icon/BMI.png") no-repeat center 10px
           .faticon
             background url("../../assets/images/icon/zhifang.png") no-repeat center 10px
-        .selected2
+        .selected
           background #fff
           color #41b8a1
           .weighticon
@@ -136,8 +138,49 @@
             background url("../../assets/images/icon/zhifang_selected.png") no-repeat center 10px
 
 
-
-
-
-
 </style>
+<script>
+
+  module.exports = {
+
+    data: function () {
+      return {
+        showModal:true
+
+      }
+    },
+
+    ready:function(){
+    },
+
+    route:{
+      data:function(){
+      }
+    },
+
+    methods:{
+      selectedtype:function(id){
+        var selectedbox = document.getElementById(id);
+        var parentbox = selectedbox.parentNode;
+        removeClass(parentbox.getElementsByClassName("selected")[0],"selected");
+        addClass(selectedbox,"selected");
+
+        function addClass( elements,cName ){
+          elements.className += " " + cName;
+        };
+        function removeClass( elements,cName ){
+          elements.className = elements.className.replace( new RegExp( "(\\s|^)" + cName + "(\\s|$)" )," " ); // replace方法是替换
+        };
+      },
+      scrollbottom:function(){
+
+      }
+
+    }
+
+
+
+
+  }
+
+</script>

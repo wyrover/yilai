@@ -62,8 +62,8 @@
         text-align center
     .entrance
       width 95%
-      height 40px
-      line-height 40px
+      height 50px
+      line-height 50px
       border-bottom 1px solid #d3d3d3
       position relative
       color #039dc1

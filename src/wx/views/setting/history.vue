@@ -1,6 +1,6 @@
 <template lang="jade">
-  .main-content.history_box
-    ul.first_ul{{test}}
+  .main-content.history_box(v-on:scroll="scrollbottom")
+    ul.first_ul.history_ul{{test}}
       li.date_msg(v-for="statistic in statistics")
         //span.data_number(v-if="istoday($statistic.date) == true") 今天
         //span.data_number(v-else) {{statistic.date.split(" ")[0].split("-")[1]}}月{{statistic.date.split(" ")[0].split("-")[2]}}日
@@ -13,10 +13,10 @@
               span BMI {{statistic.bmi}}
               i.more &gt;
               .weight_percent
-              span 脂肪 {{statistic.fat}}%
-              span 水分 {{statistic.moisture}}%
-              span 骨骼 {{statistic.bone}}%
-              span 肌肉 {{statistic.muscle}}%
+                span 脂肪 {{statistic.fat}}%
+                span 水分 {{statistic.moisture}}%
+                span 骨骼 {{statistic.bone}}%
+                span 肌肉 {{statistic.muscle}}%
 
 
 </template>
@@ -77,6 +77,10 @@
                right 15px
                transition all ease 0.3s
                transform rotate(0deg) //点击变成90deg
+              .weight_percent
+                float left
+                span
+                  line-height 40px
             [data-open="1"]
                height auto
                .more
@@ -91,10 +95,11 @@
 
     data: function () {
       return {
+        count:10,
         showModal:true,
         statistics:[
           {
-          "date":"2015-12-8 12:34:56",
+          "date":"2015-12-1 12:34:56",
           "age":30,
           "height":178,
           "weight":80.0,
@@ -106,7 +111,31 @@
           "metabolism":14
           },
           {
-          "date":"2015-11-05 13:00:00",
+          "date":"2015-11-2 13:00:00",
+          "age":30,
+          "height":178,
+          "weight":81.0,
+          "bmi":241,
+          "fat":9,
+          "moisture":10,
+          "muscle":11,
+          "bone":12,
+          "metabolism":13
+          },
+          {
+          "date":"2015-11-3 13:00:00",
+          "age":30,
+          "height":178,
+          "weight":81.0,
+          "bmi":241,
+          "fat":9,
+          "moisture":10,
+          "muscle":11,
+          "bone":12,
+          "metabolism":13
+          },
+          {
+          "date":"2015-11-4 13:00:00",
           "age":30,
           "height":178,
           "weight":81.0,
@@ -130,7 +159,7 @@
           "metabolism":13
           },
           {
-          "date":"2015-11-05 13:00:00",
+          "date":"2015-11-6 13:00:00",
           "age":30,
           "height":178,
           "weight":81.0,
@@ -142,7 +171,7 @@
           "metabolism":13
           },
           {
-          "date":"2015-11-05 13:00:00",
+          "date":"2015-11-7 13:00:00",
           "age":30,
           "height":178,
           "weight":81.0,
@@ -154,7 +183,7 @@
           "metabolism":13
           },
           {
-          "date":"2015-11-05 13:00:00",
+          "date":"2015-11-8 13:00:00",
           "age":30,
           "height":178,
           "weight":81.0,
@@ -166,7 +195,7 @@
           "metabolism":13
           },
           {
-          "date":"2015-11-05 13:00:00",
+          "date":"2015-11-9 13:00:00",
           "age":30,
           "height":178,
           "weight":81.0,
@@ -178,7 +207,7 @@
           "metabolism":13
           },
           {
-          "date":"2015-11-05 13:00:00",
+          "date":"2015-11-10 13:00:00",
           "age":30,
           "height":178,
           "weight":81.0,
@@ -190,7 +219,7 @@
           "metabolism":13
           },
           {
-          "date":"2015-11-05 13:00:00",
+          "date":"2015-11-11 13:00:00",
           "age":30,
           "height":178,
           "weight":81.0,
@@ -202,31 +231,7 @@
           "metabolism":13
           },
           {
-          "date":"2015-11-05 13:00:00",
-          "age":30,
-          "height":178,
-          "weight":81.0,
-          "bmi":241,
-          "fat":9,
-          "moisture":10,
-          "muscle":11,
-          "bone":12,
-          "metabolism":13
-          },
-          {
-          "date":"2015-11-05 13:00:00",
-          "age":30,
-          "height":178,
-          "weight":81.0,
-          "bmi":241,
-          "fat":9,
-          "moisture":10,
-          "muscle":11,
-          "bone":12,
-          "metabolism":13
-          },
-          {
-          "date":"2015-11-05 13:00:00",
+          "date":"2015-11-12 13:00:00",
           "age":30,
           "height":178,
           "weight":81.0,
@@ -241,6 +246,13 @@
       }
     },
 
+    ready:function(){
+    },
+
+    route:{
+      data:function(){
+      }
+    },
 
     methods:{
 
@@ -257,6 +269,45 @@
           return true
         }else{
           return false
+        }
+      },
+      scrollbottom:function(){
+        var self = this;
+        var history_box=document.getElementsByClassName("history_box")[0];
+        var history_ul=document.getElementsByClassName("history_ul")[0];
+        if(history_box.scrollTop>=history_ul.clientHeight-history_box.clientHeight){
+          var testarr=[
+            {
+            "date":"2015-12-1 12:34:56",
+            "age":30,
+            "height":178,
+            "weight":80.0,
+            "bmi":240,
+            "fat":10,
+            "moisture":11,
+            "muscle":12,
+            "bone":13,
+            "metabolism":14
+            },
+            {
+            "date":"2015-11-2 13:00:00",
+            "age":30,
+            "height":178,
+            "weight":81.0,
+            "bmi":241,
+            "fat":9,
+            "moisture":10,
+            "muscle":11,
+            "bone":12,
+            "metabolism":13
+            }
+          ];
+          if(self.count>0){
+            self.count--;
+            self.statistics = self.statistics.concat(testarr);
+            console.log(self.statistics)
+          }
+
         }
       }
 

@@ -14,17 +14,19 @@
       span.user_msg_title 身高
       span.user_msg_value {{information.height}}cm
       select.setmsg.user_msg_value.opacity#height(v-bind:value="information.height",v-on:change="updateheight")
-        option(v-for="n in information.height",v-bind:value="n") {{n}}cm
+        option(v-for="n in information.height-40-1",v-bind:value="n+40+1") {{n+40+1}}cm
         option(v-bind:value="information.height",v-bind:selected="true") {{information.height}}cm
-        option(v-for="n in 250",v-bind:value="n",v-if="n > information.height") {{n}}cm
+        option(v-for="n in 250-information.height-1",v-bind:value="n+information.height+1") {{n+information.height+1}}cm
     .entrance.user_weight
       span.user_msg_title 体重
-      span.user_msg_value 88kg
+      span.user_msg_value {{information.weight}}g
     .entrance.entrance_last.target_weight
-      span.user_msg_title 目标体重(kg)
-      input.setmsg.user_msg_value(type="number" value="60")
-    .entrance.entrance_last.target_weight
-
+      span.user_msg_title 目标体重
+      span.user_msg_value {{information.taget_weight}}kg
+      select.setmsg.user_msg_value.opacity#taget_weight(v-bind:value="information.taget_weight",v-on:change="updatetaget_weight")
+        option(v-for="n in information.taget_weight",v-bind:value="n") {{n}}kg
+        option(v-bind:value="information.taget_weight",v-bind:selected="true") {{information.taget_weight}}kg
+        option(v-for="n in 200-information.taget_weight-1",v-bind:value="n+information.taget_weight+1") {{n+information.taget_weight+1}}kg
 
 
 
@@ -71,9 +73,9 @@
         information:{
           "birth":"2015-11-11",
           "gender":"male",
-          "height":175,
+          "height":75,
           "weight":80212,
-          "taget_weight":78000
+          "taget_weight":78
         }
       };
     },
@@ -84,9 +86,12 @@
         console.log(self.information.birth)
       },
       updateheight: function () {
-        console.log("h")
         var self = this;
         self.information.height=document.getElementById("height").value-0;
+      },
+      updatetaget_weight: function () {
+        var self = this;
+        self.information.taget_weight=document.getElementById("taget_weight").value-0;
       }
     }
   };

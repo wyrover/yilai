@@ -128,6 +128,7 @@
         font-size 0.7rem
         position absolute
         top 30px
+        left 5px
         text-align center
         .time_num
           padding 0 3px
@@ -219,6 +220,7 @@
           height 30px
           position absolute
           top 50%
+          left 5px
           margin-top -10px
           background-size 100% 100%
         .fatlogo
@@ -243,7 +245,7 @@
           height 60px
           float left
           position absolute
-          left 33px
+          left 40px
           top 50%
           margin-top -20px
           span
