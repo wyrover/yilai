@@ -19,7 +19,7 @@
         option(v-for="n in 250-information.height-1",v-bind:value="n+information.height+1") {{n+information.height+1}}cm
     .entrance.user_weight
       span.user_msg_title 体重
-      span.user_msg_value {{information.weight}}g
+      span.user_msg_value {{information.weight/1000}}kg
     .entrance.entrance_last.target_weight
       span.user_msg_title 目标体重
       span.user_msg_value {{information.taget_weight}}kg
@@ -42,7 +42,15 @@
         overflow hidden
         position absolute
       .user_msg_title
-        width 90px
+        width 70px
+        text-align justify
+        text-align-last justify
+        &:after//兼容手机微信文字两端对其
+          display inline-block
+          content ''
+          overflow hidden
+          width 100%
+          height 0
       .user_msg_value
         position relative
         left 105px
@@ -74,7 +82,7 @@
           "birth":"2015-11-11",
           "gender":"male",
           "height":75,
-          "weight":80212,
+          "weight":80200,
           "taget_weight":78
         }
       };

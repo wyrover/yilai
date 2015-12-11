@@ -18,15 +18,21 @@
 
         .chart_canvas
           //svg.svg#svg(v-bind:width="'100%'",v-bind:height="'180px'",v-bind:viewBox="'0 0 375 180'")
-          svg.svg#svg(v-bind:width="'100%'",v-bind:height="'180px'")
+          svg.svg#svg(v-bind:width="'100%'",v-bind:height="'185px'")
             defs
               linearGradient#linearGradient-1(v-bind:x1="'0%'",v-bind:y1="'100%'",v-bind:x2="'100%'",v-bind:y2="'100%'")
-                stop(v-bind:stop-color="'#2090F8'",v-bind:offset="'0%'")
-                stop(v-bind:stop-color="'#01FCE4'",v-bind:offset="'40%'")
-                stop(v-bind:stop-color="'#0BFF8C'",v-bind:offset="'78%'")
-                stop(v-bind:stop-color="'#51FF00'",v-bind:offset="'100%'")
-            g#Page-1(stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage")
-              path#points_path.path(v-bind:d="d",v-bind:stroke="'url(#linearGradient-1)'",v-bind:stroke-width="4",v-bind:sketch:type="'MSShapeGroup'")
+                stop(v-bind:stop-color="'#f4f4d3'",v-bind:offset="'0%'")
+                stop(v-bind:stop-color="'#87f196'",v-bind:offset="'40%'")
+                stop(v-bind:stop-color="'#f1c587'",v-bind:offset="'78%'")
+                stop(v-bind:stop-color="'#dbdb0b'",v-bind:offset="'100%'")
+            g#Page-1(stroke="none" stroke-width="1" fill="none")
+              path#points_path.path(v-bind:d="d",v-bind:stroke="'url(#linearGradient-1)'",v-bind:stroke-width="3")
+            g#Page-2(v-bind:stroke="none",v-bind:stroke-width="1",v-bind:fill="'#ffffa4'")
+              circle.point_circle(v-bind:cx="point.split(',')[0]",v-bind:cy="point.split(',')[1]",v-bind:r="5",v-bind:fill="'#ffffa4'",v-for="point in points")
+            g#Page-3(stroke="none" stroke-width="1" fill="none")
+              circle(v-for="point in points",v-bind:cx="point.split(',')[0]",v-bind:cy="point.split(',')[1]",v-bind:r="15")
+            g#test(stroke="none" stroke-width="1" fill="red" fill-rule="evenodd" sketch:type="MSPage")
+              circle(v-bind:cx="50",v-bind:cy="50",v-bind:r="15")
         .coordinateX
           span.coordinateX_date 15~21
           span.coordinateX_date 15~21
@@ -97,7 +103,7 @@
           margin 0 10px
       .chart_box
         width 100%
-        height 252px
+        height 219px
         overflow hidden
         .coordinateY
           width 100%
@@ -129,15 +135,22 @@
               opacity 0.2
         .chart_canvas
           width 100%
-          height 220px
+          height 185px
           position relative
           .svg
             //background rgba(255,0,0,0.3)
-            margin-top 20px
+            //margin-top 40px
             .path
+              transition all ease 0.3s
               stroke-dasharray 1000
-              stroke-dashoffset 1000;
-              animation dash 2s ease-in forwards
+              stroke-dashoffset 1000
+              animation dash 2s ease forwards
+              animation-iteration-count 1
+              animation-delay 0.5s
+            .point_circle
+              transition all ease 0.3s
+              r 0
+              animation point_circle_r 1s ease forwards
               animation-iteration-count 1
               animation-delay 0s
         .coordinateX
@@ -195,6 +208,15 @@
     stroke-dashoffset: 0;
   }
 }
+@keyframes point_circle_r {
+
+  50%{
+    r 7
+  }
+  to {
+    r 5
+  }
+}
 </style>
 <script>
 
@@ -203,7 +225,8 @@
     data: function () {
       return {
         d:"",
-        point:["0","90","60","50","20"],
+        points:[],//实际渲染的坐标点
+        pointnum:["20","80","30","80","50"],//画布绘制的根据这里的数字绘制曲线  自动上下居中 自动计算差值 数值为0自动跳过
         coordinateYtexts:["1kg","7kg","3kg","4kg","5kg"],
         post_daydate:{
           "end_date":"2015-11-11",
@@ -224,24 +247,65 @@
     },
 
     ready:function(){
-      var self = this;
-      self.d=pointToD(self.point)
 
-
-
-      function pointToD(pointarr){
-        var coordinateXlength = 5
-        var windowWidth = window.innerWidth;
-        var result= "M"+windowWidth/coordinateXlength/2+","+(-pointarr[0]+180);
-        for(var i=1;i<pointarr.length;i++){
-          result +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-pointarr[i]+180)
-        }
-        return result;
-      }
     },
 
     route:{
       data:function(){
+        var self = this;
+        self.d=pointToD(self.pointnum).path;
+        self.points=pointToD(self.pointnum).points;
+        console.log(self.points);
+
+
+
+        function pointToD(pointarr){
+          var svg_slope = 70;//变化坡度大小 可以选择0到100之间的数字
+          var newpointarr = [];
+          for(var i=0;i<pointarr.length;i++){
+            if(pointarr[i]-0>0){
+              var max = pointarr[i]-0;
+              var min = pointarr[i]-0;
+              for(var i=1;i<pointarr.length;i++){
+                if(pointarr[i]-0>0){
+                  if(max<pointarr[i]-0){max=pointarr[i]-0};
+                  if(min>pointarr[i]-0){min=pointarr[i]-0};
+                }
+              }
+            }
+          }
+          var valueheight = max-min;
+          for(var i=0;i<pointarr.length;i++){
+            if(pointarr[i]>0){
+              newpointarr.push(((pointarr[i]-min)/valueheight*svg_slope)+(100-svg_slope)/2);
+              if(pointarr[i]==min){
+                newpointarr[i]=(100-svg_slope)/2+1;
+              }
+            }else{
+              newpointarr.push(0);
+            }
+          }
+          var coordinateXlength = newpointarr.length;
+          var windowWidth = window.innerWidth;
+          var firstno0;
+          var result={};
+          result.points=[];
+          for(var i=0;i<newpointarr.length;i++){
+            if(newpointarr[i]>0){
+              result.path= "M"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+              result.points.push((windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160));
+              firstno0=i;
+              break;
+            }
+          }
+          for(var i=firstno0+1;i<newpointarr.length;i++){
+            if(newpointarr[i]>0){
+              result.path +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+              result.points.push((windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160));
+            }
+          }
+          return result;
+        }
       }
     },
 

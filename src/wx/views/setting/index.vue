@@ -7,13 +7,13 @@
       span.user_nackname 微信昵称
     .entrance.personal_information
       a(v-link="{path: '/setting/information'}") 个人信息
-      i.more &gt;
+      i.more
     .entrance.equipment
       a(v-link="{path: '/setting/equipment'}") 设备管理
-      i.more &gt;
+      i.more
     .entrance.entrance_last.history
       a(v-link="{path: '/setting/history'}") 历史记录
-      i.more &gt;
+      i.more
 
 
 </template>
@@ -76,10 +76,13 @@
         height 100%
         color #039dc1
       i.more
+        display inline-block
+        width 30px
+        height 100%
         position absolute
         top 0
         right 15px
-        color #ffa96f
+        background url("../../assets/images/icon/more_yellow.png") no-repeat center center /50% 25%
 
 
 
