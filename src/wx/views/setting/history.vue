@@ -11,7 +11,7 @@
             .thistime_information(v-bind:data-open="0")
               span 体重 {{statistic.weight}}kg
               span BMI {{statistic.bmi}}
-              i.more &gt;
+              i.more
               .weight_percent
                 span 脂肪 {{statistic.fat}}%
                 span 水分 {{statistic.moisture}}%
@@ -71,12 +71,15 @@
                 line-height 60px
                 padding 0 10px
               .more
-               height 60px
-               line-height 60px
-               position absolute
-               right 15px
-               transition all ease 0.3s
-               transform rotate(0deg) //点击变成90deg
+                display inline-block
+                height 20px
+                width 20px
+                position absolute
+                right 15px
+                top 21px
+                transition all ease 0.3s
+                transform rotate(0deg) //点击变成90deg
+                background url("../../assets/images/icon/more_white.png") no-repeat center center /100% 100%
               .weight_percent
                 float left
                 span

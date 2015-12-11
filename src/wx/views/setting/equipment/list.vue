@@ -8,7 +8,7 @@
             .equipment_img
               img
             span.equipment_name 亿莱脂肪秤
-          i.more >
+            i.more
       li
         .entrance
           //a(v-link="{path: '/setting/'+equipment-id}")
@@ -16,7 +16,7 @@
             .equipment_img
               img
             span.equipment_name 亿莱脂肪秤
-          i.more >
+            i.more
 </template>
 
 <style lang="stylus">
@@ -47,8 +47,9 @@
             margin-left 10px
             font-size 17px
             color #fff
-        .more
-          color #fff
+          .more
+            color #fff
+            background-image url("../../../assets/images/icon/more_white.png")
 
 
 </style>

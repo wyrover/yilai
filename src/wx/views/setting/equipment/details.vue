@@ -6,11 +6,14 @@
       .device_name 亿莱脂肪秤
     .list
       .entrance.personal_information
-        a(v-link="{path: '/setting/equipment/details/users'}") 用 户
-        i.more 2人 &gt;
+        a(v-link="{path: '/setting/equipment/details/users'}")
+          span.personal_information_title 用 户
+          span.personal_information_value 2人
+          i.more.white
       .entrance.equipment
-        a(v-link="{path: '/setting/equipment/details/help'}") 使用帮助
-        i.more &gt;
+        a(v-link="{path: '/setting/equipment/details/help'}")
+          span.personal_information_title 使用帮助
+          i.more.white
     .delete_device
       input.delete_button(value="删除设备",type="button",@click.prevent.stop="reconfirm")
       //.reconfirm(v-show="showModal")
@@ -47,8 +50,12 @@
         line-height 50px
         &:first-child
           border-top 1px solid #fff
-        a,.more
+        a
           color #fff
+          .personal_information_value
+            position absolute
+            right 50px
+            line-height 51px
 
 
     .delete_device
@@ -63,6 +70,7 @@
         background #ffa96f
         color #fff
         border-radius 20px
+        line-height 36px
 
 
 </style>

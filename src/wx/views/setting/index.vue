@@ -77,12 +77,15 @@
         color #039dc1
       i.more
         display inline-block
-        width 30px
-        height 100%
+        width 20px
+        height 20px
         position absolute
-        top 0
+        top 52%
         right 15px
-        background url("../../assets/images/icon/more_yellow.png") no-repeat center center /50% 25%
+        transform translateY(-50%)
+        background url("../../assets/images/icon/more_yellow.png") no-repeat center center /100% 100%
+      i.white
+        background url("../../assets/images/icon/more_white.png") no-repeat center center /100% 100%
 
 
 

@@ -17,22 +17,32 @@
             i.line
 
         .chart_canvas
-          //svg.svg#svg(v-bind:width="'100%'",v-bind:height="'180px'",v-bind:viewBox="'0 0 375 180'")
-          svg.svg#svg(v-bind:width="'100%'",v-bind:height="'185px'")
+          svg.svg#svg1(v-bind:width="'100%'",v-bind:height="'185px'")
             defs
               linearGradient#linearGradient-1(v-bind:x1="'0%'",v-bind:y1="'100%'",v-bind:x2="'100%'",v-bind:y2="'100%'")
                 stop(v-bind:stop-color="'#f4f4d3'",v-bind:offset="'0%'")
                 stop(v-bind:stop-color="'#87f196'",v-bind:offset="'40%'")
                 stop(v-bind:stop-color="'#f1c587'",v-bind:offset="'78%'")
                 stop(v-bind:stop-color="'#dbdb0b'",v-bind:offset="'100%'")
-            g#Page-1(stroke="none" stroke-width="1" fill="none")
+              linearGradient#linearGradient-2(v-bind:x1="'0'",v-bind:y1="'100%'",v-bind:x2="'0'",v-bind:y2="'0'")
+                stop(v-bind:stop-color="'#40c8b0'",v-bind:offset="'0%'")
+                //stop(v-bind:stop-color="'#ffffa4'",v-bind:offset="'33%'")
+                //stop(v-bind:stop-color="'#dbdb0b'",v-bind:offset="'66%'")
+                stop(v-bind:stop-color="'#ffffa4'",v-bind:offset="'100%'")
+            g#Page_0(stroke="none" stroke-width="1" fill="none")
+              path.acreages(v-bind:d="acreages",v-bind:fill="'url(#linearGradient-2)'",v-bind:stroke-width="0")
+            g#Page_1(stroke="none" stroke-width="1" fill="none")
               path#points_path.path(v-bind:d="d",v-bind:stroke="'url(#linearGradient-1)'",v-bind:stroke-width="3")
-            g#Page-2(v-bind:stroke="none",v-bind:stroke-width="1",v-bind:fill="'#ffffa4'")
-              circle.point_circle(v-bind:cx="point.split(',')[0]",v-bind:cy="point.split(',')[1]",v-bind:r="5",v-bind:fill="'#ffffa4'",v-for="point in points")
-            g#Page-3(stroke="none" stroke-width="1" fill="none")
-              circle(v-for="point in points",v-bind:cx="point.split(',')[0]",v-bind:cy="point.split(',')[1]",v-bind:r="15")
-            g#test(stroke="none" stroke-width="1" fill="red" fill-rule="evenodd" sketch:type="MSPage")
-              circle(v-bind:cx="50",v-bind:cy="50",v-bind:r="15")
+            g#Page_2(v-bind:stroke="none",v-bind:stroke-width="1",v-bind:fill="'#ffffa4'")
+              circle.point_circle(v-for="point in points",v-bind:cx="point.split(',')[0]",v-bind:cy="point.split(',')[1]",v-bind:r="5",v-bind:fill="'#ffffa4'")
+          .trigger
+            .trigger_box.opacity(v-for="point in points",v-bind:style="'left:'+point.split(',')[0]+'px;top:'+point.split(',')[1]+'px'",v-on:click.prevent.stop="valueshow($index)")
+              .trigger_circle
+              .value_box
+                span.trigger_value_number
+                span.value_unit kg
+
+
         .coordinateX
           span.coordinateX_date 15~21
           span.coordinateX_date 15~21
@@ -137,9 +147,16 @@
           width 100%
           height 185px
           position relative
-          .svg
-            //background rgba(255,0,0,0.3)
-            //margin-top 40px
+          #svg1
+            perspective 800px
+            position absolute
+            .acreages
+              //transition all ease 0.5s
+              transform translateY(30px)
+              opacity 0.3
+              animation acreages 0.8s ease forwards
+              animation-iteration-count 1
+              animation-delay 0s
             .path
               transition all ease 0.3s
               stroke-dasharray 1000
@@ -148,11 +165,59 @@
               animation-iteration-count 1
               animation-delay 0.5s
             .point_circle
-              transition all ease 0.3s
-              r 0
-              animation point_circle_r 1s ease forwards
+              ransition all ease 0.3s
+              opacity 0
+              animation pointcircle 1s ease forwards
               animation-iteration-count 1
               animation-delay 0s
+          .trigger
+            width 100%
+            height 185px
+            position absolute
+            top 0
+            .trigger_box
+              transition all ease 0.4s
+              width 22px
+              height 22px
+              margin -11px 0 0 -11px
+              position absolute
+              .trigger_circle
+                position absolute
+                top 50%
+                left 50%
+                margin -8px 0 0 -8px
+                width 16px
+                height 16px
+                border-radius 50%
+                background #ffffa4
+                box-shadow 0 0 4px 1px rgba(255,255,255,0.5)
+              .value_box
+                width auto
+                height 15px
+                line-height 15px
+                padding 6px
+                position absolute
+                top -35px
+                left 50%
+                transform translate(-50%)
+                background #6adde2
+                border-radius 6px
+                &:after
+                  content " "
+                  width 0
+                  height 0
+                  border-top 6px solid #6adde2
+                  border-left 6px solid transparent
+                  border-right 6px  solid transparent
+                  position absolute
+                  left 50%
+                  top 100%
+                  margin-left -6px
+                span
+                 color #ffffa4
+                 font-size 15px
+            .opacity
+              opacity 0
         .coordinateX
           width 100%
           height 30px
@@ -208,13 +273,15 @@
     stroke-dashoffset: 0;
   }
 }
-@keyframes point_circle_r {
-
-  50%{
-    r 7
-  }
+@keyframes pointcircle {
   to {
-    r 5
+    opacity 1
+  }
+}
+@keyframes acreages{
+    to {
+    transform translateY(0)
+    //opacity 0.8
   }
 }
 </style>
@@ -226,7 +293,9 @@
       return {
         d:"",
         points:[],//实际渲染的坐标点
-        pointnum:["20","80","30","80","50"],//画布绘制的根据这里的数字绘制曲线  自动上下居中 自动计算差值 数值为0自动跳过
+        pointnum:["60","70","100","90","100"],//画布绘制的根据这里的数字绘制曲线  自动上下居中 自动计算差值 数值为0自动跳过
+        showvalues:[],//手指点击后要显示的数值
+        acreages:"",//存放绘制渐变图案的面的路径，是个字符串
         coordinateYtexts:["1kg","7kg","3kg","4kg","5kg"],
         post_daydate:{
           "end_date":"2015-11-11",
@@ -255,7 +324,8 @@
         var self = this;
         self.d=pointToD(self.pointnum).path;
         self.points=pointToD(self.pointnum).points;
-        console.log(self.points);
+        self.acreages=pointToD(self.pointnum).acreages;
+        console.log(self.acreages);
 
 
 
@@ -288,11 +358,15 @@
           var coordinateXlength = newpointarr.length;
           var windowWidth = window.innerWidth;
           var firstno0;
+          var lastno0;
           var result={};
           result.points=[];
+          result.acreages=[];
           for(var i=0;i<newpointarr.length;i++){
             if(newpointarr[i]>0){
               result.path= "M"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+              result.acreages= "M"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+
               result.points.push((windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160));
               firstno0=i;
               break;
@@ -301,9 +375,17 @@
           for(var i=firstno0+1;i<newpointarr.length;i++){
             if(newpointarr[i]>0){
               result.path +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+              result.path +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160.001);//弥补只有两个点的时候不显示线段的问题
+
+              result.acreages +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+              lastno0=i;
               result.points.push((windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160));
             }
           }
+          result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*lastno0)+",185";
+          result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*firstno0)+",185";
+          result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*firstno0)+","+(-newpointarr[firstno0]+160);
+
           return result;
         }
       }
@@ -324,6 +406,28 @@
         function removeClass( elements,cName ){
           elements.className = elements.className.replace( new RegExp( "(\\s|^)" + cName + "(\\s|$)" )," " ); // replace方法是替换
         };
+      },
+      valueshow:function(num){
+        var self = this;
+        var trigger_text = document.getElementsByClassName("trigger_value_number");
+        var trigger_box = document.getElementsByClassName("trigger_box");
+
+        self.showvalues=[];
+        for(var i=0;i<self.pointnum.length;i++){
+          if(self.pointnum[i]>0){
+            self.showvalues.push(self.pointnum[i])
+          }
+        }
+
+        for(var i=0;i<self.showvalues.length;i++){
+          trigger_text[i].innerHTML=self.showvalues[i];
+
+        }
+
+        for(var i=0;i<trigger_box.length;i++){
+          trigger_box[i].style.opacity=0;
+        }
+        trigger_box[num].style.opacity=1;
       }
 
     }
