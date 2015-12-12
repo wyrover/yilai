@@ -25,10 +25,7 @@
 var Modal = require('../shared/components/modal.vue');
 var appStore = require('../shared/stores/app');
 var locales = require('../shared/consts/locales');
-//var wxauth = require('../wx/assets/js/wxauth');
-//var wxauth = require('../wx/assets/js/wxauth');
 
-//console.log(wxauth)
 module.exports = {
   // 组件
   components: {

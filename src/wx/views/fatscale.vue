@@ -260,10 +260,11 @@
 
 <script>
   var Modal = require('../../shared/components/modal.vue');
-
+  var api = require('../../wx/api');
   module.exports = {
     components: {
-      'modal': Modal
+      'modal': Modal,
+      'api': api
     },
 
     data: function () {

@@ -53,3 +53,26 @@
 
 
 </style>
+<script>
+  var wxauth = require('../../../assets/js/wxauth');
+
+  module.exports = {
+    components: {
+      'wxauth': wxauth
+    },
+
+    data: function () {
+      return {
+
+      };
+    },
+    route:{
+      data:function(){
+        //console.log(wxauth)
+      }
+    },
+    methods: {
+
+    }
+  };
+</script>
