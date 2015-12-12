@@ -7,7 +7,7 @@
         .datetype_box.year#yearbox(v-on:click.prevent.stop="selectedtype('yearbox')") 年
       .sed_datetype
         i.pointer_left &lt;
-        |10月15日~18日
+        span.sed_datetext {{seddate.text}}
         i.pointer_right &gt;
       .chart_box
         //y坐标轴
@@ -152,7 +152,7 @@
             position absolute
             .acreages
               //transition all ease 0.5s
-              transform translateY(30px)
+              transform translateY(20px)
               opacity 0.3
               animation acreages 0.8s ease forwards
               animation-iteration-count 1
@@ -296,6 +296,11 @@
         pointnum:["60","70","100","90","100"],//画布绘制的根据这里的数字绘制曲线  自动上下居中 自动计算差值 数值为0自动跳过
         showvalues:[],//手指点击后要显示的数值
         acreages:"",//存放绘制渐变图案的面的路径，是个字符串
+        sed_dates:["5月15日~6月14日","6月15日~7月14日","7月15日~8月14日","8月15日~9月14日"],//存放可以左右选择的日期内容
+        seddate:{
+          number:0,//存放当前内容的序号
+          text:"8月15日~9月14日"//存放当前可以左右选择的日期内容
+        },
         coordinateYtexts:["1kg","7kg","3kg","4kg","5kg"],
         post_daydate:{
           "end_date":"2015-11-11",

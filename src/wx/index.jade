@@ -14,6 +14,11 @@ html
     if !__DEV__
       link(href="styles/app.css", rel="stylesheet")
     link(rel="icon", href="data:;base64,iVBORw0KGgo=")
+    //- 引入微信接口的js库
+    script(src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js")
+    //- 引入jq
+    script(src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js")
+
   body
     block content
       #app
@@ -22,3 +27,6 @@ html
       //-if __DEV__
         script(src="vue/dist/vue.min.js")
       script(src="#{basePath}scripts/app.js")
+
+
+
