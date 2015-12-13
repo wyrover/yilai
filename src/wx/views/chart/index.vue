@@ -2,13 +2,13 @@
   .main-content.chart_page
     .date_switch
       .fir_datetype
-        .datetype_box.week#weekbox(v-on:click.prevent.stop="selectedtype('weekbox')") 周
-        .datetype_box.month#monthbox.selected(v-on:click.prevent.stop="selectedtype('monthbox')") 月
-        .datetype_box.year#yearbox(v-on:click.prevent.stop="selectedtype('yearbox')") 年
+        .datetype_box.week#weekbox(v-on:click.prevent.stop="selectedweek('weekbox')") 周
+        .datetype_box.month#monthbox.selected(v-on:click.prevent.stop="selectedmonth('monthbox')") 月
+        .datetype_box.year#yearbox(v-on:click.prevent.stop="selectedyear('yearbox')") 年
       .sed_datetype
-        i.pointer_left &lt;
-        span.sed_datetext {{seddate.text}}
-        i.pointer_right &gt;
+        i.pointer_left(v-on:click.prevent.stop="prevdate") &lt;
+        span.sed_datetext {{showseddate.text}}
+        i.pointer_right(v-on:click.prevent.stop="nextdate",v-bind:style="'opacity:0'") &gt;
       .chart_box
         //y坐标轴
         //.coordinateY
@@ -25,14 +25,14 @@
                 stop(v-bind:stop-color="'#f1c587'",v-bind:offset="'78%'")
                 stop(v-bind:stop-color="'#dbdb0b'",v-bind:offset="'100%'")
               linearGradient#linearGradient-2(v-bind:x1="'0'",v-bind:y1="'100%'",v-bind:x2="'0'",v-bind:y2="'0'")
-                stop(v-bind:stop-color="'#40c8b0'",v-bind:offset="'0%'")
+                stop(v-bind:stop-color="'#ffffa4'",v-bind:stop-opacity="0.05",v-bind:offset="'0%'")
                 //stop(v-bind:stop-color="'#ffffa4'",v-bind:offset="'33%'")
                 //stop(v-bind:stop-color="'#dbdb0b'",v-bind:offset="'66%'")
-                stop(v-bind:stop-color="'#ffffa4'",v-bind:offset="'100%'")
+                stop(v-bind:stop-color="'#ffffa4'",v-bind:stop-opacity="0.3",v-bind:offset="'100%'")
             g#Page_0(stroke="none" stroke-width="1" fill="none")
               path.acreages(v-bind:d="acreages",v-bind:fill="'url(#linearGradient-2)'",v-bind:stroke-width="0")
             g#Page_1(stroke="none" stroke-width="1" fill="none")
-              path#points_path.path(v-bind:d="d",v-bind:stroke="'url(#linearGradient-1)'",v-bind:stroke-width="3")
+              path#points_path.path(v-bind:d="d",v-bind:stroke="'url(#linearGradient-1)'",v-bind:stroke-width="3",v-bind:data-odd="'first'")
             g#Page_2(v-bind:stroke="none",v-bind:stroke-width="1",v-bind:fill="'#ffffa4'")
               circle.point_circle(v-for="point in points",v-bind:cx="point.split(',')[0]",v-bind:cy="point.split(',')[1]",v-bind:r="5",v-bind:fill="'#ffffa4'")
           .trigger
@@ -44,20 +44,16 @@
 
 
         .coordinateX
-          span.coordinateX_date 15~21
-          span.coordinateX_date 15~21
-          span.coordinateX_date 15~21
-          span.coordinateX_date 15~21
-          span.coordinateX_date 15~21
+          span.coordinateX_date(v-for="coordinateX in coordinateXs",track-by="$index",v-bind:style="'width:'+100/coordinateXs.length+'%'") {{coordinateX}}
     .type_switch
       ul.type_switch_ul
-        li.date_type.weight.selected#weightbutton(v-on:click.prevent.stop="selectedtype('weightbutton')")
+        li.date_type.weight.selected#weightbutton(v-on:click.prevent.stop="selectedweight('weightbutton')")
           .divbotton.weighticon
             span 体重
-        li.date_type.bmi#bmibutton(v-on:click.prevent.stop="selectedtype('bmibutton')")
+        li.date_type.bmi#bmibutton(v-on:click.prevent.stop="selectedbmi('bmibutton')")
           .divbotton.bmiicon
             span BMI
-        li.date_type.fat#fatbutton(v-on:click.prevent.stop="selectedtype('fatbutton')")
+        li.date_type.fat#fatbutton(v-on:click.prevent.stop="selectedfat('fatbutton')")
           .divbotton.faticon
             span 脂肪率
 
@@ -111,6 +107,7 @@
           width 30px
           height 30px
           margin 0 10px
+          transition all ease 0.3s
       .chart_box
         width 100%
         height 219px
@@ -153,7 +150,7 @@
             .acreages
               //transition all ease 0.5s
               transform translateY(20px)
-              opacity 0.3
+              //opacity 0.3
               animation acreages 0.8s ease forwards
               animation-iteration-count 1
               animation-delay 0s
@@ -164,6 +161,12 @@
               animation dash 2s ease forwards
               animation-iteration-count 1
               animation-delay 0.5s
+            [data-odd="true"]
+              animation dash 2s ease forwards
+              animation-delay 0s
+            [data-odd="false"]
+              animation dash1 2s ease forwards
+              animation-delay 0s
             .point_circle
               ransition all ease 0.3s
               opacity 0
@@ -267,23 +270,29 @@
           .faticon
             background url("../../assets/images/icon/zhifang_selected.png") no-repeat center 10px
 
-@keyframes dash {
+  @keyframes dash {
 
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-@keyframes pointcircle {
-  to {
-    opacity 1
-  }
-}
-@keyframes acreages{
     to {
-    transform translateY(0)
-    //opacity 0.8
+      stroke-dashoffset: 0;
+    }
   }
-}
+  @keyframes dash1 {
+
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes pointcircle {
+    to {
+      opacity 1
+    }
+  }
+  @keyframes acreages{
+      to {
+      transform translateY(0)
+      //opacity 0.8
+    }
+  }
 </style>
 <script>
 
@@ -296,15 +305,17 @@
       return {
         d:"",
         points:[],//实际渲染的坐标点
-        pointnum:["60","70","100","90","100"],//画布绘制的根据这里的数字绘制曲线  自动上下居中 自动计算差值 数值为0自动跳过
+        pointnum:["60","70","100","90","120"],//画布绘制的根据这里的数字绘制曲线  自动上下居中 自动计算差值 数值为0自动跳过
         showvalues:[],//手指点击后要显示的数值
         acreages:"",//存放绘制渐变图案的面的路径，是个字符串
         sed_dates:["5月15日~6月14日","6月15日~7月14日","7月15日~8月14日","8月15日~9月14日"],//存放可以左右选择的日期内容
-        seddate:{
+        coordinateXs:["0~5","5~15","15~20","5~15","15~20"],
+        showseddate:{
           number:0,//存放当前内容的序号
-          text:"8月15日~9月14日"//存放当前可以左右选择的日期内容
+          text:""//存放当前可以左右选择的日期内容
         },
-        coordinateYtexts:["1kg","7kg","3kg","4kg","5kg"],
+        seddatelist:["8月10日~9月10日","8月12日~9月12日","8月14日~9月14日","2015年"],//存放当前可以左右选择的日期的所有内容
+        coordinateYtexts:["1kg","7kg","3kg","4kg","5kg"],//纵坐标内容
         post_daydate:{
           "end_date":"2015-11-11",
           "days":7,
@@ -317,7 +328,99 @@
         },
         post_yeardate:{
             "year":"2015"
+        },
+        updataSVG:function(self){
+          resetAnimation();//重置动画
+          self.d=pointToD(self.pointnum).path;//重置数值 线
+
+          self.points=pointToD(self.pointnum).points;//重置数值  点
+
+          self.acreages=pointToD(self.pointnum).acreages;//重置数值  面
+
+          function resetAnimation(){
+            if($("#points_path").attr("data-odd")=="false"){
+              $("#points_path").attr("data-odd","true")
+            }else{
+              $("#points_path").attr("data-odd","false")
+            }
+          }
+          function pointToD(pointarr){
+            var svg_slope = 70;//变化坡度大小 可以选择0到100之间的数字
+            var newpointarr = [];
+            for(var i=0;i<pointarr.length;i++){
+              if(pointarr[i]-0>0){
+                var max = pointarr[i]-0;
+                var min = pointarr[i]-0;
+                for(var i=1;i<pointarr.length;i++){
+                  if(pointarr[i]-0>0){
+                    if(max<pointarr[i]-0){max=pointarr[i]-0};
+                    if(min>pointarr[i]-0){min=pointarr[i]-0};
+                  }
+                }
+              }
+            }
+            var valueheight = max-min;
+            for(var i=0;i<pointarr.length;i++){
+              if(pointarr[i]>0){
+                newpointarr.push(((pointarr[i]-min)/valueheight*svg_slope)+(100-svg_slope)/2);
+                if(pointarr[i]==min){
+                  newpointarr[i]=(100-svg_slope)/2+1;
+                }
+              }else{
+                newpointarr.push(0);
+              }
+            }
+            var coordinateXlength = newpointarr.length;
+            var windowWidth = window.innerWidth;
+            var firstno0;
+            var lastno0;
+            var result={};
+            result.points=[];
+            result.acreages=[];
+            for(var i=0;i<newpointarr.length;i++){
+              if(newpointarr[i]>0){
+                result.path= "M"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+                result.acreages= "M"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+
+                result.points.push((windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160));
+                firstno0=i;
+                break;
+              }
+            }
+            for(var i=firstno0+1;i<newpointarr.length;i++){
+              if(newpointarr[i]>0){
+                result.path +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+                result.path +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160.001);//弥补只有两个点的时候不显示线段的问题
+
+                result.acreages +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+                lastno0=i;
+                result.points.push((windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160));
+              }
+            }
+            result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*lastno0)+",185";
+            result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*firstno0)+",185";
+            result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*firstno0)+","+(-newpointarr[firstno0]+160);
+
+            return result;
+          }
+        },
+        selectcommom:function(id){
+          var self = this;
+          var selectedbox = document.getElementById(id);
+          var parentbox = selectedbox.parentNode;
+          removeClass(parentbox.getElementsByClassName("selected")[0],"selected");
+          addClass(selectedbox,"selected");
+
+
+          self.updataSVG(self);//这个函数需要放在数据重置后执行，作用是更新svg曲线
+          function addClass( elements,cName ){
+            elements.className += " " + cName;
+          };
+          function removeClass( elements,cName ){
+            elements.className = elements.className.replace( new RegExp( "(\\s|^)" + cName + "(\\s|$)" )," " ); // replace方法是替换
+          };
         }
+
 
 
       }
@@ -330,90 +433,119 @@
     route:{
       data:function(){
         var self = this;
-        self.d=pointToD(self.pointnum).path;
-        self.points=pointToD(self.pointnum).points;
-        self.acreages=pointToD(self.pointnum).acreages;
-        console.log(self.acreages);
 
 
 
-        function pointToD(pointarr){
-          var svg_slope = 70;//变化坡度大小 可以选择0到100之间的数字
-          var newpointarr = [];
-          for(var i=0;i<pointarr.length;i++){
-            if(pointarr[i]-0>0){
-              var max = pointarr[i]-0;
-              var min = pointarr[i]-0;
-              for(var i=1;i<pointarr.length;i++){
-                if(pointarr[i]-0>0){
-                  if(max<pointarr[i]-0){max=pointarr[i]-0};
-                  if(min>pointarr[i]-0){min=pointarr[i]-0};
-                }
-              }
-            }
-          }
-          var valueheight = max-min;
-          for(var i=0;i<pointarr.length;i++){
-            if(pointarr[i]>0){
-              newpointarr.push(((pointarr[i]-min)/valueheight*svg_slope)+(100-svg_slope)/2);
-              if(pointarr[i]==min){
-                newpointarr[i]=(100-svg_slope)/2+1;
-              }
-            }else{
-              newpointarr.push(0);
-            }
-          }
-          var coordinateXlength = newpointarr.length;
-          var windowWidth = window.innerWidth;
-          var firstno0;
-          var lastno0;
-          var result={};
-          result.points=[];
-          result.acreages=[];
-          for(var i=0;i<newpointarr.length;i++){
-            if(newpointarr[i]>0){
-              result.path= "M"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
-              result.acreages= "M"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+        self.showseddate.number = self.seddatelist.length-1;
+        self.showseddate.text=self.seddatelist[self.showseddate.number]
 
-              result.points.push((windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160));
-              firstno0=i;
-              break;
-            }
-          }
-          for(var i=firstno0+1;i<newpointarr.length;i++){
-            if(newpointarr[i]>0){
-              result.path +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
-              result.path +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160.001);//弥补只有两个点的时候不显示线段的问题
+        self.updataSVG(self);
 
-              result.acreages +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
-              lastno0=i;
-              result.points.push((windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160));
-            }
-          }
-          result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*lastno0)+",185";
-          result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*firstno0)+",185";
-          result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*firstno0)+","+(-newpointarr[firstno0]+160);
 
-          return result;
-        }
+
+
+
       }
     },
 
     methods:{
-      selectedtype:function(id){
-        var selectedbox = document.getElementById(id);
-        var parentbox = selectedbox.parentNode;
-        removeClass(parentbox.getElementsByClassName("selected")[0],"selected");
-        addClass(selectedbox,"selected");
+      selectedweek:function(id){
+        var self = this;
+
+        updatecoordinateXs(self);//更新横坐标函数
+        function updatecoordinateXs(self,date){//date的格式为
+          if(date){
+            var today = new Date(date);
+          }else{
+            var today = new Date();
+          }
+
+          if(today.getDate()>=7){
+            self.coordinateXs=[];
+            for(var i=today.getDate()-6;i<=today.getDate();i++){
+              self.coordinateXs.push(i);
+            }
+          }else{
+            var prevmonth;
+            var prevmonthlength;
+            var thisyear = today.getFullYear();
+            if(today.getMonth()>0){
+              prevmonth =today.getMonth()
+            }else{
+              prevmonth=12;
+            }
+            prevmonthlength=monthmaxday(thisyear,prevmonth);
+            self.coordinateXs=[];
+            for(var i=prevmonthlength-(7-today.getDate)+1;i<=prevmonthlength;i++){
+              self.coordinateXs.push(i);
+            }
+            for(var i=1;i<=today.getDate;i++){
+              self.coordinateXs.push(i);
+            }
+          };
+        }
+
+        function monthmaxday(year,month){//返回某年某月有多少天
+          if(month==2){
+            var today = new Date();
+            if(isLeapYear(year)){
+              return 29;
+            }else{
+              return 28;
+            }
+          }else if(month==4||month==6||month==9||month==11){
+            return 30;
+          }else{
+            return 31;
+          }
+          function isLeapYear(year){//判断闰年
+            return (0==year%4&&((year%100!=0)||(year%400==0)));
+          }
+        }
 
 
 
-        function addClass( elements,cName ){
-          elements.className += " " + cName;
-        };
-        function removeClass( elements,cName ){
-          elements.className = elements.className.replace( new RegExp( "(\\s|^)" + cName + "(\\s|$)" )," " ); // replace方法是替换
-        };
+
+
+
+
+        self.selectcommom(id);
+      },
+      selectedmonth:function(id){
+        var self = this;
+
+
+
+        self.selectcommom(id);
+      },
+      selectedyear:function(id){
+        var self = this;
+
+
+
+        self.selectcommom(id);
+      },
+      selectedweight:function(id){
+        var self = this;
+
+
+
+        self.selectcommom(id);
+
+      },
+      selectedbmi:function(id){
+        var self = this;
+
+
+
+        self.selectcommom(id);
+      },
+      selectedfat:function(id){
+        var self = this;
+
+
+
+        self.selectcommom(id);
       },
       valueshow:function(num){
         var self = this;
@@ -436,6 +568,38 @@
           trigger_box[i].style.opacity=0;
         }
         trigger_box[num].style.opacity=1;
+      },
+      prevdate:function(){
+        var self = this;
+        var pointer_left = document.getElementsByClassName("pointer_left")[0];
+        var pointer_right = document.getElementsByClassName("pointer_right")[0];
+        if(self.showseddate.number>0){
+          pointer_right.style.opacity="1"
+          self.showseddate.number-=1;
+          self.showseddate.text=self.seddatelist[self.showseddate.number];
+          self.updataSVG(self);
+        }
+        if(self.showseddate.number==0){
+          pointer_left.style.opacity="0"
+        }
+
+
+      },
+      nextdate:function(){
+        var self = this;
+        var pointer_left = document.getElementsByClassName("pointer_left")[0];
+        var pointer_right = document.getElementsByClassName("pointer_right")[0];
+        if(self.showseddate.number<self.seddatelist.length-1){
+          pointer_left.style.opacity="1"
+          self.showseddate.number+=1;
+          self.showseddate.text=self.seddatelist[self.showseddate.number];
+          self.updataSVG(self);
+        }
+        if(self.showseddate.number==self.seddatelist.length-1){
+          pointer_right.style.opacity="0"
+        }
+
+
       }
 
     }
