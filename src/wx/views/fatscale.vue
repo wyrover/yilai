@@ -79,181 +79,182 @@
 </template>
 
 <style lang="stylus">
+
   @import '../../shared/assets/stylus/common'
-.main-content
-  width 100%
-  height 100%
-  overflow-x hidden
-  overflow-y auto
-  padding-bottom 0
-  .userweight
+  .main-content
     width 100%
-    height 275px
-    margin 0 auto
-    font-size rem(24)
-    text-align center
-    color #FFF
-    overflow hidden
-
-    .chart
-      size rem(60) rem(60)
-      absolute left rem(30) top rem(50)
-      background-image url("../assets/images/icon/chart.png")
-      background-size 100% 100%
-      background-position center center
-      a.chart_a
-        display block
-        width 100%
-        height 100%
-        //background ("url(../../assets/images/logo/chart.png") no-repeat center center)
-
-    .setting
-      size rem(60) rem(60)
-      background-image url("../assets/images/icon/setting.png")
-      background-size 100% 100%
-      background-position center center
-      absolute right rem(30) top rem(51)
-      a.setting_a
-        display block
-        width 100%
-        height 100%
-
-    .current_weight
+    height 100%
+    overflow-x hidden
+    overflow-y auto
+    padding-bottom 0
+    .userweight
       width 100%
-      height 212px
-      position relative
-      overflow hidden
-      .weight_time
-        width 100%
-        font-size 0.7rem
-        position absolute
-        top 30px
-        left 5px
-        text-align center
-        .time_num
-          padding 0 3px
-      .weight_number
-        text-shadow 2px 2px rgba(0,0,0,0.3)
-        width 100%
-        height 120px
-        line-height 120px
-        margin 0 auto
-        font-size 92px
-        font-family Impact,Euphemia
-        position absolute
-        top 70px
-        .weight_unit
-          text-shadow 1px 1px rgba(0,0,0,0.1)
-          position absolute
-          font-size 1rem
-          line-height 1.5rem
-          height 1.5rem
-          bottom 5px
-          padding 10px 5px
-          font-family 'Microsoft YaHei'
-      .target_weight
-        width 100%
-        font-size 0.65rem
-        position absolute
-        top 190px
-        text-align center
-        font-size 0.7ren
-        .target_weight_span
-          margin-right 10px
-    .current_bmi
-      width 100%
-      height 60px
-      position relative
+      height 275px
       margin 0 auto
-      .bmi_colorstrip
-        width 100%
-        height 10px
-        //border-radius 10px
-        background -webkit-gradient(linear, 0 0, 100% 0, from(#8cfeff), to(#ff9d9c),color-stop(0.48,#91fea1),color-stop(0.55,#ffe286))
-        //background-image url("../assets/images/setiao.jpg")
+      font-size rem(24)
+      text-align center
+      color #FFF
+      overflow hidden
+
+      .chart
+        size rem(60) rem(60)
+        absolute left rem(30) top rem(50)
+        background-image url("../assets/images/icon/chart.png")
         background-size 100% 100%
-        position absolute
-        top 50px
-        left 50%
-        transform translateX(-50%)
-      .bmi_pointer
-        height 35px
-        position absolute
-        left 25%
-        font-size 0.8rem
-        padding-top 15px
-        text-overflow ellipsis
-        transform translateX(-50%)
-        color red
-        .triangle
-          width 0
-          height 0
-          border-left 6px solid transparent
-          border-right 6px solid transparent
-          border-top 6px solid #fff //随着数值变化跟着变化颜色
-          position absolute
-          bottom 0
-          left 50%
-          transform translateX(-50%)
-      .target_weight_span
-        float left
-      .target_weight_munber
-        float right
-  .constitutes
-    width 100%
-    height 230px
-    overflow hidden
-    ul
-      padding 5px 0
-      .constitutes_li
-        display inline-block
-        width 30%
-        height 70px
-        margin 0 1.5%
-        padding 0
+        background-position center center
+        a.chart_a
+          display block
+          width 100%
+          height 100%
+          //background ("url(../../assets/images/logo/chart.png") no-repeat center center)
+
+      .setting
+        size rem(60) rem(60)
+        background-image url("../assets/images/icon/setting.png")
+        background-size 100% 100%
+        background-position center center
+        absolute right rem(30) top rem(51)
+        a.setting_a
+          display block
+          width 100%
+          height 100%
+
+      .current_weight
+        width 100%
+        height 212px
         position relative
         overflow hidden
-        color #fff
-        border 0
-        .logo
-          width 30px
-          height 30px
+        .weight_time
+          width 100%
+          font-size 0.7rem
           position absolute
-          top 50%
+          top 30px
           left 5px
-          margin-top -10px
-          background-size 100% 100%
-        .fatlogo
-          background-image url("../assets/images/icon/zhifang.png")
-        .moisturelogo
-          background-image url("../assets/images/icon/shuifen.png")
-        .bonelogo
-          background-image url("../assets/images/icon/guge.png")
-        .musclelogo
-          background-image url("../assets/images/icon/jirou.png")
-        .weightlogo
-          background-image url("../assets/images/icon/tizhong.png")
-        .bmilogo
-          background-image url("../assets/images/icon/BMI.png")
-        .organslogo
-          background-image url("../assets/images/icon/neizang.png")
-        .internalagelogo
-          background-image url("../assets/images/icon/tineinianling.png")
-        .basal_metabolism_logo
-          background-image url("../assets/images/icon/jichudaixie.png")
-        .text
-          height 60px
-          float left
+          text-align center
+          .time_num
+            padding 0 3px
+        .weight_number
+          text-shadow 2px 2px rgba(0,0,0,0.3)
+          width 100%
+          height 120px
+          line-height 120px
+          margin 0 auto
+          font-size 92px
+          font-family Impact,Euphemia
           position absolute
-          left 40px
-          top 50%
-          margin-top -20px
-          span
-            font-size 16px
-            line-height 25px
-            display inherit
-          .constitutes_title
-            font-size 14px
+          top 70px
+          .weight_unit
+            text-shadow 1px 1px rgba(0,0,0,0.1)
+            position absolute
+            font-size 1rem
+            line-height 1.5rem
+            height 1.5rem
+            bottom 5px
+            padding 10px 5px
+            font-family 'Microsoft YaHei'
+        .target_weight
+          width 100%
+          font-size 0.65rem
+          position absolute
+          top 190px
+          text-align center
+          font-size 0.7ren
+          .target_weight_span
+            margin-right 10px
+      .current_bmi
+        width 100%
+        height 60px
+        position relative
+        margin 0 auto
+        .bmi_colorstrip
+          width 100%
+          height 10px
+          //border-radius 10px
+          background -webkit-gradient(linear, 0 0, 100% 0, from(#8cfeff), to(#ff9d9c),color-stop(0.48,#91fea1),color-stop(0.55,#ffe286))
+          //background-image url("../assets/images/setiao.jpg")
+          background-size 100% 100%
+          position absolute
+          top 50px
+          left 50%
+          transform translateX(-50%)
+        .bmi_pointer
+          height 35px
+          position absolute
+          left 25%
+          font-size 0.8rem
+          padding-top 15px
+          text-overflow ellipsis
+          transform translateX(-50%)
+          color red
+          .triangle
+            width 0
+            height 0
+            border-left 6px solid transparent
+            border-right 6px solid transparent
+            border-top 6px solid #fff //随着数值变化跟着变化颜色
+            position absolute
+            bottom 0
+            left 50%
+            transform translateX(-50%)
+        .target_weight_span
+          float left
+        .target_weight_munber
+          float right
+    .constitutes
+      width 100%
+      height 230px
+      overflow hidden
+      ul
+        padding 5px 0
+        .constitutes_li
+          display inline-block
+          width 30%
+          height 70px
+          margin 0 1.5%
+          padding 0
+          position relative
+          overflow hidden
+          color #fff
+          border 0
+          .logo
+            width 30px
+            height 30px
+            position absolute
+            top 50%
+            left 5px
+            margin-top -10px
+            background-size 100% 100%
+          .fatlogo
+            background-image url("../assets/images/icon/zhifang.png")
+          .moisturelogo
+            background-image url("../assets/images/icon/shuifen.png")
+          .bonelogo
+            background-image url("../assets/images/icon/guge.png")
+          .musclelogo
+            background-image url("../assets/images/icon/jirou.png")
+          .weightlogo
+            background-image url("../assets/images/icon/tizhong.png")
+          .bmilogo
+            background-image url("../assets/images/icon/BMI.png")
+          .organslogo
+            background-image url("../assets/images/icon/neizang.png")
+          .internalagelogo
+            background-image url("../assets/images/icon/tineinianling.png")
+          .basal_metabolism_logo
+            background-image url("../assets/images/icon/jichudaixie.png")
+          .text
+            height 60px
+            float left
+            position absolute
+            left 40px
+            top 50%
+            margin-top -20px
+            span
+              font-size 16px
+              line-height 25px
+              display inherit
+            .constitutes_title
+              font-size 14px
 
 
 </style>
@@ -288,6 +289,16 @@
           "metabolism":14
         }
       };
+    },
+
+    route:{
+      data:function(){
+
+      }
+    },
+    methods:{
     }
+
+
   };
 </script>

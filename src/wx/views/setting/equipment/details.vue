@@ -2,7 +2,7 @@
   .main-content.details
     .device_msg
       .device_faces
-        img
+        img(src="../../../assets/images/icon/zhifangcheng.png" width="100%" height="100%")
       .device_name 亿莱脂肪秤
     .list
       .entrance.personal_information
@@ -32,7 +32,6 @@
       .device_faces
         width 100px
         height 100px
-        background blue
         overflow hidden
         margin 20px auto
         //img
@@ -77,11 +76,19 @@
 
 <script>
 
-  module.exports = {
+  var api = require('../../../api');
 
+  module.exports = {
+    components: {
+      'api': api
+    },
     data: function () {
       return {
         showModal:true
+      }
+    },
+    route:{
+      data:function(){
       }
     },
     methods:{

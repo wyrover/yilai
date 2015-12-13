@@ -90,3 +90,33 @@
 
 
 </style>
+<script>
+
+  var api = require('../../../wx/api');
+  module.exports = {
+    components: {
+      'api': api
+    },
+    data: function () {
+      return {
+
+      }
+    },
+
+    route:{
+      data:function(){
+      }
+    },
+
+    methods:{
+
+
+
+    }
+
+
+
+
+  }
+
+</script>

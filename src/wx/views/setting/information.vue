@@ -70,10 +70,11 @@
 </style>
 <script>
   var Modal = require('../../../shared/components/modal.vue');
-
+  var api = require('../../../wx/api');
   module.exports = {
     components: {
-      'modal': Modal
+      'modal': Modal,
+      'api': api
     },
 
     data: function () {
@@ -86,6 +87,11 @@
           "taget_weight":78
         }
       };
+    },
+
+    route:{
+      data:function(){
+      }
     },
     methods: {
       updatebirth: function () {

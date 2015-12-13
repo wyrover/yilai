@@ -6,7 +6,7 @@
           //a(v-link="{path: '/setting/'+equipment-id}")
           a(v-link="{path: '/setting/equipment/details'}")
             .equipment_img
-              img
+              img(src="../../../assets/images/icon/zhifangcheng.png" width="100%" height="100%")
             span.equipment_name 亿莱脂肪秤
             i.more
       li
@@ -14,7 +14,7 @@
           //a(v-link="{path: '/setting/'+equipment-id}")
           a(v-link="{path: '/setting/equipment/details'}")
             .equipment_img
-              img
+              img(src="../../../assets/images/icon/zhifangcheng.png" width="100%" height="100%")
             span.equipment_name 亿莱脂肪秤
             i.more
 </template>
@@ -41,7 +41,6 @@
             margin 10px
             width 40px
             height 40px
-            background blue
           span.equipment_name
             display inline-block
             margin-left 10px
@@ -54,11 +53,12 @@
 
 </style>
 <script>
-  var wxauth = require('../../../assets/js/wxauth');
+  //var wxauth = require('../../../assets/js/wxauth');
+  var api = require('../../../api');
 
   module.exports = {
     components: {
-      'wxauth': wxauth
+      'api': api
     },
 
     data: function () {
@@ -68,7 +68,6 @@
     },
     route:{
       data:function(){
-        //console.log(wxauth)
       }
     },
     methods: {

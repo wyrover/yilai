@@ -77,11 +77,19 @@
 </style>
 <script>
 
-  module.exports = {
+  var api = require('../../../api');
 
+  module.exports = {
+    components: {
+      'api': api
+    },
     data: function () {
       return {
         showModal:true
+      }
+    },
+    route:{
+      data:function(){
       }
     },
     methods:{
