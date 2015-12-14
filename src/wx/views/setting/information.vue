@@ -91,6 +91,7 @@
 
     route:{
       data:function(){
+        document.title = "用户";
       }
     },
     methods: {

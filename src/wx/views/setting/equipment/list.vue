@@ -68,6 +68,7 @@
     },
     route:{
       data:function(){
+        document.title = "设备管理";
       }
     },
     methods: {

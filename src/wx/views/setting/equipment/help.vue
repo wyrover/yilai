@@ -104,5 +104,17 @@
         color #353535
 
 </style>
+<script>
+  //var wxauth = require('../../../assets/js/wxauth');
+
+  module.exports = {
+    route:{
+      data:function(){
+        document.title = "帮助";
+      }
+    }
+
+  };
+</script>
 
 

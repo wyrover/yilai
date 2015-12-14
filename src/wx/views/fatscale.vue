@@ -98,7 +98,7 @@
 
       .chart
         size rem(60) rem(60)
-        absolute left rem(30) top rem(50)
+        absolute left rem(30) top rem(40)
         background-image url("../assets/images/icon/chart.png")
         background-size 100% 100%
         background-position center center
@@ -113,7 +113,7 @@
         background-image url("../assets/images/icon/setting.png")
         background-size 100% 100%
         background-position center center
-        absolute right rem(30) top rem(51)
+        absolute right rem(30) top rem(42)
         a.setting_a
           display block
           width 100%
@@ -139,7 +139,7 @@
           height 120px
           line-height 120px
           margin 0 auto
-          font-size 92px
+          font-size 72px
           font-family Impact,Euphemia
           position absolute
           top 70px
@@ -293,7 +293,8 @@
 
     route:{
       data:function(){
-
+        document.title = "健康管家";
+        //console.log(document.title)
       }
     },
     methods:{

@@ -90,6 +90,7 @@
     },
     route:{
       data:function(){
+        document.title = "已绑定用户";
       }
     },
     methods:{

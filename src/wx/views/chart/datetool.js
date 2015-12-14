@@ -144,16 +144,16 @@ function monthmaxday(year,month){//返回某年某月有多少天
   if(month==2){
     var today = new Date();
     if(isLeapYear(year)){
-     return 29;
+      return 29;
     }else{
-     return 28;
+      return 28;
     }
   }else if(month==4||month==6||month==9||month==11){
-     return 30;
+    return 30;
   }else{
-     return 31;
+    return 31;
   }
   function isLeapYear(year){//判断闰年
-     return (0==year%4&&((year%100!=0)||(year%400==0)));
-   }
- }
+    return (0==year%4&&((year%100!=0)||(year%400==0)));
+  }
+}

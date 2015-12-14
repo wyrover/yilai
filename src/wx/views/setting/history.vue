@@ -257,6 +257,7 @@
 
     route:{
       data:function(){
+        document.title = "历史记录";
       }
     },
 

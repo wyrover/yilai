@@ -442,6 +442,7 @@
 
     route:{
       data:function(){
+        document.title="曲线分析";
         var self = this;
 
 
@@ -545,30 +546,65 @@
         var newlastdate = new Date(new Date(firstdate)-1000*60*60*24);
         if(selectdatetype.id == "yearbox"){
 
-        datetools.updateSedDate.year(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
-        datetools.updatecoordinateXs.year(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
-          console.log("year")
+          datetools.updateSedDate.year(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+          datetools.updatecoordinateXs.year(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
         }else if(selectdatetype.id == "monthbox"){
 
-        datetools.updateSedDate.month(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
-        datetools.updatecoordinateXs.month(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
-          console.log("month")
+          datetools.updateSedDate.month(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+          datetools.updatecoordinateXs.month(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
         }else if(selectdatetype.id == "weekbox"){
 
 
-        datetools.updateSedDate.week(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
-        datetools.updatecoordinateXs.week(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
-          console.log("week")
+          datetools.updateSedDate.week(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+          datetools.updatecoordinateXs.week(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
         }
 
-
+        self.updataSVG(self);
 
       },
       nextdate:function(){
         var self = this;
         var pointer_left = document.getElementsByClassName("pointer_left")[0];
         var pointer_right = document.getElementsByClassName("pointer_right")[0];
+        var selectdatetype = document.getElementsByClassName("selected")[0];
+        var sed_datetext = document.getElementsByClassName("sed_datetext")[0];
+        var firstdate = sed_datetext.getAttribute("data-firstdate");
+        var lastdate = sed_datetext.getAttribute("data-lastdate");
 
+
+        if(selectdatetype.id == "yearbox"){
+
+          var newlastdate = new Date((new Date(lastdate)-0)+1000*60*60*24*366);
+          if(newlastdate-new Date()>0){
+            console.log("超过当前日期");
+          }else{
+            datetools.updateSedDate.year(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+            datetools.updatecoordinateXs.year(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
+            self.updataSVG(self);
+          }
+
+        }else if(selectdatetype.id == "monthbox"){
+          var newlastdate = new Date((new Date(lastdate)-0)+1000*60*60*24*30);
+          if(newlastdate-new Date()>0){
+            console.log("超过当前日期");
+          }else{
+            datetools.updateSedDate.month(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+            datetools.updatecoordinateXs.month(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
+            self.updataSVG(self);
+          }
+
+        }else if(selectdatetype.id == "weekbox"){
+
+          var newlastdate = new Date((new Date(lastdate)-0)+1000*60*60*24*7);
+          if(newlastdate-new Date()>0){
+            console.log("超过当前日期");
+          }else{
+            datetools.updateSedDate.week(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+            datetools.updatecoordinateXs.week(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
+            self.updataSVG(self);
+          }
+
+        }
 
 
       }

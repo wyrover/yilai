@@ -105,6 +105,7 @@
 
     route:{
       data:function(){
+        document.title = "设置";
       }
     },
 
