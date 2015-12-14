@@ -7,8 +7,8 @@
         .datetype_box.year#yearbox(v-on:click.prevent.stop="selectedyear('yearbox')") 年
       .sed_datetype
         i.pointer_left(v-on:click.prevent.stop="prevdate") &lt;
-        span.sed_datetext {{showseddate.text}}
-        i.pointer_right(v-on:click.prevent.stop="nextdate",v-bind:style="'opacity:0'") &gt;
+        span.sed_datetext {{showseddate}}
+        i.pointer_right(v-on:click.prevent.stop="nextdate") &gt;
       .chart_box
         //y坐标轴
         //.coordinateY
@@ -40,7 +40,7 @@
               .trigger_circle
               .value_box
                 span.trigger_value_number
-                span.value_unit kg
+                span.value_unit {{unit}}
 
 
         .coordinateX
@@ -219,6 +219,16 @@
                 span
                  color #ffffa4
                  font-size 15px
+              &:first-child
+                .value_box
+                  left 105%
+                  &:after
+                    left 25%
+              &:last-child
+                .value_box
+                  left -31%
+                  &:after
+                    left 80%
             .opacity
               opacity 0
         .coordinateX
@@ -295,11 +305,12 @@
   }
 </style>
 <script>
-var datetools = require('../../../wx/views/chart/datetools');
+  var datetools = require('../chart/datetool');
   var api = require('../../../wx/api');
   module.exports = {
     components: {
-      'api': api
+      'api': api,
+      'datetool': datetools
     },
     data: function () {
       return {
@@ -309,11 +320,8 @@ var datetools = require('../../../wx/views/chart/datetools');
         showvalues:[],//手指点击后要显示的数值
         acreages:"",//存放绘制渐变图案的面的路径，是个字符串
         coordinateXs:["0~5","5~15","15~20","5~15","15~20"],
-        showseddate:{
-          number:0,//存放当前内容的序号
-          text:""//存放当前可以左右选择的日期内容
-        },
-        seddatelist:["8月10日~9月10日","8月12日~9月12日","8月14日~9月14日","2015年","测试时间"],//存放当前可以左右选择的日期的所有内容
+        showseddate:"",//存放当前可以左右选择的日期内容
+        unit:"kg",//存放当前的单位
         coordinateYtexts:["1kg","7kg","3kg","4kg","5kg"],//纵坐标内容
         post_daydate:{
           "end_date":"2015-11-11",
@@ -426,17 +434,16 @@ var datetools = require('../../../wx/views/chart/datetools');
     },
 
     ready:function(){
+      var self = this;
 
+      datetools.updatecoordinateXs.month(self);//更新横坐标
+      datetools.updateSedDate.month(self);//更新可以左右选择的日期的内容
     },
 
     route:{
       data:function(){
         var self = this;
 
-
-
-        self.showseddate.number = self.seddatelist.length-1;
-        self.showseddate.text=self.seddatelist[self.showseddate.number]
 
         self.updataSVG(self);
 
@@ -451,105 +458,61 @@ var datetools = require('../../../wx/views/chart/datetools');
       selectedweek:function(id){
         var self = this;
 
-        updatecoordinateXs(self,"2015-10-5");//更新横坐标函数 第二个参数可以输入某一个日期  会自动更新横坐标 在这个日期往前推七天
-        function updatecoordinateXs(self,date){//date的格式为
-          if(date){
-            var today = new Date(date);
-          }else{
-            var today = new Date();
-          }
-
-          if(today.getDate()>=7){
-            self.coordinateXs=[];
-            for(var i=today.getDate()-6;i<=today.getDate();i++){
-              self.coordinateXs.push(i);
-            }
-          }else{
-            var prevmonth;
-            var prevmonthlength;
-            var thisyear = today.getFullYear();
-            if(today.getMonth()>0){
-              prevmonth =today.getMonth()
-            }else{
-              prevmonth=12;
-            }
-            prevmonthlength=monthmaxday(thisyear,prevmonth);
-            self.coordinateXs=[];
-            for(var i=prevmonthlength-(7-today.getDate())+1;i<=prevmonthlength;i++){
-              self.coordinateXs.push(i);
-            }
-            for(var i=1;i<=today.getDate();i++){
-              self.coordinateXs.push(i);
-            }
-          };
-        }
-
-        function monthmaxday(year,month){//返回某年某月有多少天
-          if(month==2){
-            var today = new Date();
-            if(isLeapYear(year)){
-              return 29;
-            }else{
-              return 28;
-            }
-          }else if(month==4||month==6||month==9||month==11){
-            return 30;
-          }else{
-            return 31;
-          }
-          function isLeapYear(year){//判断闰年
-            return (0==year%4&&((year%100!=0)||(year%400==0)));
-          }
-        }
+        self.pointnum = ["123",134,255,200,134,127,244];
 
 
+        datetools.updateSedDate.week(self);//更新可以左右选择的日期的内容
+        datetools.updatecoordinateXs.week(self);//更新横坐标函数 第二个参数可以输入某一个日期例如"2015-12-10"  会自动更新横坐标 在这个日期往前推七天
 
-
-
-
-
-        self.selectcommom(id);
+        self.selectcommom(id);//必须在self.pointnum重置后执行
       },
       selectedmonth:function(id){
         var self = this;
+        self.pointnum = [255,282,134,127,244];
 
+        datetools.updateSedDate.month(self);//更新可以左右选择的日期的内容
+        datetools.updatecoordinateXs.month(self);//更新横坐标函数 第二个参数可以输入某一个日期例如"2015-12-10"  会自动更新横坐标 在这个日期往前推一个月
 
-
-        self.selectcommom(id);
+        self.selectcommom(id);//必须在self.pointnum重置后执行
       },
       selectedyear:function(id){
         var self = this;
+        self.pointnum = ["123",2,2,2,2,0,2,244,200,134,127,244];
 
+        datetools.updateSedDate.year(self);//更新可以左右选择的日期的内容
+        datetools.updatecoordinateXs.year(self) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
 
-
-        self.selectcommom(id);
+        self.selectcommom(id);//必须在self.pointnum重置后执行
       },
       selectedweight:function(id){
         var self = this;
+        self.unit = "kg";
 
 
 
-        self.selectcommom(id);
 
+        self.selectcommom(id);//必须在self.pointnum重置后执行
       },
       selectedbmi:function(id){
         var self = this;
+        self.unit = " ";
 
 
 
-        self.selectcommom(id);
+        self.selectcommom(id);//必须在self.pointnum重置后执行
       },
       selectedfat:function(id){
         var self = this;
+        self.unit = "%";
 
 
-
-        self.selectcommom(id);
+        self.selectcommom(id);//必须在self.pointnum重置后执行
       },
       valueshow:function(num){
         var self = this;
         var trigger_text = document.getElementsByClassName("trigger_value_number");
         var trigger_box = document.getElementsByClassName("trigger_box");
+        var value_box = document.getElementsByClassName("value_box");
 
         self.showvalues=[];
         for(var i=0;i<self.pointnum.length;i++){
@@ -565,22 +528,28 @@ var datetools = require('../../../wx/views/chart/datetools');
 
         for(var i=0;i<trigger_box.length;i++){
           trigger_box[i].style.opacity=0;
+          value_box[i].style.display="none";
         }
         trigger_box[num].style.opacity=1;
+        value_box[num].style.display="block";
+
       },
       prevdate:function(){
         var self = this;
         var pointer_left = document.getElementsByClassName("pointer_left")[0];
         var pointer_right = document.getElementsByClassName("pointer_right")[0];
-        if(self.showseddate.number>0){
-          pointer_right.style.opacity="1"
-          self.showseddate.number-=1;
-          self.showseddate.text=self.seddatelist[self.showseddate.number];
-          self.updataSVG(self);
+        var selectdatetype = document.getElementsByClassName("selected")[0];
+        if(selectdatetype.id == "yearbox"){
+
+          console.log("year")
+        }else if(selectdatetype.id == "monthbox"){
+
+          console.log("month")
+        }else if(selectdatetype.id == "weekbox"){
+
+          console.log("week")
         }
-        if(self.showseddate.number==0){
-          pointer_left.style.opacity="0"
-        }
+
 
 
       },
@@ -588,15 +557,7 @@ var datetools = require('../../../wx/views/chart/datetools');
         var self = this;
         var pointer_left = document.getElementsByClassName("pointer_left")[0];
         var pointer_right = document.getElementsByClassName("pointer_right")[0];
-        if(self.showseddate.number<self.seddatelist.length-1){
-          pointer_left.style.opacity="1"
-          self.showseddate.number+=1;
-          self.showseddate.text=self.seddatelist[self.showseddate.number];
-          self.updataSVG(self);
-        }
-        if(self.showseddate.number==self.seddatelist.length-1){
-          pointer_right.style.opacity="0"
-        }
+
 
 
       }

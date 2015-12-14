@@ -1,24 +1,125 @@
-module.exports = function (Vue, Promise, config) {
-  return {
+module.exports = {
 
 
 
-    test: function(params) {//测试用  发送验证码
-      return new Promise(function(resolve, reject) {
-        Vue.http.post(
-          config.apiRoot + '/sms/verifycode',
-          JSON.stringify(params),
-          function(data, status, request) {
-            resolve(status);
-          }, {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
+  updatecoordinateXs:{
+    week:function updatecoordinateXsweek(self,date){//date的格式为
+            if(date){
+              var today = new Date(date);
+            }else{
+              var today = new Date();
             }
-          }
-        ).error(function(data, status, request) {
-          reject(data.error);
-        });
-      });
+
+            if(today.getDate()>=7){
+              self.coordinateXs=[];
+              for(var i=today.getDate()-6;i<=today.getDate();i++){
+                self.coordinateXs.push(i);
+              }
+            }else{
+              var prevmonth;
+              var prevmonthlength;
+              var thisyear = today.getFullYear();
+              if(today.getMonth()>0){
+                prevmonth =today.getMonth()
+              }else{
+                prevmonth=12;
+              }
+              prevmonthlength=monthmaxday(thisyear,prevmonth);
+              self.coordinateXs=[];
+              for(var i=prevmonthlength-(7-today.getDate())+1;i<=prevmonthlength;i++){
+                self.coordinateXs.push(i);
+              }
+              for(var i=1;i<=today.getDate();i++){
+                self.coordinateXs.push(i);
+              }
+            };
+        },
+    month:function updatecoordinateXsmonth(self,date){
+      var valuelength = 6;
+      if(date){
+        var today = new Date(date);
+      }else{
+        var today = new Date();
+      }
+      var day = today.getDate();
+      var month = today.getMonth()+1;
+      var year = today.getFullYear();
+
+
+      self.coordinateXs=[];
+      for(var i = 0;i<30/valuelength;i++){
+
+        var text = day-30+monthmaxday(year,month-1)+1+(i*valuelength)
+        if(text>monthmaxday(year,month-1)){
+          var text= text-monthmaxday(year,month-1)
+        }
+        var textfirst = text;
+        var textlast = text+valuelength-1;
+        if(textlast>monthmaxday(year,month-1)){
+          textlast-=monthmaxday(year,month-1)
+        }
+        self.coordinateXs.push(textfirst+"~"+textlast)
+
+      }
+        },
+    year:function updatecoordinateXyear(self,month){
+      var lastmonth= new Date().getMonth()+1;
+      var result;
+      if(month){
+        lastmonth=month-0;
+      }
+      self.coordinateXs=[];
+      for(i=lastmonth-11;i<=lastmonth;i++){
+        if(i>0){
+          self.coordinateXs.push(i)
+        }else{
+          self.coordinateXs.push(i+12)
+        }
+      }
+    }
+  },
+  updateSedDate:{
+    week:function(self){
+      var text="";
+      var today = new Date();
+      var day = today.getDate();
+      var month = today.getMonth()+1;
+      var year = today.getFullYear();
+      var prevmonth = month-1>0?month-1:month-1+12;
+      var firmonth = day>6?month:prevmonth;
+      var firday = day>6?day-6:day-6+monthmaxday(year,month-1);
+      console.log();
+      self.showseddate=firmonth+"月"+firday+"日~"+month+"月"+day+"日";
+    },
+    month:function(self){
+      var today = new Date();
+
+      var firstday = new Date(today.getTime()-1000*60*60*24*29);
+
+      self.showseddate = (firstday.getMonth()-0+1)+"月"+firstday.getDate()+"日~"+(today.getMonth()-0+1)+"月"+today.getDate()+"日";
+    },
+    year:function(self){
+      var thisyear = new Date().getFullYear();
+      self.showseddate = thisyear+"年"
     }
   }
+
 }
+
+function monthmaxday(year,month){//返回某年某月有多少天
+  if(month==2){
+    var today = new Date();
+    if(isLeapYear(year)){
+     return 29;
+    }else{
+     return 28;
+    }
+  }else if(month==4||month==6||month==9||month==11){
+     return 30;
+  }else{
+     return 31;
+  }
+  function isLeapYear(year){//判断闰年
+     return (0==year%4&&((year%100!=0)||(year%400==0)));
+   }
+ }
