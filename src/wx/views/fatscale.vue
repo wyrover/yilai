@@ -262,7 +262,7 @@
 <script>
   var Modal = require('../../shared/components/modal.vue');
   var api = require('../../wx/api');
-  var wxauth = require('../../wx/assets/js/wxauth');
+  //var wxauth = require('../../wx/assets/js/wxauth');
 
   module.exports = {
     components: {
@@ -297,6 +297,15 @@
       data:function(){
         document.title = "健康管家";
         //console.log(document.title)
+        var user_id="1234567890"
+        /*
+        api.BluetoothScale.getOneData(user_id).then(function (data) {
+          if(__DEBUG__) {
+            console.log(data);
+          }
+          closestState=data;
+        });
+        */
       }
     },
     methods:{

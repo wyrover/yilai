@@ -2,9 +2,9 @@
   .main-content.chart_page
     .date_switch
       .fir_datetype
-        .datetype_box.week#weekbox(v-on:click.prevent.stop="selectedweek('weekbox')") 周
-        .datetype_box.month#monthbox.selected(v-on:click.prevent.stop="selectedmonth('monthbox')") 月
-        .datetype_box.year#yearbox(v-on:click.prevent.stop="selectedyear('yearbox')") 年
+        .datetype_box.week#weekbox(v-on:click.prevent.stop="selectedweek('weekbox')",v-bind:data-name="'week'") 周
+        .datetype_box.month#monthbox.selected(v-on:click.prevent.stop="selectedmonth('monthbox')",v-bind:data-name="'month'") 月
+        .datetype_box.year#yearbox(v-on:click.prevent.stop="selectedyear('yearbox')",v-bind:data-name="'year'") 年
       .sed_datetype
         i.pointer_left(v-on:click.prevent.stop="prevdate") &lt;
         span.sed_datetext(v-bind:firstdate="",v-bind:lastdate="") {{showseddate}}
@@ -47,13 +47,13 @@
           span.coordinateX_date(v-for="coordinateX in coordinateXs",track-by="$index",v-bind:style="'width:'+100/coordinateXs.length+'%'") {{coordinateX}}
     .type_switch
       ul.type_switch_ul
-        li.date_type.weight.selected#weightbutton(v-on:click.prevent.stop="selectedweight('weightbutton')")
+        li.date_type.weight.selected#weightbutton(v-on:click.prevent.stop="selectedweight('weightbutton')",v-bind:data-name="'weight'")
           .divbotton.weighticon
             span 体重
-        li.date_type.bmi#bmibutton(v-on:click.prevent.stop="selectedbmi('bmibutton')")
+        li.date_type.bmi#bmibutton(v-on:click.prevent.stop="selectedbmi('bmibutton')",v-bind:data-name="'bmi'")
           .divbotton.bmiicon
             span BMI
-        li.date_type.fat#fatbutton(v-on:click.prevent.stop="selectedfat('fatbutton')")
+        li.date_type.fat#fatbutton(v-on:click.prevent.stop="selectedfat('fatbutton')",v-bind:data-name="'fat'")
           .divbotton.faticon
             span 脂肪率
 
@@ -306,11 +306,16 @@
 </style>
 <script>
   var datetools = require('../chart/datetool');
+  var updataPointNum = require('../chart/updataPointNum');//获取数据，更新self.pointnum
   var api = require('../../../wx/api');
+
+
+
   module.exports = {
     components: {
       'api': api,
-      'datetool': datetools
+      'datetool': datetools,
+      'updataPointNum': updataPointNum
     },
     data: function () {
       return {
@@ -436,6 +441,9 @@
     ready:function(){
       var self = this;
 
+      //updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+
+
       datetools.updatecoordinateXs.month(self);//更新横坐标
       datetools.updateSedDate.month(self);//更新可以左右选择的日期的内容
     },
@@ -444,6 +452,8 @@
       data:function(){
         document.title="曲线分析";
         var self = this;
+
+
 
 
         self.updataSVG(self);

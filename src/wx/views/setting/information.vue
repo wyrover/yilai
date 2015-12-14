@@ -85,6 +85,22 @@
           "height":75,
           "weight":80200,
           "taget_weight":78
+        },
+        updataInformation:function(){
+          var self = this;
+          var postobj = {
+            //"gender":"male",
+            "brith":self.information.birth,
+            "height":self.information.height,
+            //"weight":80000,
+            "taget_weight":self.information.taget_weight
+          };
+          api.BluetoothScale.setUserInformation(postobj).then(function (data) {
+            if(__DEBUG__) {
+              console.log(data);
+            }
+            console.log(data)
+          });
         }
       };
     },
@@ -98,16 +114,19 @@
       updatebirth: function () {
         var self = this;
         self.information.birth=document.getElementById("birthday").value;
-        console.log(self.information.birth)
+        //self.updataInformation();//debug
       },
       updateheight: function () {
         var self = this;
         self.information.height=document.getElementById("height").value-0;
+        //self.updataInformation();//debug
       },
       updatetaget_weight: function () {
         var self = this;
         self.information.taget_weight=document.getElementById("taget_weight").value-0;
+        //self.updataInformation();//debug
       }
+
     }
   };
 </script>
