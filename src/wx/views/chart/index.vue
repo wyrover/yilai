@@ -295,7 +295,7 @@
   }
 </style>
 <script>
-
+var datetools = require('../../../wx/views/chart/datetools');
   var api = require('../../../wx/api');
   module.exports = {
     components: {
@@ -303,18 +303,17 @@
     },
     data: function () {
       return {
-        d:"",
+        d:"",//存放曲线的路径 是个字符串
         points:[],//实际渲染的坐标点
         pointnum:["60","70","100","90","120"],//画布绘制的根据这里的数字绘制曲线  自动上下居中 自动计算差值 数值为0自动跳过
         showvalues:[],//手指点击后要显示的数值
         acreages:"",//存放绘制渐变图案的面的路径，是个字符串
-        sed_dates:["5月15日~6月14日","6月15日~7月14日","7月15日~8月14日","8月15日~9月14日"],//存放可以左右选择的日期内容
         coordinateXs:["0~5","5~15","15~20","5~15","15~20"],
         showseddate:{
           number:0,//存放当前内容的序号
           text:""//存放当前可以左右选择的日期内容
         },
-        seddatelist:["8月10日~9月10日","8月12日~9月12日","8月14日~9月14日","2015年"],//存放当前可以左右选择的日期的所有内容
+        seddatelist:["8月10日~9月10日","8月12日~9月12日","8月14日~9月14日","2015年","测试时间"],//存放当前可以左右选择的日期的所有内容
         coordinateYtexts:["1kg","7kg","3kg","4kg","5kg"],//纵坐标内容
         post_daydate:{
           "end_date":"2015-11-11",
@@ -329,7 +328,7 @@
         post_yeardate:{
             "year":"2015"
         },
-        updataSVG:function(self){
+        updataSVG:function(self){//更新svg的内容
           resetAnimation();//重置动画
           self.d=pointToD(self.pointnum).path;//重置数值 线
 
@@ -404,7 +403,7 @@
             return result;
           }
         },
-        selectcommom:function(id){
+        selectcommom:function(id){ //将某id的class添加点击事件 ，添加class.selected和删除class.selected
           var self = this;
           var selectedbox = document.getElementById(id);
           var parentbox = selectedbox.parentNode;
@@ -452,7 +451,7 @@
       selectedweek:function(id){
         var self = this;
 
-        updatecoordinateXs(self);//更新横坐标函数
+        updatecoordinateXs(self,"2015-10-5");//更新横坐标函数 第二个参数可以输入某一个日期  会自动更新横坐标 在这个日期往前推七天
         function updatecoordinateXs(self,date){//date的格式为
           if(date){
             var today = new Date(date);
@@ -476,10 +475,10 @@
             }
             prevmonthlength=monthmaxday(thisyear,prevmonth);
             self.coordinateXs=[];
-            for(var i=prevmonthlength-(7-today.getDate)+1;i<=prevmonthlength;i++){
+            for(var i=prevmonthlength-(7-today.getDate())+1;i<=prevmonthlength;i++){
               self.coordinateXs.push(i);
             }
-            for(var i=1;i<=today.getDate;i++){
+            for(var i=1;i<=today.getDate();i++){
               self.coordinateXs.push(i);
             }
           };
