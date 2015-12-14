@@ -170,15 +170,15 @@ function configXW() {
   wx.error(function(res) {
 
     error = JSON.stringify(res);
-    //write('wx.error : ' + JSON.stringify(res));
+    write('wx.error : ' + JSON.stringify(res));
   });
 }
 
 function getBlueToothDevicelist() {
-  //write('getBlueToothDevicelist...');
+  write('getBlueToothDevicelist...');
   WeixinJSBridge.invoke('getWXDeviceInfos', {}, function(res) {
     blueToothDevicelists = JSON.stringify(res);
-    //write(JSON.stringify(res));
+    write(JSON.stringify(res));
   });
 }
 
@@ -200,7 +200,7 @@ function startAirkiss() {
  * @constructor
  */
 function GetQueryString(name) {
-  // write(window.location.search);
+  write(window.location.search);
   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
   var r = window.location.search.substr(1).match(reg);
   if (r != null)
@@ -214,7 +214,7 @@ function write(msg) {
   var date = new Date();
   var log = date.getHours() + ":" + date.getMinutes() + ":"
       + date.getSeconds() + ": " + msg;
-  //console.log('', log);
+  console.log('', log);
   if (writeAlert) {
     alert(log);
   }
@@ -224,8 +224,6 @@ function write(msg) {
   // divDom.innerHTML = msg;
   // div.appendChild(divDom);
 }
-
-console.log()
 
 module.exports = {
   tokenId:tokenId,

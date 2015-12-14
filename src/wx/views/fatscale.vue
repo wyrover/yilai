@@ -262,6 +262,8 @@
 <script>
   var Modal = require('../../shared/components/modal.vue');
   var api = require('../../wx/api');
+  var wxauth = require('../../wx/assets/js/wxauth');
+
   module.exports = {
     components: {
       'modal': Modal,
@@ -281,7 +283,7 @@
           "age":30,
           "height":178,
           "weight":802.12,
-          "bmi":35,
+          "bmi":22,
           "fat":10,
           "moisture":11,
           "muscle":12,
