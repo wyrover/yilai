@@ -7,7 +7,7 @@
         .datetype_box.year#yearbox(v-on:click.prevent.stop="selectedyear('yearbox')") 年
       .sed_datetype
         i.pointer_left(v-on:click.prevent.stop="prevdate") &lt;
-        span.sed_datetext {{showseddate}}
+        span.sed_datetext(v-bind:firstdate="",v-bind:lastdate="") {{showseddate}}
         i.pointer_right(v-on:click.prevent.stop="nextdate") &gt;
       .chart_box
         //y坐标轴
@@ -214,16 +214,16 @@
                   border-right 6px  solid transparent
                   position absolute
                   left 50%
-                  top 100%
+                  top 98%
                   margin-left -6px
                 span
                  color #ffffa4
                  font-size 15px
               &:first-child
                 .value_box
-                  left 105%
+                  left 125%
                   &:after
-                    left 25%
+                    left 22%
               &:last-child
                 .value_box
                   left -31%
@@ -461,7 +461,7 @@
         self.pointnum = ["123",134,255,200,134,127,244];
 
 
-        datetools.updateSedDate.week(self);//更新可以左右选择的日期的内容
+        datetools.updateSedDate.week(self);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
         datetools.updatecoordinateXs.week(self);//更新横坐标函数 第二个参数可以输入某一个日期例如"2015-12-10"  会自动更新横坐标 在这个日期往前推七天
 
         self.selectcommom(id);//必须在self.pointnum重置后执行
@@ -470,7 +470,7 @@
         var self = this;
         self.pointnum = [255,282,134,127,244];
 
-        datetools.updateSedDate.month(self);//更新可以左右选择的日期的内容
+        datetools.updateSedDate.month(self);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
         datetools.updatecoordinateXs.month(self);//更新横坐标函数 第二个参数可以输入某一个日期例如"2015-12-10"  会自动更新横坐标 在这个日期往前推一个月
 
         self.selectcommom(id);//必须在self.pointnum重置后执行
@@ -479,7 +479,7 @@
         var self = this;
         self.pointnum = ["123",2,2,2,2,0,2,244,200,134,127,244];
 
-        datetools.updateSedDate.year(self);//更新可以左右选择的日期的内容
+        datetools.updateSedDate.year(self);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
         datetools.updatecoordinateXs.year(self) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
 
         self.selectcommom(id);//必须在self.pointnum重置后执行
@@ -539,14 +539,25 @@
         var pointer_left = document.getElementsByClassName("pointer_left")[0];
         var pointer_right = document.getElementsByClassName("pointer_right")[0];
         var selectdatetype = document.getElementsByClassName("selected")[0];
+        var sed_datetext = document.getElementsByClassName("sed_datetext")[0];
+        var firstdate = sed_datetext.getAttribute("data-firstdate");
+        var lastdate = sed_datetext.getAttribute("data-lastdate");
+        var newlastdate = new Date(new Date(firstdate)-1000*60*60*24);
         if(selectdatetype.id == "yearbox"){
 
+        datetools.updateSedDate.year(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+        datetools.updatecoordinateXs.year(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
           console.log("year")
         }else if(selectdatetype.id == "monthbox"){
 
+        datetools.updateSedDate.month(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+        datetools.updatecoordinateXs.month(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
           console.log("month")
         }else if(selectdatetype.id == "weekbox"){
 
+
+        datetools.updateSedDate.week(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+        datetools.updatecoordinateXs.week(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
           console.log("week")
         }
 

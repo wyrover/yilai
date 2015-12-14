@@ -62,11 +62,12 @@ module.exports = {
 
       }
         },
-    year:function updatecoordinateXyear(self,month){
+    year:function updatecoordinateXyear(self,date){
       var lastmonth= new Date().getMonth()+1;
       var result;
-      if(month){
-        lastmonth=month-0;
+      if(date){
+
+        lastmonth=new Date(date).getMonth()+1;
       }
       self.coordinateXs=[];
       for(i=lastmonth-11;i<=lastmonth;i++){
@@ -79,33 +80,66 @@ module.exports = {
     }
   },
   updateSedDate:{
-    week:function(self){
+    week:function(self,date){
       var text="";
-      var today = new Date();
+      if(date){
+        var today = new Date(date);
+      }else{
+        var today = new Date();
+      }
+
       var day = today.getDate();
       var month = today.getMonth()+1;
       var year = today.getFullYear();
+
+
       var prevmonth = month-1>0?month-1:month-1+12;
       var firmonth = day>6?month:prevmonth;
       var firday = day>6?day-6:day-6+monthmaxday(year,month-1);
-      console.log();
       self.showseddate=firmonth+"月"+firday+"日~"+month+"月"+day+"日";
-    },
-    month:function(self){
-      var today = new Date();
 
+      var firstday = new Date(today.getTime()-1000*60*60*24*6)
+      setSedDateTextAttr(firstday.getFullYear()+"-"+(firstday.getMonth()+1)+"-"+firstday.getDate(),today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate());
+
+
+    },
+    month:function(self,date){
+      if(date){
+        var today = new Date(date);
+      }else{
+        var today = new Date();
+      }
       var firstday = new Date(today.getTime()-1000*60*60*24*29);
-
       self.showseddate = (firstday.getMonth()-0+1)+"月"+firstday.getDate()+"日~"+(today.getMonth()-0+1)+"月"+today.getDate()+"日";
+
+      setSedDateTextAttr(firstday.getFullYear()+"-"+(firstday.getMonth()+1)+"-"+firstday.getDate(),today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate());
+
     },
-    year:function(self){
-      var thisyear = new Date().getFullYear();
-      self.showseddate = thisyear+"年"
+    year:function(self,date){
+      if(date){
+        var today = new Date(date);
+      }else{
+        var today = new Date();
+      }
+      var thisyear = today.getFullYear();
+      var month = today.getMonth()+1;
+      var firstyear = month==12?thisyear:thisyear-1;
+      var firstmonth = month==12?1:month+1;
+      self.showseddate = firstyear+"年"+firstmonth+"月~"+thisyear+"年"+month+"月";
+
+
+
+      setSedDateTextAttr(firstyear+"-"+firstmonth+"-01",thisyear+"-"+month+"-01");
+
     }
   }
 
 }
-
+function setSedDateTextAttr(firstdate,lastdate){
+  var sed_datetext = document.getElementsByClassName("sed_datetext")[0];
+  sed_datetext.setAttribute("data-firstdate",firstdate);
+  sed_datetext.setAttribute("data-lastdate",lastdate);
+}
 function monthmaxday(year,month){//返回某年某月有多少天
   if(month==2){
     var today = new Date();
