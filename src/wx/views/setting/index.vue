@@ -34,7 +34,7 @@
         width 100px
         height 100px
         border 5px solid #fff
-        background blue
+        background url("../../assets/images/nofece.jpg") no-repeat center center /100% 100%
         border-radius 50%
         overflow hidden
         position absolute
@@ -99,6 +99,10 @@
     },
     data: function () {
       return {
+        wxmsg:{
+          "name":"测试微信昵称",
+          "face":"blue"
+        }
 
       }
     },

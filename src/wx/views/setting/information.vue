@@ -114,17 +114,17 @@
       updatebirth: function () {
         var self = this;
         self.information.birth=document.getElementById("birthday").value;
-        //self.updataInformation();//debug
+        self.updataInformation();//debug
       },
       updateheight: function () {
         var self = this;
         self.information.height=document.getElementById("height").value-0;
-        //self.updataInformation();//debug
+        self.updataInformation();//debug
       },
       updatetaget_weight: function () {
         var self = this;
         self.information.taget_weight=document.getElementById("taget_weight").value-0;
-        //self.updataInformation();//debug
+        self.updataInformation();//debug
       }
 
     }
