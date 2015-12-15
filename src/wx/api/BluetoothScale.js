@@ -1,6 +1,28 @@
 module.exports = function (Vue, Promise, config) {
   return {
 
+    /*0.获取用户信息
+        1. url:get  /v1/scale_user/info
+
+    */
+    getUserInformation: function(params) {
+      return new Promise(function(resolve, reject) {
+        Vue.http.get(
+          config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale_user/info/ozEANuNXaPyykVqp6gTm2PwO404g',
+          JSON.stringify(params),
+          function(data, status, request) {
+            resolve(data);
+          }, {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          }
+        ).error(function(data, status, request) {
+          reject(data.error);
+        });
+      });
+    },
+
     /*1.设置用户信息
         1. url:post  /v1/scale_user/info
         2. 发送：
