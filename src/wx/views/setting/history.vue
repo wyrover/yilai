@@ -2,9 +2,10 @@
   .main-content.history_box(v-on:scroll="scrollbottom")
     ul.first_ul.history_ul{{test}}
       li.date_msg(v-for="statistic in statistics")
-        //span.data_number(v-if="istoday($statistic.date) == true") 今天
-        //span.data_number(v-else) {{statistic.date.split(" ")[0].split("-")[1]}}月{{statistic.date.split(" ")[0].split("-")[2]}}日
-        span.data_number {{statistic.date.split(" ")[0].split("-")[1]}}月{{statistic.date.split(" ")[0].split("-")[2]}}日
+        span.data_number(v-if="istoday(statistic.date)") 今天
+        span.data_number(v-if="isyesterday(statistic.date)") 昨天
+        span.data_number(v-if="!istoday(statistic.date)&&!isyesterday(statistic.date)") {{statistic.date.split(" ")[0].split("-")[1]}}月{{statistic.date.split(" ")[0].split("-")[2]}}日
+        //-span.data_number {{statistic.date.split(" ")[0].split("-")[1]}}月{{statistic.date.split(" ")[0].split("-")[2]}}日
         ul.sed_ul(v-on:click="openthis($index)")
           li.time_msg
             .time_number {{statistic.date.split(" ")[1].slice(0,5)}}
@@ -105,7 +106,7 @@
         showModal:true,
         statistics:[
           {
-          "date":"2015-12-1 12:34:56",
+          "date":"2015-12-15 12:34:56",
           "age":30,
           "height":178,
           "weight":80.0,
@@ -117,7 +118,7 @@
           "metabolism":14
           },
           {
-          "date":"2015-11-2 13:00:00",
+          "date":"2015-12-14 13:00:00",
           "age":30,
           "height":178,
           "weight":81.0,
@@ -272,10 +273,17 @@
         }
       },
       istoday:function(date){
-        if (new Date(date).toDateString() === new Date().toDateString()) {
-          return true
+        if (new Date().toLocaleString().split(" ")[0]==new Date(date).toLocaleString().split(" ")[0]) {
+          return 1
         }else{
-          return false
+          return 0
+        }
+      },
+      isyesterday:function(date){
+        if (new Date(new Date()-86400000).toLocaleString().split(" ")[0]===new Date(date).toLocaleString().split(" ")[0]) {
+          return 1
+        }else{
+          return 0
         }
       },
       scrollbottom:function(){

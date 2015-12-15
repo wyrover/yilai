@@ -2,9 +2,9 @@
   .main-content.white
     .user_msg
       .user_faces
-        img
-      .sex(v-bind:data-sex="'male'")
-      .user_nackname 微信昵称
+        img(v-bind:src="wxmsg.face",v-bind:width="'100%'",v-bind:height="'100%'")
+      .sex(v-bind:data-sex="wxmsg.gender")
+      .user_nackname {{wxmsg.name}}
     .entrance.user_birthday
       span.user_msg_title 出生日期
       span.user_msg_value {{information.birth}}
@@ -79,6 +79,11 @@
 
     data: function () {
       return {
+        wxmsg:{
+          "name":"测试微信昵称",
+          "face":"http://img.wdjimg.com/mms/icon/v1/9/d4/22884940c69ffbe02cb97c52d7e60d49_256_256.png",
+          "gender":"male"//"female"
+        },
         information:{
           "birth":"2015-11-11",
           "gender":"male",

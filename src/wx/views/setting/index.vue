@@ -2,9 +2,9 @@
   .main-content.white
     .user_msg
       .user_faces
-        img
-      .sex(v-bind:data-sex="'male'")
-      span.user_nackname 微信昵称
+        img(v-bind:src="wxmsg.face",v-bind:width="'100%'",v-bind:height="'100%'")
+      .sex(v-bind:data-sex="wxmsg.gender")
+      span.user_nackname {{wxmsg.name}}
     .entrance.personal_information
       a(v-link="{path: '/setting/information'}") 个人信息
       i.more
@@ -34,13 +34,16 @@
         width 100px
         height 100px
         border 5px solid #fff
-        background url("../../assets/images/nofece.jpg") no-repeat center center /100% 100%
+        background #fff url("../../assets/images/noface.jpg") no-repeat center center /100% 100%
         border-radius 50%
         overflow hidden
         position absolute
         left 15px
         top 85px
-        //img
+        img
+          width 102%
+          height 102%
+          margin -1px
       .sex
         width 22px
         height 22px
@@ -101,7 +104,8 @@
       return {
         wxmsg:{
           "name":"测试微信昵称",
-          "face":"blue"
+          "face":"http://img.wdjimg.com/mms/icon/v1/9/d4/22884940c69ffbe02cb97c52d7e60d49_256_256.png",
+          "gender":"male"//"female"
         }
 
       }
