@@ -57,7 +57,7 @@ module.exports = function (Vue, Promise, config) {
         Vue.http.get(
           config.apiRoot + '/scale/statistic/'+user_id,
           function(data, status, request) {
-            resolve(status);
+            resolve(data);
           }, {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
@@ -110,10 +110,11 @@ module.exports = function (Vue, Promise, config) {
     getMultiData: function(params) {
       return new Promise(function(resolve, reject) {
         Vue.http.post(
-          config.apiRoot + '/scale/statistics/list',
+          //config.apiRoot + '/scale/statistics/list',
+          config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale_user/statisticList',
           JSON.stringify(params),
           function(data, status, request) {
-            resolve(status);
+            resolve(data);
           }, {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
@@ -170,7 +171,7 @@ module.exports = function (Vue, Promise, config) {
           config.apiRoot + '/scale/statistics/daily',
           JSON.stringify(params),
           function(data, status, request) {
-            resolve(status);
+            resolve(data);
           }, {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
@@ -191,7 +192,7 @@ module.exports = function (Vue, Promise, config) {
           config.apiRoot + '/scale/statistics/monthly',
           JSON.stringify(params),
           function(data, status, request) {
-            resolve(status);
+            resolve(data);
           }, {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
@@ -212,7 +213,7 @@ module.exports = function (Vue, Promise, config) {
           config.apiRoot + '/scale/statistics/yearly',
           JSON.stringify(params),
           function(data, status, request) {
-            resolve(status);
+            resolve(data);
           }, {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'

@@ -35,7 +35,7 @@ module.exports = {
             };
         },
     month:function updatecoordinateXsmonth(self,date){
-      var valuelength = 6;
+      var valuelength = 5;
       if(date){
         var today = new Date(date);
       }else{

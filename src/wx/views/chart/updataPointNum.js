@@ -55,6 +55,7 @@ module.exports = function(self,api){//这个js的功能就是更新self.pointnum
         console.log(data);
       }
       getdata=data;
+      toshowobjs=[12];
     });
   }
 }

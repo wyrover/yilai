@@ -25,11 +25,14 @@
 var Modal = require('../shared/components/modal.vue');
 var appStore = require('../shared/stores/app');
 var locales = require('../shared/consts/locales');
+var wxauth = require('../wx/assets/js/wxauth');
+
 
 module.exports = {
   // 组件
   components: {
-    'modal': Modal
+    'modal': Modal,
+    'wxauth': wxauth
   },
 
   // 视图初始化数据

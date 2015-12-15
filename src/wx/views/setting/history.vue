@@ -102,7 +102,8 @@
     },
     data: function () {
       return {
-        count:10,
+        time:10,
+        offset:0,
         showModal:true,
         statistics:[
           {
@@ -254,11 +255,17 @@
     },
 
     ready:function(){
+      document.getElementsByClassName("thistime_information")[0].setAttribute("data-open",1);//默认打开第一条
     },
 
     route:{
       data:function(){
         document.title = "历史记录";
+        var self = this;
+        api.BluetoothScale.getMultiData({"count":30,"offset":0}).then(function(data){
+          console.log(data)
+          //self.statistics = data;
+        })
       }
     },
 
@@ -317,8 +324,8 @@
             "metabolism":13
             }
           ];
-          if(self.count>0){
-            self.count--;
+          if(self.time>0){
+            self.time--;
             self.statistics = self.statistics.concat(testarr);
             console.log(self.statistics)
           }

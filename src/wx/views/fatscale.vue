@@ -262,7 +262,6 @@
 <script>
   var Modal = require('../../shared/components/modal.vue');
   var api = require('../../wx/api');
-  //var wxauth = require('../../wx/assets/js/wxauth');
 
   module.exports = {
     components: {

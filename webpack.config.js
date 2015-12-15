@@ -131,7 +131,7 @@ var webpackConfig = {
   output: {
     filename: 'scripts/[name].js',
     path: path.join(__dirname, 'dist', APP),
-    publicPath: DEV ? 'http://' + DEV_IP + ':' + PORT + '/' + dirs.dist + '/' + APP + '/': '../../'
+    publicPath: DEV ? 'http://' + DEV_IP + ':' + PORT + '/' + dirs.dist + '/' + APP + '/': '../'
   },
 
   resolve: {
