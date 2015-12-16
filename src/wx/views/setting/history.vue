@@ -263,7 +263,7 @@
         document.title = "历史记录";
         var self = this;
 
-        var postobj={"count":30,"offset":1};
+        var postobj={"count":30,"offset":0};
 
         api.BluetoothScale.getMultiData(postobj).then(function(data,status){
           self.offset+=postobj.count

@@ -12,17 +12,17 @@
 
     .entrance.user_height
       span.user_msg_title 身高
-      span.user_msg_value {{information.height}}cm
+      span.user_msg_value {{information.height||0}}cm
       select.setmsg.user_msg_value.opacity#height(v-bind:value="information.height",v-on:change="updateheight")
         option(v-for="n in information.height-40-1",v-bind:value="n+40+1") {{n+40+1}}cm
         option(v-bind:value="information.height",v-bind:selected="true") {{information.height}}cm
         option(v-for="n in 250-information.height-1",v-bind:value="n+information.height+1") {{n+information.height+1}}cm
     .entrance.user_weight
       span.user_msg_title 体重
-      span.user_msg_value {{information.weight/1000}}kg
+      span.user_msg_value {{information.weight/1000||0}}kg
     .entrance.entrance_last.target_weight
       span.user_msg_title 目标体重
-      span.user_msg_value {{information.taget_weight}}kg
+      span.user_msg_value {{information.taget_weight||0}}kg
       select.setmsg.user_msg_value.opacity#taget_weight(v-bind:value="information.taget_weight",v-on:change="updatetaget_weight")
         option(v-for="n in information.taget_weight",v-bind:value="n") {{n}}kg
         option(v-bind:value="information.taget_weight",v-bind:selected="true") {{information.taget_weight}}kg
@@ -112,15 +112,21 @@
 
     route:{
       data:function(){
-        document.title = "用户";
+        document.title = "个人信息";
         var self = this;
 
         api.BluetoothScale.getUserInformation().then(function (data) {
           if(__DEBUG__) {
             console.log(data);
           }
-           console.log(data)
            self.information = data;
+           self.information.birth = data.birth||"2015-01-01";
+           self.information.gender =(data.gender=="男"||data.gender=="male")?"male":"female";//默认是女的
+           self.information.height = data.height||0;
+           self.information.weight = data.weight||0;
+           self.information.taget_weight=data.taget_weight||0;
+           self.wxmsg.gender=(data.gender=="男"||data.gender=="male")?"male":"female";//默认是女的
+           console.log(self.information)
         });
       }
     },

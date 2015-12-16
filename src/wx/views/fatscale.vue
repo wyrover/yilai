@@ -11,7 +11,7 @@
         .target_weight
           span.target_weight_span 目标
           span.target_weight_munber 75.5kg
-      .chart
+      //-.chart
         a.chart_a(v-link="{path: '/chart'}")
       .setting
         a.setting_a(v-link="{path: '/setting'}")
@@ -262,15 +262,18 @@
 <script>
   var Modal = require('../../shared/components/modal.vue');
   var api = require('../../wx/api');
-  var wxauth = require('../../wx/assets/js/wxauth');
+  //var wxauth = require('../../wx/assets/js/wxauth');
 
-  //console.log(wxauth)
+
+
+
+  console.log(api.wxmsg.getUrlStr("tokenId"))
 
 
   module.exports = {
     components: {
       'modal': Modal,
-      'wxauth': wxauth,
+      //'wxauth': wxauth,
       'api': api
     },
 
@@ -293,17 +296,31 @@
           "muscle":12,
           "bone":13,
           "metabolism":14
+        },
+        wxmsg:{
+          code:"",
+          tokenId:"",
+          openid:""
+
         }
       };
     },
 
     route:{
       data:function(){
+        var self = this;
         document.title = "健康管家";
+
+        self.wxmsg.code = api.wxmsg.getUrlStr("code");
+        self.wxmsg.tokenId = api.wxmsg.getUrlStr("tokenId");
+        if(self.wxmsg.code){
+          self.wxmsg.tokenId = api.wxmsg.getOpenId(self.wxmsg.code);
+        }
+        console.log(self.wxmsg);
         //console.log(document.title)
-        sessionStorage.code = wxauth.code;
-        sessionStorage.tokenId = wxauth.tokenId;
-        sessionStorage.openid = wxauth.openid;
+        //sessionStorage.code = wxauth.code;
+        //sessionStorage.tokenId = wxauth.tokenId;
+        //sessionStorage.openid = wxauth.openid;
         var user_id="1234567890"
         /*
         api.BluetoothScale.getOneData(user_id).then(function (data) {

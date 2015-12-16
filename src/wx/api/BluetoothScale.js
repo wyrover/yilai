@@ -27,10 +27,8 @@ module.exports = function (Vue, Promise, config) {
         1. url:post  /v1/scale_user/info
         2. 发送：
           {
-            "gender":"male",
             "brith":"1980-02-04",
             "height":180,
-            "weight":80000,
             "taget_weight":78000
           }
         3.接收：
@@ -38,10 +36,11 @@ module.exports = function (Vue, Promise, config) {
             "status":200
           }
     */
-    setUserInformation: function(params) {
+    setUserInformation: function(params,openid) {
       return new Promise(function(resolve, reject) {
         Vue.http.post(
-          config.apiRoot + '/scale_user/info',
+          //config.apiRoot + '/scale_user/info'+openid,
+          config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale_user/info/'+openid,
           JSON.stringify(params),
           function(data, status, request) {
             resolve(status);
