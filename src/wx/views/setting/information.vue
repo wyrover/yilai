@@ -88,7 +88,7 @@
           "birth":"2015-11-11",
           "gender":"male",
           "height":75,
-          "weight":80200,
+          "weight":60200,
           "taget_weight":78
         },
         updataInformation:function(){
