@@ -226,7 +226,10 @@ function write(msg) {
 }
 
 module.exports = {
+  code:GetQueryString('code'),
   tokenId:tokenId,
+  openid:openid,
+
   blueToothDevicelists:blueToothDevicelists,
   error:error
 };

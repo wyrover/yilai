@@ -1,7 +1,7 @@
 <template lang="jade">
   .main-content.helppage
     .help_box
-      h2 使用帮助
+      //-h2 使用帮助
       p.question
         |1、体脂肪率等这些事怎么计算出来的？
       p.answer
@@ -88,7 +88,7 @@
   .helppage
     width 100%
     height 100%
-    padding 5px
+    padding 10px 5px
     .help_box
       overflow auto
       h2
@@ -110,7 +110,7 @@
   module.exports = {
     route:{
       data:function(){
-        document.title = "帮助";
+        document.title = "使用帮助";
       }
     }
 

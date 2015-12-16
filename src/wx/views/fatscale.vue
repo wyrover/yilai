@@ -262,10 +262,15 @@
 <script>
   var Modal = require('../../shared/components/modal.vue');
   var api = require('../../wx/api');
+  var wxauth = require('../../wx/assets/js/wxauth');
+
+  //console.log(wxauth)
+
 
   module.exports = {
     components: {
       'modal': Modal,
+      'wxauth': wxauth,
       'api': api
     },
 
@@ -296,6 +301,9 @@
       data:function(){
         document.title = "健康管家";
         //console.log(document.title)
+        sessionStorage.code = wxauth.code;
+        sessionStorage.tokenId = wxauth.tokenId;
+        sessionStorage.openid = wxauth.openid;
         var user_id="1234567890"
         /*
         api.BluetoothScale.getOneData(user_id).then(function (data) {

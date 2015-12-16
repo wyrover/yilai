@@ -102,12 +102,12 @@
     },
     data: function () {
       return {
-        time:10,
+        count:99,
         offset:0,
         showModal:true,
         statistics:[
           {
-          "date":"2015-12-15 12:34:56",
+          "date":"2015-12-16 12:34:56",
           "age":30,
           "height":178,
           "weight":80.0,
@@ -119,7 +119,7 @@
           "metabolism":14
           },
           {
-          "date":"2015-12-14 13:00:00",
+          "date":"2015-12-15 13:00:00",
           "age":30,
           "height":178,
           "weight":81.0,
@@ -262,8 +262,13 @@
       data:function(){
         document.title = "历史记录";
         var self = this;
-        api.BluetoothScale.getMultiData({"count":30,"offset":0}).then(function(data){
+
+        var postobj={"count":30,"offset":1};
+
+        api.BluetoothScale.getMultiData(postobj).then(function(data,status){
           console.log(data)
+          self.offset+=postobj.count
+          console.log(self.offset)
           //self.statistics = data;
         })
       }
@@ -324,10 +329,23 @@
             "metabolism":13
             }
           ];
-          if(self.time>0){
-            self.time--;
-            self.statistics = self.statistics.concat(testarr);
-            console.log(self.statistics)
+          if(self.count>0){
+            self.count--;
+
+
+            var postobj={"count":30,"offset":self.offset};
+            self.offset+=postobj.count
+              console.log(self.offset)
+            api.BluetoothScale.getMultiData(postobj).then(function(data,status){
+              console.log(data)
+              self.offset+=postobj.count
+              console.log(self.offset)
+              //testarr = data;
+              //self.statistics = self.statistics.concat(testarr);
+              console.log(self.statistics)
+            })
+
+
           }
 
         }

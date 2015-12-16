@@ -136,7 +136,7 @@ module.exports = function (Vue, Promise, config) {
           config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale_user/statisticList',
           JSON.stringify(params),
           function(data, status, request) {
-            resolve(data);
+            resolve(data,status);
           }, {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
