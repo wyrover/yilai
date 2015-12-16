@@ -113,12 +113,14 @@
     route:{
       data:function(){
         document.title = "用户";
+        var self = this;
 
         api.BluetoothScale.getUserInformation().then(function (data) {
           if(__DEBUG__) {
             console.log(data);
           }
            console.log(data)
+           self.information = data;
         });
       }
     },

@@ -1,6 +1,6 @@
 <template lang="jade">
   .main-content.history_box(v-on:scroll="scrollbottom")
-    ul.first_ul.history_ul{{test}}
+    ul.first_ul.history_ul
       li.date_msg(v-for="statistic in statistics")
         span.data_number(v-if="istoday(statistic.date)") 今天
         span.data_number(v-if="isyesterday(statistic.date)") 昨天
@@ -10,7 +10,7 @@
           li.time_msg
             .time_number {{statistic.date.split(" ")[1].slice(0,5)}}
             .thistime_information(v-bind:data-open="0")
-              span 体重 {{statistic.weight}}kg
+              span 体重 {{statistic.weight/1000}}kg
               span BMI {{statistic.bmi}}
               i.more
               .weight_percent
@@ -102,7 +102,7 @@
     },
     data: function () {
       return {
-        count:99,
+        count:99,//最大加载次数
         offset:0,
         showModal:true,
         statistics:[
@@ -266,10 +266,8 @@
         var postobj={"count":30,"offset":1};
 
         api.BluetoothScale.getMultiData(postobj).then(function(data,status){
-          console.log(data)
           self.offset+=postobj.count
-          console.log(self.offset)
-          //self.statistics = data;
+          self.statistics = data;
         })
       }
     },
@@ -277,11 +275,11 @@
     methods:{
 
       openthis:function(num){
-        var test = document.getElementsByClassName("thistime_information")[num];
-        if(test.getAttribute("data-open")=="1"){
-          test.setAttribute("data-open","0");
+        var thistime_information = document.getElementsByClassName("thistime_information")[num];
+        if(thistime_information.getAttribute("data-open")=="1"){
+          thistime_information.setAttribute("data-open","0");
         }else{
-          test.setAttribute("data-open","1");
+          thistime_information.setAttribute("data-open","1");
         }
       },
       istoday:function(date){
@@ -303,7 +301,7 @@
         var history_box=document.getElementsByClassName("history_box")[0];
         var history_ul=document.getElementsByClassName("history_ul")[0];
         if(history_box.scrollTop>=history_ul.clientHeight-history_box.clientHeight){
-          var testarr=[
+          var centerarr=[
             {
             "date":"2015-12-1 12:34:56",
             "age":30,
@@ -331,21 +329,14 @@
           ];
           if(self.count>0){
             self.count--;
-
-
             var postobj={"count":30,"offset":self.offset};
             self.offset+=postobj.count
               console.log(self.offset)
             api.BluetoothScale.getMultiData(postobj).then(function(data,status){
-              console.log(data)
               self.offset+=postobj.count
-              console.log(self.offset)
-              //testarr = data;
-              //self.statistics = self.statistics.concat(testarr);
-              console.log(self.statistics)
+              centerarr = data;
+              self.statistics = self.statistics.concat(centerarr);
             })
-
-
           }
 
         }
