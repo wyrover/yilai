@@ -1,12 +1,6 @@
 <template lang="jade">
 .page-container
-  //.loading(v-show="firstAccessChecking")
-    p 正在检查是否第一次访问...
-    p {{firstAccessChecking}}
   router-view.view(transition="view", transition-mode="out-in")
-  //modal
-    .modal-footer
-      button(@click="hide") 确定
 </template>
 
 <style lang="stylus">
@@ -20,32 +14,3 @@
 [v-cloak]
   display none
 </style>
-
-<script>
-var Modal = require('../shared/components/modal.vue');
-var appStore = require('../shared/stores/app');
-var locales = require('../shared/consts/locales');
-
-
-module.exports = {
-  // 组件
-  components: {
-    'modal': Modal
-  },
-
-  // 视图初始化数据
-  data: function () {
-    return {
-      firstAccessChecked: false,
-      appState: appStore.state
-    };
-  },
-
-  ready: function () {
-
-  },
-
-  methods: {
-  }
-};
-</script>

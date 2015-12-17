@@ -311,8 +311,8 @@
         var self = this;
         document.title = "健康管家";
 
-        self.wxmsg.code = api.wxmsg.getUrlStr("code");
-        self.wxmsg.tokenId = api.wxmsg.getUrlStr("tokenId");
+        self.wxmsg.code = localStorage.code;
+        self.wxmsg.tokenId = localStorage.tokenId;
         if(self.wxmsg.code){
           self.wxmsg.tokenId = api.wxmsg.getOpenId(self.wxmsg.code);
         }

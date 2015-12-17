@@ -51,20 +51,11 @@ var configRouter = function (router) {
   });
 
   // 重定向
-  // router.redirect({
-    // '/': '/fatscale'
-  // });
-
-  router.beforeEach(function (transition) {
-    if (transition.to.path === '/') {
-      JSSDK.getXSystemInfo().then(function (info) {
-          appStore.markFirstAccessChecked();
-          router.go('/fatscale');
-        });
-    } else {
-      transition.next();
-    }
+  router.redirect({
+    '/': '/fatscale'
   });
+
+
 };
 
 module.exports = configRouter;

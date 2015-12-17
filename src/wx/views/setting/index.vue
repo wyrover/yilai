@@ -63,6 +63,7 @@
         top 135px
         color #000
         text-align center
+        font-size 20px
     .entrance
       width 95%
       height 50px

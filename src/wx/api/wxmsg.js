@@ -23,7 +23,7 @@ module.exports = function (Vue, Promise, config) {
     getUrlStr:function(name){
       var result = null;
       if(window.location.href.split(name+"=")[1]){
-        var result = testhref.split(name+"=")[1].split("&")[0];
+        var result = window.location.href.split(name+"=")[1].split("&")[0];
       }
        return result;
     }
