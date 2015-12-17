@@ -3,11 +3,10 @@ module.exports = function (Vue, Promise, config) {
 
 
 
-    getOpenId: function(code) {//获取可以用code换得的数据
+    getWXmsg: function(code) {//获取可以用code换得的数据
       return new Promise(function(resolve, reject) {
-        Vue.http.post(
+        Vue.http.get(
           config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale_user/getCode/'+code,
-          JSON.stringify(params),
           function(data, status, request) {
             resolve(data);
           }, {

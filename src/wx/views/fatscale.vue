@@ -264,10 +264,10 @@
   var api = require('../../wx/api');
   //var wxauth = require('../../wx/assets/js/wxauth');
 
+  var test={};
 
 
 
-  console.log(api.wxmsg.getUrlStr("tokenId"))
 
 
   module.exports = {
@@ -312,18 +312,20 @@
         document.title = "健康管家";
 
         self.wxmsg.code = localStorage.code;
-        if(self.wxmsg.code){
-          alert(self.wxmsg.code);
+        if(localStorage.openid){
+          self.wxmsg.openid=localStorage.openid;
+          alert(self.wxmsg.openid);
+        }else if(self.wxmsg.code&&self.wxmsg.code!="null"){
+          api.wxmsg.getWXmsg(localStorage.code).then(function (data) {
+            self.wxmsg.openid=data.openid;
+            self.wxmsg.access_token = data.access_token;
+            self.wxmsg.expires_in = data.expires_in;
+            self.wxmsg.refresh_token = data.refresh_token;
+            localStorage.openid=data.openid;
+          })
 
-          alert(api.wxmsg.getOpenId(self.wxmsg.code));
-          //self.wxmsg.tokenId = api.wxmsg.getOpenId(self.wxmsg.code);
+          alert(self.wxmsg.openid);
         }
-        console.log(self.wxmsg);
-        //console.log(document.title)
-        //sessionStorage.code = wxauth.code;
-        //sessionStorage.tokenId = wxauth.tokenId;
-        //sessionStorage.openid = wxauth.openid;
-        var user_id="1234567890"
         /*
         api.BluetoothScale.getOneData(user_id).then(function (data) {
           if(__DEBUG__) {
