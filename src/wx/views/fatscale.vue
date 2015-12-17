@@ -312,9 +312,11 @@
         document.title = "健康管家";
 
         self.wxmsg.code = localStorage.code;
-        self.wxmsg.tokenId = localStorage.tokenId;
         if(self.wxmsg.code){
-          self.wxmsg.tokenId = api.wxmsg.getOpenId(self.wxmsg.code);
+          alert(self.wxmsg.code);
+
+          alert(api.wxmsg.getOpenId(self.wxmsg.code));
+          //self.wxmsg.tokenId = api.wxmsg.getOpenId(self.wxmsg.code);
         }
         console.log(self.wxmsg);
         //console.log(document.title)
