@@ -3,14 +3,14 @@
     .userweight
       .current_weight
         .weight_time
-          span.time_num.day_date{{closestState.date.split(" ")[0].split("-")[1]}}-{{closestState.date.split(" ")[0].split("-")[2]}}
-          span.time_num.time_date{{closestState.date.split(" ")[1].slice(0,5)}}
+          span.time_num.day_date {{closestState.date.split("T")[0].split("-")[1]}}-{{closestState.date.split("T")[0].split("-")[2]}}
+          span.time_num.time_date {{closestState.date.split("T")[1].slice(0,5)}}
         .weight_number
           | {{closestState.weight/1000}}
           span.weight_unit kg
         .target_weight
           span.target_weight_span 目标
-          span.target_weight_munber {{closestState.taget_weight}}kg
+          span.target_weight_munber {{closestState.taget_weight/1000}}kg
       //-.chart
         a.chart_a(v-link="{path: '/chart'}")
       .setting
@@ -56,21 +56,21 @@
           .text
             span.constitutes_title 肌肉率
             span {{closestState.muscle/10}}%
-        li.constitutes_li.organs_li(v-if="false")
+        li.constitutes_li.organs_li(v-if="closestState.internal_fat||closestState.internal_fat==0")
           .logo.organslogo
           .text
             span.constitutes_title 内脏脂肪
-            span ??%
-        li.constitutes_li.internalage_li(v-if="false")
+            span {{closestState.internal_fat}}
+        li.constitutes_li.internalage_li(v-if="closestState.internal_age||closestState.internal_age==0")
           .logo.internalagelogo
           .text
             span.constitutes_title 体内年龄
-            span ??岁
+            span {{closestState.internal_age}}岁
         li.constitutes_li.basal_metabolism_li(v-if="closestState.metabolism||closestState.metabolism==0")
           .logo.basal_metabolism_logo
           .text
             span.constitutes_title 基础代谢
-            span {{closestState.metabolism}}%
+            span {{closestState.metabolism}}
 
   //- modal
   //-   .modal-footer
@@ -311,11 +311,13 @@
       data:function(){
         var self = this;
         document.title = "健康管家";
-
+        //alert("openid不存在？正常的话这里是true："+!localStorage.openid);
         self.wxmsg.code = localStorage.code;
-        if(!localStorage.openid||localStorage.openid == "ozEANuNXaPyykVqp6gTm2PwO404g"){
+        if(!localStorage.openid){
           if(self.wxmsg.code&&self.wxmsg.code!="null"){
             api.wxmsg.getWXmsg(localStorage.code).then(function (data) {
+              //alert("本地openid，这个应该是没有的："+localStorage.openid)
+              //alert("获取到的openid，这个是通过接口获取的，这个错的话发送请求的参数也是错的："+data.openid)
               self.wxmsg.openid=data.openid;
               self.wxmsg.access_token = data.access_token;
               self.wxmsg.expires_in = data.expires_in;
@@ -328,12 +330,11 @@
           self.wxmsg.openid=localStorage.openid;
           //alert("本地获得openid"+self.wxmsg.openid);
         }
+        var openid = localStorage.openid;
         if(__DEBUG__){
           var openid = "ozEANuNXaPyykVqp6gTm2PwO404g";
-        }else{
-          var openid = localStorage.openid;
         }
-        alert(localStorage.openid)
+        //alert(localStorage.openid)
 
         // api.wxmsg.getWXmsg("001a21c9a9db39828199293797df48aX").then(function (data) {
         //   console.log(data)
@@ -355,8 +356,9 @@
             console.log(centerdata[i].time.split("").length)
             if(centerdata[i].time.split("").length==10){
               centerdata[i].time+=" 00:00:00";//兼容后端返回的数据只有日期没有时间
-              centerdata[i].date = centerdata[i].time;
+
             }
+            centerdata[i].date = centerdata[i].time;
           }
           /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
           centerdata[0].taget_weight = 10000;
@@ -364,7 +366,7 @@
           //self.closestState.bmi = centerdata[0].weight/(centerdata[0].height*centerdata[0].height)
 
           self.closestState.bmi = centerdata[0].weight/1000/((centerdata[0].height/100)*(centerdata[0].height/100));
-          self.closestState.bmi = Math.round(self.closestState.bmi*100)/100
+          self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
           /********************通过获取个人信息取得目标体重 start*************************/
 
 

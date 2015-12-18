@@ -4,20 +4,23 @@
       li.date_msg(v-for="statistic in statistics")
         span.data_number(v-if="istoday(statistic.date)") 今天
         span.data_number(v-if="isyesterday(statistic.date)") 昨天
-        span.data_number(v-if="!istoday(statistic.date)&&!isyesterday(statistic.date)") {{statistic.date.split(" ")[0].split("-")[1]}}月{{statistic.date.split(" ")[0].split("-")[2]}}日
+        span.data_number(v-if="!istoday(statistic.date)&&!isyesterday(statistic.date)") {{statistic.date.split("T")[0].split("-")[1]}}月{{statistic.date.split("T")[0].split("-")[2]}}日
         //-span.data_number {{statistic.date.split(" ")[0].split("-")[1]}}月{{statistic.date.split(" ")[0].split("-")[2]}}日
         ul.sed_ul(v-on:click="openthis($index)")
           li.time_msg
-            .time_number {{statistic.date.split(" ")[1].slice(0,5)}}
+            .time_number {{statistic.date.split("T")[1].slice(0,5)}}
             .thistime_information(v-bind:data-open="0")
               span 体重 {{statistic.weight/1000}}kg
-              span BMI {{statistic.bmi}}
+              span BMI {{Math.round(statistic.bmi*10)/10}}
               i.more
               .weight_percent
-                span 脂肪 {{statistic.fat}}%
-                span 水分 {{statistic.moisture}}%
-                span 骨骼 {{statistic.bone}}%
-                span 肌肉 {{statistic.muscle}}%
+                span 脂肪 {{statistic.fat/10}}%
+                span 水分 {{statistic.moisture/10}}%
+                span 骨骼 {{statistic.bone/10}}%
+                span 肌肉 {{statistic.muscle/10}}%
+                //- span 内脂 {{statistic.internal_fat/10}}%
+                //- span 内龄 {{statistic.internal_age/10}}%
+                //- span 基础代谢 {{statistic.metabolism/10}}%
 
 
 </template>
@@ -272,13 +275,15 @@
           self.offset+=postobj.count;
 
           var centerdata=data;
+
           /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
           for(var i=0;i<centerdata.length;i++){
-            console.log(centerdata[i].time.split("").length)
+            centerdata[i].bmi = centerdata[i].weight/1000/((centerdata[i].height/100)*(centerdata[i].height/100))
             if(centerdata[i].time.split("").length==10){
               centerdata[i].time+=" 00:00:00";//兼容后端返回的数据只有日期没有时间
-              centerdata[i].date = centerdata[i].time;
+
             }
+            centerdata[i].date = centerdata[i].time;
           }
           /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
           self.statistics = centerdata;
@@ -357,9 +362,10 @@
               for(var i=0;i<centerdata.length;i++){
                 console.log(centerdata[i].time.split("").length)
                 if(centerdata[i].time.split("").length==10){
-                  centerdata[i].time+=" 00:00:00";//兼容后端返回的数据只有日期没有时间
-                  centerdata[i].date = centerdata[i].time;
+                  centerdata[i].time+="T00:00:00";//兼容后端返回的数据只有日期没有时间
+
                 }
+                centerdata[i].date = centerdata[i].time;
               }
               /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
               self.statistics.concat(centerdata);
