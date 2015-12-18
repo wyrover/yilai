@@ -166,9 +166,8 @@ html(style="width:100%;height:100%")
         }
       }
 
-
+      localStorage.openid=null;
       localStorage.code = wxmsg.getUrlStr("code");
-      //alert(wxmsg.getUrlStr("code"));
       goNewUrl(wxmsg.getUrlStr("linkto"));
 
 

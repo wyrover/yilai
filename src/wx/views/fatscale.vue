@@ -6,11 +6,11 @@
           span.time_num.day_date{{closestState.date.split(" ")[0].split("-")[1]}}-{{closestState.date.split(" ")[0].split("-")[2]}}
           span.time_num.time_date{{closestState.date.split(" ")[1].slice(0,5)}}
         .weight_number
-          | {{closestState.weight}}
+          | {{closestState.weight/1000}}
           span.weight_unit kg
         .target_weight
           span.target_weight_span 目标
-          span.target_weight_munber 75.5kg
+          span.target_weight_munber {{closestState.taget_weight}}kg
       //-.chart
         a.chart_a(v-link="{path: '/chart'}")
       .setting
@@ -21,13 +21,13 @@
         .bmi_pointer(v-if="closestState.bmi>0&closestState.bmi<18.5",v-bind:style="{left:closestState.bmi*2+'%'}")
           span(v-bind:style="{color:bmicolor.color1}") BMI {{closestState.bmi}} 过轻
           i.triangle(v-bind:style="{borderTopColor:bmicolor.color1}")
-        .bmi_pointer(v-if="closestState.bmi>=18.5&&closestState.bmi<=24.99",v-bind:style="{left:closestState.bmi*2+'%'}")
+        .bmi_pointer(v-if="closestState.bmi>=18.5&&closestState.bmi<=23.99",v-bind:style="{left:closestState.bmi*2+'%'}")
           span(v-bind:style="{color:bmicolor.color2}") BMI {{closestState.bmi}} 正常
           i.triangle(v-bind:style="{borderTopColor:bmicolor.color2}")
-        .bmi_pointer(v-if="closestState.bmi>24.99&&closestState.bmi<=32",v-bind:style="{left:closestState.bmi*2+'%'}")
-          span(v-bind:style="{color:bmicolor.color3}") BMI {{closestState.bmi}} 过重
+        .bmi_pointer(v-if="closestState.bmi>23.99&&closestState.bmi<=27.9",v-bind:style="{left:closestState.bmi*2+'%'}")
+          span(v-bind:style="{color:bmicolor.color3}") BMI {{closestState.bmi}} 超重
           i.triangle(v-bind:style="{borderTopColor:bmicolor.color3}")
-        .bmi_pointer(v-if="closestState.bmi>32&&closestState.bmi<=42.5",v-bind:style="{left:closestState.bmi*2+'%'}")
+        .bmi_pointer(v-if="closestState.bmi>27.9&&closestState.bmi<=42.5",v-bind:style="{left:closestState.bmi*2+'%'}")
           span(v-bind:style="{color:bmicolor.color4}") BMI {{closestState.bmi}} 肥胖
           i.triangle(v-bind:style="{borderTopColor:bmicolor.color4}")
         .bmi_pointer(v-if="closestState.bmi>43",v-bind:style="{left:'85%'}")
@@ -36,37 +36,37 @@
 
     .constitutes
       ul
-        li.constitutes_li.fat
+        li.constitutes_li.fat(v-if="closestState.fat||closestState.fat==0")
           .logo.fatlogo
           .text
             span.constitutes_title 脂肪率
-            span {{closestState.fat}}%
-        li.constitutes_li.moisture
+            span {{closestState.fat/10}}%
+        li.constitutes_li.moisture(v-if="closestState.moisture||closestState.moisture==0")
           .logo.moisturelogo
           .text
             span.constitutes_title 水分率
-            span {{closestState.moisture}}%
-        li.constitutes_li.bone
+            span {{closestState.moisture/10}}%
+        li.constitutes_li.bone(v-if="closestState.bone||closestState.bone==0")
           .logo.bonelogo
           .text
             span.constitutes_title 骨量
-            span {{closestState.bone}}%
-        li.constitutes_li.muscle
+            span {{closestState.bone}}
+        li.constitutes_li.muscle(v-if="closestState.muscle||closestState.muscle==0")
           .logo.musclelogo
           .text
             span.constitutes_title 肌肉率
-            span {{closestState.muscle}}%
-        li.constitutes_li.organs_li
+            span {{closestState.muscle/10}}%
+        li.constitutes_li.organs_li(v-if="false")
           .logo.organslogo
           .text
             span.constitutes_title 内脏脂肪
             span ??%
-        li.constitutes_li.internalage_li
+        li.constitutes_li.internalage_li(v-if="false")
           .logo.internalagelogo
           .text
             span.constitutes_title 体内年龄
             span ??岁
-        li.constitutes_li.basal_metabolism_li
+        li.constitutes_li.basal_metabolism_li(v-if="closestState.metabolism||closestState.metabolism==0")
           .logo.basal_metabolism_logo
           .text
             span.constitutes_title 基础代谢
@@ -295,7 +295,8 @@
           "moisture":11,
           "muscle":12,
           "bone":13,
-          "metabolism":14
+          "metabolism":14,
+          "taget_weight":12000
         },
         wxmsg:{
           code:"",
@@ -312,7 +313,7 @@
         document.title = "健康管家";
 
         self.wxmsg.code = localStorage.code;
-        if(!localStorage.openid){
+        if(!localStorage.openid||localStorage.openid == "ozEANuNXaPyykVqp6gTm2PwO404g"){
           if(self.wxmsg.code&&self.wxmsg.code!="null"){
             api.wxmsg.getWXmsg(localStorage.code).then(function (data) {
               self.wxmsg.openid=data.openid;
@@ -327,6 +328,12 @@
           self.wxmsg.openid=localStorage.openid;
           //alert("本地获得openid"+self.wxmsg.openid);
         }
+        if(__DEBUG__){
+          var openid = "ozEANuNXaPyykVqp6gTm2PwO404g";
+        }else{
+          var openid = localStorage.openid;
+        }
+        alert(localStorage.openid)
 
         // api.wxmsg.getWXmsg("001a21c9a9db39828199293797df48aX").then(function (data) {
         //   console.log(data)
@@ -334,6 +341,51 @@
 
         //   localStorage.openid=data.openid;
         // })
+
+        /*********************获取批量数据 取出第一条 start****************************/
+        api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data,status){
+          if(__DEBUG__){
+            console.log(data)
+          }
+
+
+          var centerdata=data;
+          /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
+          for(var i=0;i<centerdata.length;i++){
+            console.log(centerdata[i].time.split("").length)
+            if(centerdata[i].time.split("").length==10){
+              centerdata[i].time+=" 00:00:00";//兼容后端返回的数据只有日期没有时间
+              centerdata[i].date = centerdata[i].time;
+            }
+          }
+          /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
+          centerdata[0].taget_weight = 10000;
+          self.closestState = centerdata[0];
+          //self.closestState.bmi = centerdata[0].weight/(centerdata[0].height*centerdata[0].height)
+
+          self.closestState.bmi = centerdata[0].weight/1000/((centerdata[0].height/100)*(centerdata[0].height/100));
+          self.closestState.bmi = Math.round(self.closestState.bmi*100)/100
+          /********************通过获取个人信息取得目标体重 start*************************/
+
+
+          api.BluetoothScale.getUserInformation(openid).then(function (data) {
+            if(__DEBUG__) {
+              console.log(data);
+            }
+            self.closestState.taget_weight = data.taget_weight;
+          });
+          /********************通过获取个人信息取得目标体重 end*************************/
+        })
+        /*********************获取批量数据 取出第一条 end****************************/
+
+
+
+
+
+
+
+
+        //console.log(self.closestState.taget_weight)
         /*
         api.BluetoothScale.getOneData(user_id).then(function (data) {
           if(__DEBUG__) {

@@ -110,7 +110,7 @@
           "date":"2015-12-16 12:34:56",
           "age":30,
           "height":178,
-          "weight":80.0,
+          "weight":80000,
           "bmi":240,
           "fat":10,
           "moisture":11,
@@ -122,7 +122,7 @@
           "date":"2015-12-15 13:00:00",
           "age":30,
           "height":178,
-          "weight":81.0,
+          "weight":80000,
           "bmi":241,
           "fat":9,
           "moisture":10,
@@ -134,7 +134,7 @@
           "date":"2015-11-3 13:00:00",
           "age":30,
           "height":178,
-          "weight":81.0,
+          "weight":80000,
           "bmi":241,
           "fat":9,
           "moisture":10,
@@ -266,8 +266,22 @@
         var postobj={"count":30,"offset":0};
 
         api.BluetoothScale.getMultiData(postobj).then(function(data,status){
-          self.offset+=postobj.count
-          self.statistics = data;
+          if(__DEBUG__){
+            console.log(data)
+          }
+          self.offset+=postobj.count;
+
+          var centerdata=data;
+          /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
+          for(var i=0;i<centerdata.length;i++){
+            console.log(centerdata[i].time.split("").length)
+            if(centerdata[i].time.split("").length==10){
+              centerdata[i].time+=" 00:00:00";//兼容后端返回的数据只有日期没有时间
+              centerdata[i].date = centerdata[i].time;
+            }
+          }
+          /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
+          self.statistics = centerdata;
         })
       }
     },
@@ -333,9 +347,22 @@
             self.offset+=postobj.count
               console.log(self.offset)
             api.BluetoothScale.getMultiData(postobj).then(function(data,status){
-              self.offset+=postobj.count
-              centerarr = data;
-              self.statistics = self.statistics.concat(centerarr);
+              if(__DEBUG__){
+                console.log(data)
+              }
+              self.offset+=postobj.count;
+
+              var centerdata=data;
+              /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
+              for(var i=0;i<centerdata.length;i++){
+                console.log(centerdata[i].time.split("").length)
+                if(centerdata[i].time.split("").length==10){
+                  centerdata[i].time+=" 00:00:00";//兼容后端返回的数据只有日期没有时间
+                  centerdata[i].date = centerdata[i].time;
+                }
+              }
+              /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
+              self.statistics.concat(centerdata);
             })
           }
 

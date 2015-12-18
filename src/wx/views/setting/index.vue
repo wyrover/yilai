@@ -2,7 +2,7 @@
   .main-content.white
     .user_msg
       .user_faces
-        img(v-bind:src="wxmsg.face",v-bind:width="'100%'",v-bind:height="'100%'")
+        img(v-bind:src="wxmsg.headimgurl",v-bind:width="'100%'",v-bind:height="'100%'")
       .sex(v-bind:data-sex="wxmsg.gender")
       span.user_nackname {{wxmsg.name}}
     .entrance.personal_information
@@ -105,7 +105,7 @@
       return {
         wxmsg:{
           "name":"测试微信昵称",
-          "face":"http://img.wdjimg.com/mms/icon/v1/9/d4/22884940c69ffbe02cb97c52d7e60d49_256_256.png",
+          "headimgurl":"http://img.wdjimg.com/mms/icon/v1/9/d4/22884940c69ffbe02cb97c52d7e60d49_256_256.png",
           "gender":"male"//"female"
         }
 
@@ -115,6 +115,23 @@
     route:{
       data:function(){
         document.title = "设置";
+
+        var self = this;
+        if(__DEBUG__){
+          var openid = "ozEANuNXaPyykVqp6gTm2PwO404g";
+        }else{
+          var openid = localStorage.openid;
+        }
+
+        api.BluetoothScale.getUserInformation(openid).then(function (data) {
+          if(__DEBUG__) {
+            console.log(data);
+          }
+          self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
+          self.wxmsg.headimgurl = data.headimgurl
+          self.wxmsg.name = data.name
+           //console.log(self.wxmsg)
+        });
       }
     },
 

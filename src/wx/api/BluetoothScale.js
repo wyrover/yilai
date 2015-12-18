@@ -5,11 +5,10 @@ module.exports = function (Vue, Promise, config) {
         1. url:get  /v1/scale_user/info
 
     */
-    getUserInformation: function(params) {
+    getUserInformation: function(openid) {
       return new Promise(function(resolve, reject) {
         Vue.http.get(
-          config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale_user/info/ozEANuNXaPyykVqp6gTm2PwO404g',
-          JSON.stringify(params),
+          config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale_user/info/'+openid,
           function(data, status, request) {
             resolve(data);
           }, {

@@ -2,7 +2,7 @@
   .main-content.white
     .user_msg
       .user_faces
-        img(v-bind:src="wxmsg.face",v-bind:width="'100%'",v-bind:height="'100%'")
+        img(v-bind:src="wxmsg.headimgurl",v-bind:width="'100%'",v-bind:height="'100%'")
       .sex(v-bind:data-sex="wxmsg.gender")
       .user_nackname {{wxmsg.name}}
     .entrance.user_birthday
@@ -27,6 +27,7 @@
         option(v-for="n in information.taget_weight",v-bind:value="n") {{n}}kg
         option(v-bind:value="information.taget_weight",v-bind:selected="true") {{information.taget_weight}}kg
         option(v-for="n in 200-information.taget_weight-1",v-bind:value="n+information.taget_weight+1") {{n+information.taget_weight+1}}kg
+    //-.entrance.entrance_last(v-on:click="test") 测试按钮
 
 
 
@@ -80,16 +81,16 @@
     data: function () {
       return {
         wxmsg:{
-          "name":"测试微信昵称",
-          "face":"http://img.wdjimg.com/mms/icon/v1/9/d4/22884940c69ffbe02cb97c52d7e60d49_256_256.png",
-          "gender":"male"//"female"
+          "name":"111",
+          "headimgurl":"",
+          "gender":"female"//"female"
         },
         information:{
-          "birth":"2015-11-11",
+          "birth":"1999-9-9",
           "gender":"male",
           "height":75,
           "weight":60200,
-          "taget_weight":78
+          "taget_weight":65
         },
         updataInformation:function(){
           var self = this;
@@ -98,13 +99,15 @@
             "brith":self.information.birth,
             "height":self.information.height,
             //"weight":80000,
-            "taget_weight":self.information.taget_weight
+            "taget_weight":self.information.taget_weight*1000
           };
-          if(!localStorage.openid){
+          if(localStorage.openid=="undefined"||(!localStorage.openid)||localStorage.openid == "ozEANuNXaPyykVqp6gTm2PwO404g"){
+            if(__DEBUG__){console.log("本地不存在openid,")}
             if(localStorage.code&&localStorage.code!="null"){
               api.wxmsg.getWXmsg(localStorage.code).then(function (data) {
                 localStorage.openid=data.openid;
                 var openid = data.openid;
+                //var openid = "ozEANuBTIEscOwZ6wS4UFvhK38yw"
                 api.BluetoothScale.setUserInformation(postobj,openid).then(function (data) {
                   if(__DEBUG__) {
                     console.log(data);
@@ -114,12 +117,13 @@
               })
             }
           }else{
+            //var openid = "ozEANuBTIEscOwZ6wS4UFvhK38yw"
             var openid = localStorage.openid;
             api.BluetoothScale.setUserInformation(postobj,openid).then(function (data) {
               if(__DEBUG__) {
                 console.log(data);
               }
-              console.log(data)
+              alert(data==200?"修改成功":"修改失败")
             });
           }
 
@@ -132,19 +136,53 @@
         document.title = "个人信息";
         var self = this;
 
-        api.BluetoothScale.getUserInformation().then(function (data) {
-          if(__DEBUG__) {
-            console.log(data);
+          //if(!localStorage.openid){
+          if(localStorage.code&&localStorage.code!="null"){
+            api.wxmsg.getWXmsg(localStorage.code).then(function (data) {
+              localStorage.openid=data.openid;
+              var openid = data.openid;
+              //var openid = "ozEANuBTIEscOwZ6wS4UFvhK38yw"
+              alert(data.openid)
+
+              api.BluetoothScale.getUserInformation(openid).then(function (data) {
+                if(__DEBUG__) {
+                  console.log(data);
+                }
+                 //self.information = data;
+                 self.information.birth = data.birth||"2005-01-01";
+                 self.information.gender =(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
+                 self.information.height = data.height||0;
+                 self.information.weight = data.weight||0;
+                 self.information.taget_weight = (data.taget_weight/1000)||0;
+                 self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
+                 self.wxmsg.headimgurl = data.headimgurl
+                 self.wxmsg.name = data.name
+                 //console.log(self.wxmsg)
+              });
+            })
           }
-           self.information = data;
-           self.information.birth = data.birth||"2015-01-01";
-           self.information.gender =(data.gender=="男"||data.gender=="male")?"male":"female";//默认是女的
-           self.information.height = data.height||0;
-           self.information.weight = data.weight||0;
-           self.information.taget_weight=data.taget_weight||0;
-           self.wxmsg.gender=(data.gender=="男"||data.gender=="male")?"male":"female";//默认是女的
-           console.log(self.information)
-        });
+          // }else{
+          //   //var openid = "ozEANuBTIEscOwZ6wS4UFvhK38yw"
+          //   alert(!localStorage.openid)
+          //   var openid = localStorage.openid;
+          //   alert(openid)
+          //   api.BluetoothScale.getUserInformation(openid).then(function (data) {
+          //     if(__DEBUG__) {
+          //       console.log(data);
+          //     }
+          //      //self.information = data;
+          //      self.information.birth = data.birth||"2005-01-01";
+          //      self.information.gender =(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
+          //      self.information.height = data.height||0;
+          //      self.information.weight = data.weight||0;
+          //      self.information.taget_weight = (data.taget_weight/1000)||0;
+          //      self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
+          //      self.wxmsg.headimgurl = data.headimgurl
+          //      self.wxmsg.name = data.name
+          //      //console.log(self.wxmsg)
+          //   });
+          // }
+
       }
     },
     methods: {
@@ -162,6 +200,20 @@
         var self = this;
         self.information.taget_weight=document.getElementById("taget_weight").value-0;
         self.updataInformation();//debug
+      },
+      test:function(){
+        api.wxmsg.getWXmsg("00141835b672b4f7ebc2f0c97c08b5n").then(function (data) {
+          console.log(data)
+          localStorage.openid=data.openid;
+          var openid = data.openid;
+          //var openid = "ozEANuBTIEscOwZ6wS4UFvhK38yw"
+          api.BluetoothScale.setUserInformation(postobj,openid).then(function (data) {
+            if(__DEBUG__) {
+              console.log(data);
+            }
+            console.log(data)
+          });
+        })
       }
 
     }
