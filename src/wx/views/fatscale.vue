@@ -312,20 +312,28 @@
         document.title = "健康管家";
 
         self.wxmsg.code = localStorage.code;
-        if(localStorage.openid){
+        if(!localStorage.openid){
+          if(self.wxmsg.code&&self.wxmsg.code!="null"){
+            api.wxmsg.getWXmsg(localStorage.code).then(function (data) {
+              self.wxmsg.openid=data.openid;
+              self.wxmsg.access_token = data.access_token;
+              self.wxmsg.expires_in = data.expires_in;
+              self.wxmsg.refresh_token = data.refresh_token;
+              localStorage.openid=data.openid;
+              //alert("请求获得openid"+localStorage.openid);
+            })
+          }
+        }else{
           self.wxmsg.openid=localStorage.openid;
-          alert(self.wxmsg.openid);
-        }else if(self.wxmsg.code&&self.wxmsg.code!="null"){
-          api.wxmsg.getWXmsg(localStorage.code).then(function (data) {
-            self.wxmsg.openid=data.openid;
-            self.wxmsg.access_token = data.access_token;
-            self.wxmsg.expires_in = data.expires_in;
-            self.wxmsg.refresh_token = data.refresh_token;
-            localStorage.openid=data.openid;
-          })
-
-          alert(self.wxmsg.openid);
+          //alert("本地获得openid"+self.wxmsg.openid);
         }
+
+        // api.wxmsg.getWXmsg("001a21c9a9db39828199293797df48aX").then(function (data) {
+        //   console.log(data)
+        //   alert("openid:"+data.openid)
+
+        //   localStorage.openid=data.openid;
+        // })
         /*
         api.BluetoothScale.getOneData(user_id).then(function (data) {
           if(__DEBUG__) {

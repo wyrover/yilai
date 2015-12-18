@@ -100,12 +100,29 @@
             //"weight":80000,
             "taget_weight":self.information.taget_weight
           };
-          api.BluetoothScale.setUserInformation(postobj).then(function (data) {
-            if(__DEBUG__) {
-              console.log(data);
+          if(!localStorage.openid){
+            if(localStorage.code&&localStorage.code!="null"){
+              api.wxmsg.getWXmsg(localStorage.code).then(function (data) {
+                localStorage.openid=data.openid;
+                var openid = data.openid;
+                api.BluetoothScale.setUserInformation(postobj,openid).then(function (data) {
+                  if(__DEBUG__) {
+                    console.log(data);
+                  }
+                  console.log(data)
+                });
+              })
             }
-            console.log(data)
-          });
+          }else{
+            var openid = localStorage.openid;
+            api.BluetoothScale.setUserInformation(postobj,openid).then(function (data) {
+              if(__DEBUG__) {
+                console.log(data);
+              }
+              console.log(data)
+            });
+          }
+
         }
       };
     },
