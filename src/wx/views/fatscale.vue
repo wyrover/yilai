@@ -9,8 +9,8 @@
           | {{closestState.weight/1000}}
           span.weight_unit kg
         .target_weight
-          span.target_weight_span 目标
-          span.target_weight_munber {{closestState.taget_weight/1000||0}}kg
+          span.target_weight_span 目标体重
+          span.target_weight_munber {{closestState.target_weight/1000||0}}kg
       //-.chart
         a.chart_a(v-link="{path: '/chart'}")
       .setting
@@ -129,7 +129,7 @@
           font-size 0.7rem
           position absolute
           top 30px
-          left 5px
+          left 2px
           text-align center
           .time_num
             padding 0 3px
@@ -213,7 +213,6 @@
           margin 0 1.5%
           padding 0
           position relative
-          overflow hidden
           color #fff
           border 0
           .logo
@@ -296,7 +295,7 @@
           "muscle":12,
           "bone":13,
           "metabolism":14,
-          "taget_weight":12000
+          "target_weight":12000
         },
         wxmsg:{
           code:"",
@@ -309,6 +308,7 @@
 
     route:{
       data:function(){
+        //alert("用这个id去查询"+localStorage.state);
         var self = this;
         document.title = "健康管家";
         //alert("openid不存在？正常的话这里是true："+!localStorage.openid);
@@ -344,58 +344,68 @@
         // })
 
         /*********************获取批量数据 取出第一条 start****************************/
-        api.BluetoothScale.getMultiData({"count":1,"offset":0}).then(function(data,status){
-          if(__DEBUG__){
-            console.log(data)
-          }
+        alert("是否取出最后一条数据？"+(!(localStorage.state-0)))
+        if(__DEBUG__){
+            localStorage.state = "567526C3D32169735564131C"
+        }
+        if(!(localStorage.state-0)){
+
+          api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data,status){
+            if(__DEBUG__){
+              console.log(data)
+            }
 
 
-          var centerdata=data;
-/***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
-          for(var i=0;i<centerdata.length;i++){
-            centerdata[i].bmi = centerdata[i].weight/1000/((centerdata[i].height/100)*(centerdata[i].height/100))
-            var centertime = new Date(centerdata[i].time)
-            var date = new Date(centerdata[i].time).getFullYear()+"/"+(new Date(centerdata[i].time).getMonth()+1)+"/"+new Date(centerdata[i].time).getDate();
-            var hours = (new Date(centerdata[i].time).getHours()>9)?new Date(centerdata[i].time).getHours():"0"+new Date(centerdata[i].time).getHours()
-            var minutes = (new Date(centerdata[i].time).getMinutes()>9)?new Date(centerdata[i].time).getMinutes():"0"+new Date(centerdata[i].time).getMinutes()
-            centerdata[i].date =date+" "+hours+":"+minutes;
-          }
-          /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
-          centerdata[0].taget_weight = 10000;
-          self.closestState = centerdata[0];
+            var centerdata=data;
+  /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
+            for(var i=0;i<centerdata.length;i++){
+              centerdata[i].bmi = centerdata[i].weight/1000/((centerdata[i].height/100)*(centerdata[i].height/100))
+              var centertime = new Date(centerdata[i].time)
+              var date = new Date(centerdata[i].time).getFullYear()+"/"+(new Date(centerdata[i].time).getMonth()+1)+"/"+new Date(centerdata[i].time).getDate();
+              var hours = (new Date(centerdata[i].time).getHours()>9)?new Date(centerdata[i].time).getHours():"0"+new Date(centerdata[i].time).getHours()
+              var minutes = (new Date(centerdata[i].time).getMinutes()>9)?new Date(centerdata[i].time).getMinutes():"0"+new Date(centerdata[i].time).getMinutes()
+              centerdata[i].date =date+" "+hours+":"+minutes;
+            }
+            /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
+            self.closestState = centerdata[0];
 
 
-          self.closestState.bmi = centerdata[0].weight/1000/((centerdata[0].height/100)*(centerdata[0].height/100));
-          self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
-          /********************通过获取个人信息取得目标体重 start*************************/
+            self.closestState.bmi = centerdata[0].weight/1000/((centerdata[0].height/100)*(centerdata[0].height/100));
+            self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
 
+          })
+        /*********************获取批量数据 取出第一条 end****************************/
+        }else {
+          /*********获取某id对应的一条数据 start************/
+          //alert("已经准备根据state去取某一次的数据")
 
-          api.BluetoothScale.getUserInformation(openid).then(function (data) {
+          api.BluetoothScale.getOneData(localStorage.state).then(function (data) {
             if(__DEBUG__) {
               console.log(data);
             }
-            self.closestState.taget_weight = data.taget_weight;
+            var centerdata=data;
+              /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
+              centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100))
+              var centertime = new Date(centerdata.time)
+              var date = new Date(centerdata.time).getFullYear()+"/"+(new Date(centerdata.time).getMonth()+1)+"/"+new Date(centerdata.time).getDate();
+              var hours = (new Date(centerdata.time).getHours()>9)?new Date(centerdata.time).getHours():"0"+new Date(centerdata.time).getHours()
+              var minutes = (new Date(centerdata.time).getMinutes()>9)?new Date(centerdata.time).getMinutes():"0"+new Date(centerdata.time).getMinutes()
+              centerdata.date =date+" "+hours+":"+minutes;
+
+            /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
+            self.closestState = centerdata;
+
+
+            self.closestState.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100));
+            self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
           });
-          /********************通过获取个人信息取得目标体重 end*************************/
-        })
-        /*********************获取批量数据 取出第一条 end****************************/
+          /*********获取某id对应的一条数据  end************/
+        }
 
 
 
 
 
-
-
-
-        //console.log(self.closestState.taget_weight)
-        /*
-        api.BluetoothScale.getOneData(user_id).then(function (data) {
-          if(__DEBUG__) {
-            console.log(data);
-          }
-          closestState=data;
-        });
-        */
       }
     },
     methods:{

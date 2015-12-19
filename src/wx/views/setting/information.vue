@@ -20,8 +20,8 @@
       span.user_msg_value {{information.weight/1000||0}}kg
     .entrance.entrance_last.target_weight
       span.user_msg_title 目标体重
-      span.user_msg_value {{information.taget_weight||0}}kg
-      select.setmsg.user_msg_value.opacity#taget_weight(v-bind:value="information.taget_weight",v-on:change="updatetaget_weight")
+      span.user_msg_value {{information.target_weight||0}}kg
+      select.setmsg.user_msg_value.opacity#target_weight(v-bind:value="information.target_weight",v-on:change="updatetarget_weight")
         option(v-for="n in 200",v-bind:value="n") {{n}}kg
     //-.entrance.entrance_last(v-on:click="test") 测试按钮
 
@@ -86,7 +86,7 @@
           "gender":"male",
           "height":75,
           "weight":60200,
-          "taget_weight":65
+          "target_weight":65
         },
         updataInformation:function(){
           var self = this;
@@ -95,7 +95,7 @@
             "birth":self.information.birth,
             "height":self.information.height,
             //"weight":80000,
-            "taget_weight":self.information.taget_weight*1000
+            "target_weight":self.information.target_weight*1000
           };
           if(!localStorage.openid){
             if(__DEBUG__){console.log("本地不存在openid,")}
@@ -150,7 +150,7 @@
                  self.information.gender =(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
                  self.information.height = data.height||0;
                  self.information.weight = data.weight||0;
-                 self.information.taget_weight = (data.taget_weight/1000)||0;
+                 self.information.target_weight = (data.target_weight/1000)||0;
                  self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
                  self.wxmsg.headimgurl = data.headimgurl
                  self.wxmsg.name = data.name
@@ -176,7 +176,7 @@
             self.information.gender =(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
             self.information.height = data.height||0;
             self.information.weight = data.weight||0;
-            self.information.taget_weight = (data.taget_weight/1000)||0;
+            self.information.target_weight = (data.target_weight/1000)||0;
             self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
             self.wxmsg.headimgurl = data.headimgurl
             self.wxmsg.name = data.name
@@ -197,9 +197,9 @@
         self.information.height=document.getElementById("height").value-0;
         self.updataInformation();//debug
       },
-      updatetaget_weight: function () {
+      updatetarget_weight: function () {
         var self = this;
-        self.information.taget_weight=document.getElementById("taget_weight").value-0;
+        self.information.target_weight=document.getElementById("target_weight").value-0;
         self.updataInformation();//debug
       },
       test:function(){

@@ -28,7 +28,7 @@ module.exports = function (Vue, Promise, config) {
           {
             "brith":"1980-02-04",
             "height":180,
-            "taget_weight":78000
+            "target_weight":78000
           }
         3.接收：
           {
@@ -72,10 +72,10 @@ module.exports = function (Vue, Promise, config) {
             "metabolism":14
           }
     */
-    getOneData: function(user_id) {
+    getOneData: function(state) {
       return new Promise(function(resolve, reject) {
         Vue.http.get(
-          config.apiRoot + '/scale/statistic/'+user_id,
+          config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale_user/statistic/'+state,
           function(data, status, request) {
             resolve(data);
           }, {
@@ -127,11 +127,11 @@ module.exports = function (Vue, Promise, config) {
             ]
           }
     */
-    getMultiData: function(params) {
+    getMultiData: function(params,openid) {
       return new Promise(function(resolve, reject) {
         Vue.http.post(
           //config.apiRoot + '/scale/statistics/list',
-          config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale_user/statisticList',
+          config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale_user/statisticList/'+openid,
           JSON.stringify(params),
           function(data, status, request) {
             resolve(data,status);

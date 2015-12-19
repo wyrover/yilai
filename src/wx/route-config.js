@@ -7,7 +7,7 @@ var configRouter = function (router) {
       component: require('../shared/views/not-found.vue')
     },
 
-    // 主界面 脂肪秤
+    // 主界面 脂肪秤 从消息推送进入
     '/fatscale': {
       component: require('./views/fatscale.vue')
     },

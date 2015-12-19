@@ -152,7 +152,7 @@ html(style="width:100%;height:100%")
     script.
       var wxmsg= {
         getUrlStr:function(name){
-          var result = null;
+          var result = 0;
           if(window.location.href.split(name+"=")[1]){
             var result = window.location.href.split(name+"=")[1].split("&")[0];
           }
@@ -166,7 +166,10 @@ html(style="width:100%;height:100%")
         }
       }
       //localStorage.clear();
+      //alert(window.location.href)
       localStorage.code = wxmsg.getUrlStr("code");
+      localStorage.state = wxmsg.getUrlStr("state");
+      //alert("取到id(state):"+localStorage.state)
       goNewUrl(wxmsg.getUrlStr("linkto"));
 
 

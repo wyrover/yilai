@@ -18,9 +18,9 @@
                 span 水分 {{statistic.moisture/10}}%
                 span 肌肉 {{statistic.muscle/10}}%
                 span 骨骼 {{statistic.bone/10}}kg
-                span 内脂 {{statistic.internal_fat}}
-                span 内龄 {{statistic.internal_age}}岁
-                span 代谢 {{statistic.metabolism}}kcal
+                span 体内脂肪 {{statistic.internal_fat}}
+                span 体内年龄 {{statistic.internal_age}}岁
+                span(v-bind:style="'width:80%'") 基本代谢 {{statistic.metabolism}}kcal
 
 
 </template>
@@ -86,9 +86,10 @@
                 background url("../../assets/images/icon/more_white.png") no-repeat center center /100% 100%
               .weight_percent
                 float left
-                font-size 14px
                 span
                   line-height 40px
+                  font-size 14px
+
             [data-open="1"]
                height auto
                .more
@@ -109,6 +110,8 @@
         count:999,//最大加载次数
         canload:true,//是否允许加载
         offset:0,//默认偏移量
+        firGetCount:29,//首次加载的数量 不要超过30
+        reGetCount:29,//每次拉到底部加载的数量
         showModal:true,
         statistics:[
           {
@@ -152,7 +155,7 @@
     },
 
     ready:function(){
-      document.getElementsByClassName("thistime_information")[0].setAttribute("data-open",1);//默认打开第一条
+      //document.getElementsByClassName("thistime_information")[0].setAttribute("data-open",1);//默认打开第一条
     },
 
     route:{
@@ -160,9 +163,12 @@
         document.title = "历史记录";
         var self = this;
 
-        var postobj={"count":30,"offset":0};
+        var postobj={"count":self.firGetCount,"offset":0};
+        if(__DEBUG__){
+          localStorage.openid = "ozEANuNXaPyykVqp6gTm2PwO404g";
+        }
 
-        api.BluetoothScale.getMultiData(postobj).then(function(data,status){
+        api.BluetoothScale.getMultiData(postobj,localStorage.openid).then(function(data,status){
           if(__DEBUG__){
             console.log(data)
           }
@@ -244,10 +250,13 @@
           ];
           if(self.count>0){
             self.count--;
-            var postobj={"count":30,"offset":self.offset};
+            var postobj={"count":self.reGetCount,"offset":self.offset};
             console.log(postobj.offset)
             self.offset+=postobj.count
-            api.BluetoothScale.getMultiData(postobj).then(function(data,status){
+            if(__DEBUG__){
+              localStorage.openid = "ozEANuNXaPyykVqp6gTm2PwO404g";
+            }
+            api.BluetoothScale.getMultiData(postobj,localStorage.openid).then(function(data,status){
 
               if(__DEBUG__){
                 console.log(data)
