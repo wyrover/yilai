@@ -10,7 +10,7 @@
           span.weight_unit kg
         .target_weight
           span.target_weight_span 目标
-          span.target_weight_munber {{closestState.taget_weight/1000}}kg
+          span.target_weight_munber {{closestState.taget_weight/1000||0}}kg
       //-.chart
         a.chart_a(v-link="{path: '/chart'}")
       .setting
@@ -60,7 +60,7 @@
           .logo.organslogo
           .text
             span.constitutes_title 内脏脂肪
-            span {{closestState.internal_fat/10}}%
+            span {{closestState.internal_fat}}%
         li.constitutes_li.internalage_li(v-if="closestState.internal_age||closestState.internal_age==0")
           .logo.internalagelogo
           .text
@@ -344,7 +344,7 @@
         // })
 
         /*********************获取批量数据 取出第一条 start****************************/
-        api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data,status){
+        api.BluetoothScale.getMultiData({"count":1,"offset":0}).then(function(data,status){
           if(__DEBUG__){
             console.log(data)
           }
@@ -354,15 +354,16 @@
 /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
           for(var i=0;i<centerdata.length;i++){
             centerdata[i].bmi = centerdata[i].weight/1000/((centerdata[i].height/100)*(centerdata[i].height/100))
-
+            var centertime = new Date(centerdata[i].time)
+            var date = new Date(centerdata[i].time).getFullYear()+"/"+(new Date(centerdata[i].time).getMonth()+1)+"/"+new Date(centerdata[i].time).getDate();
             var hours = (new Date(centerdata[i].time).getHours()>9)?new Date(centerdata[i].time).getHours():"0"+new Date(centerdata[i].time).getHours()
             var minutes = (new Date(centerdata[i].time).getMinutes()>9)?new Date(centerdata[i].time).getMinutes():"0"+new Date(centerdata[i].time).getMinutes()
-            centerdata[i].date = new Date(centerdata[i].time).toLocaleDateString()+" "+hours+":"+minutes;
+            centerdata[i].date =date+" "+hours+":"+minutes;
           }
           /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
           centerdata[0].taget_weight = 10000;
           self.closestState = centerdata[0];
-          //self.closestState.bmi = centerdata[0].weight/(centerdata[0].height*centerdata[0].height)
+
 
           self.closestState.bmi = centerdata[0].weight/1000/((centerdata[0].height/100)*(centerdata[0].height/100));
           self.closestState.bmi = Math.round(self.closestState.bmi*10)/10

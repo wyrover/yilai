@@ -4,7 +4,7 @@
       li.date_msg(v-for="statistic in statistics")
         span.data_number(v-if="istoday(statistic.date)") 今天
         span.data_number(v-if="isyesterday(statistic.date)") 昨天
-        span.data_number(v-if="!istoday(statistic.date)&&!isyesterday(statistic.date)") {{statistic.date.split(" ")[0].split("-")[1]}}月{{statistic.date.split(" ")[0].split("-")[2]}}日
+        span.data_number(v-if="!istoday(statistic.date)&&!isyesterday(statistic.date)") {{statistic.date.split(" ")[0].split("/")[1]}}月{{statistic.date.split(" ")[0].split("/")[2]}}日
         //-span.data_number {{statistic.date.split(" ")[0].split("-")[1]}}月{{statistic.date.split(" ")[0].split("-")[2]}}日
         ul.sed_ul(v-on:click="openthis($index)")
           li.time_msg
@@ -18,9 +18,9 @@
                 span 水分 {{statistic.moisture/10}}%
                 span 肌肉 {{statistic.muscle/10}}%
                 span 骨骼 {{statistic.bone/10}}kg
-                span 内脂 {{statistic.internal_fat/10}}%
-                span 内龄 {{statistic.internal_age/10}}岁
-                span 代谢 {{statistic.metabolism/10}}kcal
+                span 内脂 {{statistic.internal_fat}}%
+                span 内龄 {{statistic.internal_age}}岁
+                span 代谢 {{statistic.metabolism}}kcal
 
 
 </template>
@@ -174,10 +174,11 @@
           /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
           for(var i=0;i<centerdata.length;i++){
             centerdata[i].bmi = centerdata[i].weight/1000/((centerdata[i].height/100)*(centerdata[i].height/100))
-
+            var centertime = new Date(centerdata[i].time)
+            var date = new Date(centerdata[i].time).getFullYear()+"/"+(new Date(centerdata[i].time).getMonth()+1)+"/"+new Date(centerdata[i].time).getDate();
             var hours = (new Date(centerdata[i].time).getHours()>9)?new Date(centerdata[i].time).getHours():"0"+new Date(centerdata[i].time).getHours()
             var minutes = (new Date(centerdata[i].time).getMinutes()>9)?new Date(centerdata[i].time).getMinutes():"0"+new Date(centerdata[i].time).getMinutes()
-            centerdata[i].date = new Date(centerdata[i].time).toLocaleDateString()+" "+hours+":"+minutes;
+            centerdata[i].date =date+" "+hours+":"+minutes;
           }
           /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
           self.statistics = centerdata;
@@ -258,10 +259,11 @@
               /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
               for(var i=0;i<centerdata.length;i++){
                 centerdata[i].bmi = centerdata[i].weight/1000/((centerdata[i].height/100)*(centerdata[i].height/100))
-
+                var centertime = new Date(centerdata[i].time)
+                var date = new Date(centerdata[i].time).getFullYear()+"/"+(new Date(centerdata[i].time).getMonth()+1)+"/"+new Date(centerdata[i].time).getDate();
                 var hours = (new Date(centerdata[i].time).getHours()>9)?new Date(centerdata[i].time).getHours():"0"+new Date(centerdata[i].time).getHours()
                 var minutes = (new Date(centerdata[i].time).getMinutes()>9)?new Date(centerdata[i].time).getMinutes():"0"+new Date(centerdata[i].time).getMinutes()
-                centerdata[i].date = new Date(centerdata[i].time).toLocaleDateString()+" "+hours+":"+minutes;
+                centerdata[i].date =date+" "+hours+":"+minutes;
               }
               /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
               self.statistics = self.statistics.concat(centerdata);

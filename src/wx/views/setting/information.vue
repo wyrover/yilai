@@ -13,19 +13,19 @@
     .entrance.user_height
       span.user_msg_title 身高
       span.user_msg_value {{information.height||0}}cm
-      select.setmsg.user_msg_value.opacity#height(v-bind:value="information.height",v-on:change="updateheight")
-        option(v-for="n in information.height-40-1",v-bind:value="n+40+1") {{n+40+1}}cm
-        option(v-bind:value="information.height",v-bind:selected="true") {{information.height}}cm
-        option(v-for="n in 250-information.height-1",v-bind:value="n+information.height+1") {{n+information.height+1}}cm
+      select.setmsg.user_msg_value.opacity#height(v-on:change="updateheight")
+        option(v-for="n in information.height-41",v-bind:value="n+40+1") {{n+40+1}}cm
+        option(v-bind:value="information.height",v-bind:selected="'selected'") {{information.height}}cm
+        option(v-for="n in 249-information.height",v-bind:value="n+1+information.height") {{n+information.height+1}}cm
     .entrance.user_weight
       span.user_msg_title 体重
       span.user_msg_value {{information.weight/1000||0}}kg
     .entrance.entrance_last.target_weight
       span.user_msg_title 目标体重
       span.user_msg_value {{information.taget_weight||0}}kg
-      select.setmsg.user_msg_value.opacity#taget_weight(v-bind:value="information.taget_weight",v-on:change="updatetaget_weight")
+      select.setmsg.user_msg_value.opacity#taget_weight(v-on:change="updatetaget_weight")
         option(v-for="n in information.taget_weight",v-bind:value="n") {{n}}kg
-        option(v-bind:value="information.taget_weight",v-bind:selected="true") {{information.taget_weight}}kg
+        option(v-bind:value="information.taget_weight",v-bind:selected="'selected'") {{information.taget_weight}}kg
         option(v-for="n in 200-information.taget_weight-1",v-bind:value="n+information.taget_weight+1") {{n+information.taget_weight+1}}kg
     //-.entrance.entrance_last(v-on:click="test") 测试按钮
 
@@ -132,6 +132,7 @@
         document.title = "个人信息";
         var self = this;
         //alert("openid不存在？正常的话这里是true："+!localStorage.openid);
+
         if(!localStorage.openid){
             api.wxmsg.getWXmsg(localStorage.code).then(function (data) {
               //alert("本地openid，这个应该是没有的："+localStorage.openid)
@@ -147,6 +148,7 @@
                 if(__DEBUG__) {
                   console.log(data);
                 }
+                alert("1"+data.weight);
                  //self.information = data;
                  self.information.birth = data.birth||"2005-01-01";
                  self.information.gender =(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
@@ -171,16 +173,18 @@
             if(__DEBUG__) {
               console.log(data);
             }
-             //self.information = data;
-             self.information.birth = data.birth||"2005-01-01";
-             self.information.gender =(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
-             self.information.height = data.height||0;
-             self.information.weight = data.weight||0;
-             self.information.taget_weight = (data.taget_weight/1000)||0;
-             self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
-             self.wxmsg.headimgurl = data.headimgurl
-             self.wxmsg.name = data.name
-             //console.log(self.wxmsg)
+            alert("后端返回的体重："+data.weight);
+            alert("后端返回的身高"+data.height);
+            //self.information = data;
+            self.information.birth = data.birth||"2005-01-01";
+            self.information.gender =(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
+            self.information.height = data.height||0;
+            self.information.weight = data.weight||0;
+            self.information.taget_weight = (data.taget_weight/1000)||0;
+            self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
+            self.wxmsg.headimgurl = data.headimgurl
+            self.wxmsg.name = data.name
+            //console.log(self.wxmsg)
           });
         }
 
