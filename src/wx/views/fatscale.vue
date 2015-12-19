@@ -344,34 +344,44 @@
         // })
 
         /*********************获取批量数据 取出第一条 start****************************/
-        alert("是否取出最后一条数据？"+(!(localStorage.state-0)))
+        //alert("是否取出最后一条数据？"+(!(localStorage.state-0)))
         if(__DEBUG__){
             localStorage.state = "567526C3D32169735564131C"
         }
         if(!(localStorage.state-0)){
-
           api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data,status){
             if(__DEBUG__){
               console.log(data)
             }
 
 
-            var centerdata=data;
-  /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
-            for(var i=0;i<centerdata.length;i++){
-              centerdata[i].bmi = centerdata[i].weight/1000/((centerdata[i].height/100)*(centerdata[i].height/100))
-              var centertime = new Date(centerdata[i].time)
-              var date = new Date(centerdata[i].time).getFullYear()+"/"+(new Date(centerdata[i].time).getMonth()+1)+"/"+new Date(centerdata[i].time).getDate();
-              var hours = (new Date(centerdata[i].time).getHours()>9)?new Date(centerdata[i].time).getHours():"0"+new Date(centerdata[i].time).getHours()
-              var minutes = (new Date(centerdata[i].time).getMinutes()>9)?new Date(centerdata[i].time).getMinutes():"0"+new Date(centerdata[i].time).getMinutes()
-              centerdata[i].date =date+" "+hours+":"+minutes;
-            }
+            var centerdata=data[0];
+            /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
+            centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100))
+            var centertime = new Date(centerdata.time)
+            var date = new Date(centerdata.time).getFullYear()+"/"+(new Date(centerdata.time).getMonth()+1)+"/"+new Date(centerdata.time).getDate();
+            var hours = (new Date(centerdata.time).getHours()>9)?new Date(centerdata.time).getHours():"0"+new Date(centerdata.time).getHours()
+            var minutes = (new Date(centerdata.time).getMinutes()>9)?new Date(centerdata.time).getMinutes():"0"+new Date(centerdata.time).getMinutes();
+            centerdata.date =date+" "+hours+":"+minutes;
+
             /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
-            self.closestState = centerdata[0];
+            /***************获取目标体重 start****************/
+            centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100));
+            api.BluetoothScale.getUserInformation(openid).then(function(data){
+              if(__DEBUG__){
+                console.log(data)
+              }
+              centerdata.target_weight = data.target_weight;
+              self.closestState = centerdata;
+              self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
+
+            })
+            /***************获取目标体重 end****************/
 
 
-            self.closestState.bmi = centerdata[0].weight/1000/((centerdata[0].height/100)*(centerdata[0].height/100));
-            self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
+
+
+
 
           })
         /*********************获取批量数据 取出第一条 end****************************/
@@ -384,13 +394,13 @@
               console.log(data);
             }
             var centerdata=data;
-              /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
-              centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100))
-              var centertime = new Date(centerdata.time)
-              var date = new Date(centerdata.time).getFullYear()+"/"+(new Date(centerdata.time).getMonth()+1)+"/"+new Date(centerdata.time).getDate();
-              var hours = (new Date(centerdata.time).getHours()>9)?new Date(centerdata.time).getHours():"0"+new Date(centerdata.time).getHours()
-              var minutes = (new Date(centerdata.time).getMinutes()>9)?new Date(centerdata.time).getMinutes():"0"+new Date(centerdata.time).getMinutes()
-              centerdata.date =date+" "+hours+":"+minutes;
+            /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
+            centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100))
+            var centertime = new Date(centerdata.time)
+            var date = new Date(centerdata.time).getFullYear()+"/"+(new Date(centerdata.time).getMonth()+1)+"/"+new Date(centerdata.time).getDate();
+            var hours = (new Date(centerdata.time).getHours()>9)?new Date(centerdata.time).getHours():"0"+new Date(centerdata.time).getHours()
+            var minutes = (new Date(centerdata.time).getMinutes()>9)?new Date(centerdata.time).getMinutes():"0"+new Date(centerdata.time).getMinutes();
+            centerdata.date =date+" "+hours+":"+minutes;
 
             /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
             self.closestState = centerdata;
