@@ -3,8 +3,8 @@
     .userweight
       .current_weight
         .weight_time
-          span.time_num.day_date {{closestState.date.split("T")[0].split("-")[1]}}-{{closestState.date.split("T")[0].split("-")[2]}}
-          span.time_num.time_date {{closestState.date.split("T")[1].slice(0,5)}}
+          span.time_num.day_date {{closestState.date.split(" ")[0].split("/")[1]}}-{{closestState.date.split(" ")[0].split("/")[2]}}
+          span.time_num.time_date {{closestState.date.split(" ")[1].slice(0,5)}}
         .weight_number
           | {{closestState.weight/1000}}
           span.weight_unit kg
@@ -50,7 +50,7 @@
           .logo.bonelogo
           .text
             span.constitutes_title 骨量
-            span {{closestState.bone}}
+            span {{closestState.bone}}kg
         li.constitutes_li.muscle(v-if="closestState.muscle||closestState.muscle==0")
           .logo.musclelogo
           .text
@@ -60,7 +60,7 @@
           .logo.organslogo
           .text
             span.constitutes_title 内脏脂肪
-            span {{closestState.internal_fat}}
+            span {{closestState.internal_fat/10}}%
         li.constitutes_li.internalage_li(v-if="closestState.internal_age||closestState.internal_age==0")
           .logo.internalagelogo
           .text
@@ -70,7 +70,7 @@
           .logo.basal_metabolism_logo
           .text
             span.constitutes_title 基础代谢
-            span {{closestState.metabolism}}
+            span {{closestState.metabolism}}kcal
 
   //- modal
   //-   .modal-footer
@@ -149,7 +149,7 @@
             font-size 1rem
             line-height 1.5rem
             height 1.5rem
-            bottom 5px
+            bottom 13px
             padding 10px 5px
             font-family 'Microsoft YaHei'
         .target_weight
@@ -351,14 +351,13 @@
 
 
           var centerdata=data;
-          /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
+/***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
           for(var i=0;i<centerdata.length;i++){
-            console.log(centerdata[i].time.split("").length)
-            if(centerdata[i].time.split("").length==10){
-              centerdata[i].time+=" 00:00:00";//兼容后端返回的数据只有日期没有时间
+            centerdata[i].bmi = centerdata[i].weight/1000/((centerdata[i].height/100)*(centerdata[i].height/100))
 
-            }
-            centerdata[i].date = centerdata[i].time;
+            var hours = (new Date(centerdata[i].time).getHours()>9)?new Date(centerdata[i].time).getHours():"0"+new Date(centerdata[i].time).getHours()
+            var minutes = (new Date(centerdata[i].time).getMinutes()>9)?new Date(centerdata[i].time).getMinutes():"0"+new Date(centerdata[i].time).getMinutes()
+            centerdata[i].date = new Date(centerdata[i].time).toLocaleDateString()+" "+hours+":"+minutes;
           }
           /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
           centerdata[0].taget_weight = 10000;

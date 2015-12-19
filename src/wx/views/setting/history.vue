@@ -4,11 +4,11 @@
       li.date_msg(v-for="statistic in statistics")
         span.data_number(v-if="istoday(statistic.date)") 今天
         span.data_number(v-if="isyesterday(statistic.date)") 昨天
-        span.data_number(v-if="!istoday(statistic.date)&&!isyesterday(statistic.date)") {{statistic.date.split("T")[0].split("-")[1]}}月{{statistic.date.split("T")[0].split("-")[2]}}日
+        span.data_number(v-if="!istoday(statistic.date)&&!isyesterday(statistic.date)") {{statistic.date.split(" ")[0].split("-")[1]}}月{{statistic.date.split(" ")[0].split("-")[2]}}日
         //-span.data_number {{statistic.date.split(" ")[0].split("-")[1]}}月{{statistic.date.split(" ")[0].split("-")[2]}}日
         ul.sed_ul(v-on:click="openthis($index)")
           li.time_msg
-            .time_number {{statistic.date.split("T")[1].slice(0,5)}}
+            .time_number {{statistic.date.split(" ")[1].slice(0,5)}}
             .thistime_information(v-bind:data-open="0")
               span 体重 {{statistic.weight/1000}}kg
               span BMI {{Math.round(statistic.bmi*10)/10}}
@@ -16,11 +16,11 @@
               .weight_percent
                 span 脂肪 {{statistic.fat/10}}%
                 span 水分 {{statistic.moisture/10}}%
-                span 骨骼 {{statistic.bone/10}}%
                 span 肌肉 {{statistic.muscle/10}}%
-                //- span 内脂 {{statistic.internal_fat/10}}%
-                //- span 内龄 {{statistic.internal_age/10}}%
-                //- span 基础代谢 {{statistic.metabolism/10}}%
+                span 骨骼 {{statistic.bone/10}}kg
+                span 内脂 {{statistic.internal_fat/10}}%
+                span 内龄 {{statistic.internal_age/10}}岁
+                span 代谢 {{statistic.metabolism/10}}kcal
 
 
 </template>
@@ -86,6 +86,7 @@
                 background url("../../assets/images/icon/more_white.png") no-repeat center center /100% 100%
               .weight_percent
                 float left
+                font-size 14px
                 span
                   line-height 40px
             [data-open="1"]
@@ -105,8 +106,9 @@
     },
     data: function () {
       return {
-        count:99,//最大加载次数
-        offset:0,
+        count:999,//最大加载次数
+        canload:true,//是否允许加载
+        offset:0,//默认偏移量
         showModal:true,
         statistics:[
           {
@@ -144,114 +146,6 @@
           "muscle":11,
           "bone":12,
           "metabolism":13
-          },
-          {
-          "date":"2015-11-4 13:00:00",
-          "age":30,
-          "height":178,
-          "weight":81.0,
-          "bmi":241,
-          "fat":9,
-          "moisture":10,
-          "muscle":11,
-          "bone":12,
-          "metabolism":13
-          },
-          {
-          "date":"2015-11-05 13:00:00",
-          "age":30,
-          "height":178,
-          "weight":81.0,
-          "bmi":241,
-          "fat":9,
-          "moisture":10,
-          "muscle":11,
-          "bone":12,
-          "metabolism":13
-          },
-          {
-          "date":"2015-11-6 13:00:00",
-          "age":30,
-          "height":178,
-          "weight":81.0,
-          "bmi":241,
-          "fat":9,
-          "moisture":10,
-          "muscle":11,
-          "bone":12,
-          "metabolism":13
-          },
-          {
-          "date":"2015-11-7 13:00:00",
-          "age":30,
-          "height":178,
-          "weight":81.0,
-          "bmi":241,
-          "fat":9,
-          "moisture":10,
-          "muscle":11,
-          "bone":12,
-          "metabolism":13
-          },
-          {
-          "date":"2015-11-8 13:00:00",
-          "age":30,
-          "height":178,
-          "weight":81.0,
-          "bmi":241,
-          "fat":9,
-          "moisture":10,
-          "muscle":11,
-          "bone":12,
-          "metabolism":13
-          },
-          {
-          "date":"2015-11-9 13:00:00",
-          "age":30,
-          "height":178,
-          "weight":81.0,
-          "bmi":241,
-          "fat":9,
-          "moisture":10,
-          "muscle":11,
-          "bone":12,
-          "metabolism":13
-          },
-          {
-          "date":"2015-11-10 13:00:00",
-          "age":30,
-          "height":178,
-          "weight":81.0,
-          "bmi":241,
-          "fat":9,
-          "moisture":10,
-          "muscle":11,
-          "bone":12,
-          "metabolism":13
-          },
-          {
-          "date":"2015-11-11 13:00:00",
-          "age":30,
-          "height":178,
-          "weight":81.0,
-          "bmi":241,
-          "fat":9,
-          "moisture":10,
-          "muscle":11,
-          "bone":12,
-          "metabolism":13
-          },
-          {
-          "date":"2015-11-12 13:00:00",
-          "age":30,
-          "height":178,
-          "weight":81.0,
-          "bmi":241,
-          "fat":9,
-          "moisture":10,
-          "muscle":11,
-          "bone":12,
-          "metabolism":13
           }
         ]
       }
@@ -272,6 +166,7 @@
           if(__DEBUG__){
             console.log(data)
           }
+          self.canload =( data.length==postobj.count);
           self.offset+=postobj.count;
 
           var centerdata=data;
@@ -279,11 +174,10 @@
           /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
           for(var i=0;i<centerdata.length;i++){
             centerdata[i].bmi = centerdata[i].weight/1000/((centerdata[i].height/100)*(centerdata[i].height/100))
-            if(centerdata[i].time.split("").length==10){
-              centerdata[i].time+=" 00:00:00";//兼容后端返回的数据只有日期没有时间
 
-            }
-            centerdata[i].date = centerdata[i].time;
+            var hours = (new Date(centerdata[i].time).getHours()>9)?new Date(centerdata[i].time).getHours():"0"+new Date(centerdata[i].time).getHours()
+            var minutes = (new Date(centerdata[i].time).getMinutes()>9)?new Date(centerdata[i].time).getMinutes():"0"+new Date(centerdata[i].time).getMinutes()
+            centerdata[i].date = new Date(centerdata[i].time).toLocaleDateString()+" "+hours+":"+minutes;
           }
           /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
           self.statistics = centerdata;
@@ -319,7 +213,8 @@
         var self = this;
         var history_box=document.getElementsByClassName("history_box")[0];
         var history_ul=document.getElementsByClassName("history_ul")[0];
-        if(history_box.scrollTop>=history_ul.clientHeight-history_box.clientHeight){
+        if((history_box.scrollTop>=history_ul.clientHeight-history_box.clientHeight)&&self.canload){
+          self.canload = false;
           var centerarr=[
             {
             "date":"2015-12-1 12:34:56",
@@ -349,26 +244,31 @@
           if(self.count>0){
             self.count--;
             var postobj={"count":30,"offset":self.offset};
+            console.log(postobj.offset)
             self.offset+=postobj.count
-              console.log(self.offset)
             api.BluetoothScale.getMultiData(postobj).then(function(data,status){
+
               if(__DEBUG__){
                 console.log(data)
               }
+              self.canload = (data.length ==postobj.count);
               self.offset+=postobj.count;
 
               var centerdata=data;
               /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
               for(var i=0;i<centerdata.length;i++){
-                console.log(centerdata[i].time.split("").length)
-                if(centerdata[i].time.split("").length==10){
-                  centerdata[i].time+="T00:00:00";//兼容后端返回的数据只有日期没有时间
+                centerdata[i].bmi = centerdata[i].weight/1000/((centerdata[i].height/100)*(centerdata[i].height/100))
 
-                }
-                centerdata[i].date = centerdata[i].time;
+                var hours = (new Date(centerdata[i].time).getHours()>9)?new Date(centerdata[i].time).getHours():"0"+new Date(centerdata[i].time).getHours()
+                var minutes = (new Date(centerdata[i].time).getMinutes()>9)?new Date(centerdata[i].time).getMinutes():"0"+new Date(centerdata[i].time).getMinutes()
+                centerdata[i].date = new Date(centerdata[i].time).toLocaleDateString()+" "+hours+":"+minutes;
               }
               /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
-              self.statistics.concat(centerdata);
+              self.statistics = self.statistics.concat(centerdata);
+              if(__DEBUG__){
+                console.log(self.statistics)
+              }
+
             })
           }
 

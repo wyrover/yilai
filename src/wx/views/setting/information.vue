@@ -164,7 +164,7 @@
           //var openid = "ozEANuBTIEscOwZ6wS4UFvhK38yw"
           var openid = localStorage.openid;
           if(__DEBUG__){
-            openid="ozEANuBTIEscOwZ6wS4UFvhK38yw"
+            openid="ozEANuNXaPyykVqp6gTm2PwO404g"
           }
           //alert("本地已经存在openid："+openid)
           api.BluetoothScale.getUserInformation(openid).then(function (data) {
