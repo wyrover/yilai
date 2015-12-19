@@ -50,7 +50,7 @@
           .logo.bonelogo
           .text
             span.constitutes_title 骨量
-            span {{closestState.bone}}kg
+            span {{closestState.bone/10}}kg
         li.constitutes_li.muscle(v-if="closestState.muscle||closestState.muscle==0")
           .logo.musclelogo
           .text
@@ -60,7 +60,7 @@
           .logo.organslogo
           .text
             span.constitutes_title 内脏脂肪
-            span {{closestState.internal_fat}}%
+            span {{closestState.internal_fat}}
         li.constitutes_li.internalage_li(v-if="closestState.internal_age||closestState.internal_age==0")
           .logo.internalagelogo
           .text

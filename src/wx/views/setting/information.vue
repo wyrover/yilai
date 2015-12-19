@@ -13,20 +13,16 @@
     .entrance.user_height
       span.user_msg_title 身高
       span.user_msg_value {{information.height||0}}cm
-      select.setmsg.user_msg_value.opacity#height(v-on:change="updateheight")
-        option(v-for="n in information.height-41",v-bind:value="n+40+1") {{n+40+1}}cm
-        option(v-bind:value="information.height",v-bind:selected="'selected'") {{information.height}}cm
-        option(v-for="n in 249-information.height",v-bind:value="n+1+information.height") {{n+information.height+1}}cm
+      select.setmsg.user_msg_value.opacity#height(v-bind:value="information.height",v-on:change="updateheight")
+        option(v-for="n in 200",v-bind:value="n+50") {{n+50}}cm
     .entrance.user_weight
       span.user_msg_title 体重
       span.user_msg_value {{information.weight/1000||0}}kg
     .entrance.entrance_last.target_weight
       span.user_msg_title 目标体重
       span.user_msg_value {{information.taget_weight||0}}kg
-      select.setmsg.user_msg_value.opacity#taget_weight(v-on:change="updatetaget_weight")
-        option(v-for="n in information.taget_weight",v-bind:value="n") {{n}}kg
-        option(v-bind:value="information.taget_weight",v-bind:selected="'selected'") {{information.taget_weight}}kg
-        option(v-for="n in 200-information.taget_weight-1",v-bind:value="n+information.taget_weight+1") {{n+information.taget_weight+1}}kg
+      select.setmsg.user_msg_value.opacity#taget_weight(v-bind:value="information.taget_weight",v-on:change="updatetaget_weight")
+        option(v-for="n in 200",v-bind:value="n") {{n}}kg
     //-.entrance.entrance_last(v-on:click="test") 测试按钮
 
 
@@ -173,8 +169,8 @@
             if(__DEBUG__) {
               console.log(data);
             }
-            alert("后端返回的体重："+data.weight);
-            alert("后端返回的身高"+data.height);
+            //alert("后端返回的体重："+data.weight);
+            //alert("后端返回的身高"+data.height);
             //self.information = data;
             self.information.birth = data.birth||"2005-01-01";
             self.information.gender =(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的

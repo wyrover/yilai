@@ -18,7 +18,7 @@
                 span 水分 {{statistic.moisture/10}}%
                 span 肌肉 {{statistic.muscle/10}}%
                 span 骨骼 {{statistic.bone/10}}kg
-                span 内脂 {{statistic.internal_fat}}%
+                span 内脂 {{statistic.internal_fat}}
                 span 内龄 {{statistic.internal_age}}岁
                 span 代谢 {{statistic.metabolism}}kcal
 
