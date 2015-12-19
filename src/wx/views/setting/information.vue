@@ -144,17 +144,23 @@
                 if(__DEBUG__) {
                   console.log(data);
                 }
-                alert("1"+data.weight);
-                 //self.information = data;
-                 self.information.birth = data.birth||"2005-01-01";
-                 self.information.gender =(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
-                 self.information.height = data.height||0;
-                 self.information.weight = data.weight||0;
-                 self.information.target_weight = (data.target_weight/1000)||0;
-                 self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
-                 self.wxmsg.headimgurl = data.headimgurl
-                 self.wxmsg.name = data.name
-                 //console.log(self.wxmsg)
+                //self.information = data;
+                self.information.birth = data.birth||"2005-01-01";
+                self.information.gender =(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
+                self.information.height = data.height||0;
+                self.information.weight = data.weight||0;
+                self.information.target_weight = (data.target_weight/1000)||0;
+                self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
+                self.wxmsg.headimgurl = data.headimgurl
+                self.wxmsg.name = data.name
+                //console.log(self.wxmsg)
+                api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data){
+                  if(__DEBUG__){
+                    console.log(data)
+                  }
+                  self.information.weight = data[0].weight;
+
+                })
               });
             })
 
@@ -172,15 +178,23 @@
             //alert("后端返回的体重："+data.weight);
             //alert("后端返回的身高"+data.height);
             //self.information = data;
+
             self.information.birth = data.birth||"2005-01-01";
             self.information.gender =(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
             self.information.height = data.height||0;
             self.information.weight = data.weight||0;
             self.information.target_weight = (data.target_weight/1000)||0;
             self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
-            self.wxmsg.headimgurl = data.headimgurl
-            self.wxmsg.name = data.name
+            self.wxmsg.headimgurl = data.headimgurl;
+            self.wxmsg.name = data.name;
             //console.log(self.wxmsg)
+            api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data){
+              if(__DEBUG__){
+                console.log(data)
+              }
+              self.information.weight = data[0].weight;
+
+            })
           });
         }
 
