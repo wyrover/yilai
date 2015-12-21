@@ -201,10 +201,10 @@
               if(__DEBUG__){
                 console.log(data)
               }
-              alert(self.canload)
+              //alert(self.canload)
               self.canload = (data.length ==postobj.count);
-              alert("偏移量"+postobj.offset)
-              alert("返回的数据长度："+data.length +"请求的数据长度："+postobj.count)
+              //alert("偏移量"+postobj.offset)
+              //alert("返回的数据长度："+data.length +"请求的数据长度："+postobj.count)
               self.offset+=postobj.count;
 
               var centerdata=data;
