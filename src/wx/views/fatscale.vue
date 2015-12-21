@@ -1,5 +1,6 @@
 <template lang="jade">
   .main-content.with-foot-actions
+
     .userweight
       .current_weight
         .weight_time
@@ -77,7 +78,7 @@
           .text
             span.constitutes_title 基础代谢
             span {{closestState.metabolism}}kcal
-
+    .loadingdiv(v-bind:data-pageshow = "pageshow")
   //- modal
   //-   .modal-footer
   //-     button(@click="hide") 设置
@@ -87,6 +88,7 @@
 <style lang="stylus">
 
   @import '../../shared/assets/stylus/common'
+
   .main-content
     width 100%
     height 100%
@@ -267,7 +269,17 @@
               display inherit
             .constitutes_title
               font-size 14px
-
+  .loadingdiv
+    width 100%
+    height 100%
+    position fixed
+    left 0
+    top 0
+    background #fff
+    transition top ease 0.3s
+    z-index 10
+  [data-pageshow = true]
+    top -120%
 
 </style>
 
@@ -314,8 +326,8 @@
           code:"",
           tokenId:"",
           openid:""
-
-        }
+        },
+        pageshow:false
       };
     },
 
@@ -389,7 +401,7 @@
               centerdata.target_weight = data.target_weight;
               self.closestState = centerdata;
               self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
-
+              self.pageshow =true;
             })
             /***************获取目标体重 end****************/
 
@@ -423,6 +435,7 @@
 
             self.closestState.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100));
             self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
+            self.pageshow =true;
           });
           /*********获取某id对应的一条数据  end************/
         }

@@ -14,6 +14,7 @@
     .entrance.entrance_last.history
       a(v-link="{path: '/setting/history'}") 历史记录
       i.more
+    .loadingdiv(v-bind:data-pageshow = "pageshow")
 
 
 </template>
@@ -104,10 +105,11 @@
     data: function () {
       return {
         wxmsg:{
-          "name":"测试微信昵称",
-          "headimgurl":"http://img.wdjimg.com/mms/icon/v1/9/d4/22884940c69ffbe02cb97c52d7e60d49_256_256.png",
+          "name":"",
+          "headimgurl":"",
           "gender":"male"//"female"
-        }
+        },
+        pageshow:false
 
       }
     },
@@ -128,8 +130,9 @@
             console.log(data);
           }
           self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
-          self.wxmsg.headimgurl = data.headimgurl
-          self.wxmsg.name = data.name
+          self.wxmsg.headimgurl = data.headimgurl;
+          self.wxmsg.name = data.name;
+          self.pageshow = true;
            //console.log(self.wxmsg)
         });
       }
