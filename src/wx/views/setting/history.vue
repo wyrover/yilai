@@ -113,44 +113,7 @@
         firGetCount:29,//首次加载的数量 不要超过30
         reGetCount:29,//每次拉到底部加载的数量
         showModal:true,
-        statistics:[
-          {
-          "date":"2015-12-16 12:34:56",
-          "age":30,
-          "height":178,
-          "weight":80000,
-          "bmi":240,
-          "fat":10,
-          "moisture":11,
-          "muscle":12,
-          "bone":13,
-          "metabolism":14
-          },
-          {
-          "date":"2015-12-15 13:00:00",
-          "age":30,
-          "height":178,
-          "weight":80000,
-          "bmi":241,
-          "fat":9,
-          "moisture":10,
-          "muscle":11,
-          "bone":12,
-          "metabolism":13
-          },
-          {
-          "date":"2015-11-3 13:00:00",
-          "age":30,
-          "height":178,
-          "weight":80000,
-          "bmi":241,
-          "fat":9,
-          "moisture":10,
-          "muscle":11,
-          "bone":12,
-          "metabolism":13
-          }
-        ]
+        statistics:[]
       }
     },
 
@@ -172,6 +135,7 @@
           if(__DEBUG__){
             console.log(data)
           }
+
           self.canload =( data.length==postobj.count);
           self.offset+=postobj.count;
 
@@ -222,32 +186,7 @@
         var history_ul=document.getElementsByClassName("history_ul")[0];
         if((history_box.scrollTop>=history_ul.clientHeight-history_box.clientHeight)&&self.canload){
           self.canload = false;
-          var centerarr=[
-            {
-            "date":"2015-12-1 12:34:56",
-            "age":30,
-            "height":178,
-            "weight":80.0,
-            "bmi":240,
-            "fat":10,
-            "moisture":11,
-            "muscle":12,
-            "bone":13,
-            "metabolism":14
-            },
-            {
-            "date":"2015-11-2 13:00:00",
-            "age":30,
-            "height":178,
-            "weight":81.0,
-            "bmi":241,
-            "fat":9,
-            "moisture":10,
-            "muscle":11,
-            "bone":12,
-            "metabolism":13
-            }
-          ];
+          var centerarr=[];
           if(self.count>0){
             self.count--;
             var postobj={"count":self.reGetCount,"offset":self.offset};
@@ -256,12 +195,16 @@
             if(__DEBUG__){
               localStorage.openid = "ozEANuNXaPyykVqp6gTm2PwO404g";
             }
+
             api.BluetoothScale.getMultiData(postobj,localStorage.openid).then(function(data,status){
 
               if(__DEBUG__){
                 console.log(data)
               }
+              alert(self.canload)
               self.canload = (data.length ==postobj.count);
+              alert("偏移量"+postobj.offset)
+              alert("返回的数据长度："+data.length +"请求的数据长度："+postobj.count)
               self.offset+=postobj.count;
 
               var centerdata=data;

@@ -17,20 +17,26 @@
         a.setting_a(v-link="{path: '/setting'}")
       .current_bmi
         .bmi_colorstrip
-
-        .bmi_pointer(v-if="closestState.bmi>0&closestState.bmi<18.5",v-bind:style="{left:closestState.bmi*2+'%'}")
+          span.color1(v-bind:style="'background:#8cfeff;left:0%'")
+          span.color2(v-bind:style="'background:#91fea1;left:25%'")
+          span.color3(v-bind:style="'background:#ffe286;left:50%'")
+          span.color4(v-bind:style="'background:#ff9d9c;left:75%'")
+        .bmi_pointer(v-if="closestState.bmi>0&closestState.bmi<=14.5",v-bind:style="{left:'19%'}")
           span(v-bind:style="{color:bmicolor.color1}") BMI {{closestState.bmi}} 过轻
           i.triangle(v-bind:style="{borderTopColor:bmicolor.color1}")
-        .bmi_pointer(v-if="closestState.bmi>=18.5&&closestState.bmi<=23.99",v-bind:style="{left:closestState.bmi*2+'%'}")
+        .bmi_pointer(v-if="closestState.bmi>14.5&closestState.bmi<18.5",v-bind:style="{left:(closestState.bmi-14.5)*6.25+'%'}")
+          span(v-bind:style="{color:bmicolor.color1}") BMI {{closestState.bmi}} 过轻
+          i.triangle(v-bind:style="{borderTopColor:bmicolor.color1}")
+        .bmi_pointer(v-if="closestState.bmi>=18.5&&closestState.bmi<=23.99",v-bind:style="{left:((closestState.bmi-18.5)*6.25+25)+'%'}")
           span(v-bind:style="{color:bmicolor.color2}") BMI {{closestState.bmi}} 正常
           i.triangle(v-bind:style="{borderTopColor:bmicolor.color2}")
-        .bmi_pointer(v-if="closestState.bmi>23.99&&closestState.bmi<=27.9",v-bind:style="{left:closestState.bmi*2+'%'}")
+        .bmi_pointer(v-if="closestState.bmi>23.99&&closestState.bmi<28",v-bind:style="{left:((closestState.bmi-24)*6.25+50)+'%'}")
           span(v-bind:style="{color:bmicolor.color3}") BMI {{closestState.bmi}} 超重
           i.triangle(v-bind:style="{borderTopColor:bmicolor.color3}")
-        .bmi_pointer(v-if="closestState.bmi>27.9&&closestState.bmi<=42.5",v-bind:style="{left:closestState.bmi*2+'%'}")
+        .bmi_pointer(v-if="closestState.bmi>=28&&closestState.bmi<=32",v-bind:style="{left:((closestState.bmi-28)*3.75+75)+'%'}")
           span(v-bind:style="{color:bmicolor.color4}") BMI {{closestState.bmi}} 肥胖
           i.triangle(v-bind:style="{borderTopColor:bmicolor.color4}")
-        .bmi_pointer(v-if="closestState.bmi>43",v-bind:style="{left:'85%'}")
+        .bmi_pointer(v-if="closestState.bmi>32",v-bind:style="{left:'85%'}")
           span(v-bind:style="{color:bmicolor.color4}") BMI {{closestState.bmi}} 肥胖
           i.triangle(v-bind:style="{borderTopColor:bmicolor.color4}")
 
@@ -177,6 +183,13 @@
           top 50px
           left 50%
           transform translateX(-50%)
+          span
+            display inline-block
+            position absolute
+            width 50%
+            top 0
+            left 0
+            height 100%
         .bmi_pointer
           height 35px
           position absolute
@@ -285,17 +298,17 @@
           "color4":"#ff9d9c"
         },
         closestState:{
-          "date":"2015-11-11 12:00:00",
-          "age":30,
-          "height":178,
-          "weight":802.12,
-          "bmi":22,
-          "fat":10,
-          "moisture":11,
-          "muscle":12,
-          "bone":13,
-          "metabolism":14,
-          "target_weight":12000
+          "date":"200/1/1 12:00:00",
+          "age":0,
+          "height":0,
+          "weight":0,
+          "bmi":0,
+          "fat":0,
+          "moisture":0,
+          "muscle":0,
+          "bone":0,
+          "metabolism":0,
+          "target_weight":0
         },
         wxmsg:{
           code:"",
@@ -344,11 +357,13 @@
         // })
 
         /*********************获取批量数据 取出第一条 start****************************/
-        //alert("是否取出最后一条数据？"+(!(localStorage.state-0)))
+
+        //alert("是否取出最后一条数据？"+((localStorage.state-0==0)))
         if(__DEBUG__){
             localStorage.state = "567526C3D32169735564131C"
         }
-        if(!(localStorage.state-0)){
+        if(localStorage.state==0){
+
           api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data,status){
             if(__DEBUG__){
               console.log(data)

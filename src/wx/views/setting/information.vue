@@ -77,16 +77,16 @@
     data: function () {
       return {
         wxmsg:{
-          "name":"111",
+          "name":"",
           "headimgurl":"",
           "gender":"female"//"female"
         },
         information:{
           "birth":"1999-9-9",
           "gender":"male",
-          "height":75,
-          "weight":60200,
-          "target_weight":65
+          "height":0,
+          "weight":0,
+          "target_weight":0
         },
         updataInformation:function(){
           var self = this;
