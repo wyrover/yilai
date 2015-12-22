@@ -12,7 +12,7 @@
         .target_weight
           span.target_weight_span 目标体重
           span.target_weight_munber {{closestState.target_weight/1000||0}}kg
-      //-.chart
+      .chart
         a.chart_a(v-link="{path: '/chart'}")
       .setting
         a.setting_a(v-link="{path: '/setting'}")

@@ -91,8 +91,6 @@ module.exports = {
       var day = today.getDate();
       var month = today.getMonth()+1;
       var year = today.getFullYear();
-
-
       var prevmonth = month-1>0?month-1:month-1+12;
       var firmonth = day>6?month:prevmonth;
       var firday = day>6?day-6:day-6+monthmaxday(year,month-1);

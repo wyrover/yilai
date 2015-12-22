@@ -185,10 +185,10 @@ module.exports = function (Vue, Promise, config) {
             ]
           }
     */
-    getDayData: function(params) {
+    getDayData: function(params,openid) {
       return new Promise(function(resolve, reject) {
         Vue.http.post(
-          config.apiRoot + '/scale/statistics/daily',
+          config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/wx/daily/'+openid,
           JSON.stringify(params),
           function(data, status, request) {
             resolve(data);
@@ -206,10 +206,10 @@ module.exports = function (Vue, Promise, config) {
     /*5.获取月数据
 
     */
-    getMonthData: function(params) {
+    getMonthData: function(params,openid) {
       return new Promise(function(resolve, reject) {
         Vue.http.post(
-          config.apiRoot + '/scale/statistics/monthly',
+          config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/wx/monthly/'+openid,
           JSON.stringify(params),
           function(data, status, request) {
             resolve(data);
@@ -227,10 +227,10 @@ module.exports = function (Vue, Promise, config) {
     /*6.获取年数据
 
     */
-    getYearData: function(params) {
+    getYearData: function(params,openid) {
       return new Promise(function(resolve, reject) {
         Vue.http.post(
-          config.apiRoot + '/scale/statistics/yearly',
+          config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale/yearly/'+openid,
           JSON.stringify(params),
           function(data, status, request) {
             resolve(data);
@@ -245,5 +245,16 @@ module.exports = function (Vue, Promise, config) {
       });
     }
 
+
+/****************************************************
+
+
+
+    /5dba318782f34938920da2ee0eeb1440/scale/getUserDevices/openid //获取用户绑定设备列表
+/5dba318782f34938920da2ee0eeb1440/scale/getUserDevices/deviceid//获取该设备绑定用户
+/5dba318782f34938920da2ee0eeb1440/scale/unbind/deviceid/openid/ticket //删除设备与用户绑定的关系
+
+
+******************************************************/
   }
 }

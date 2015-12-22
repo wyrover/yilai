@@ -321,7 +321,7 @@
       return {
         d:"",//存放曲线的路径 是个字符串
         points:[],//实际渲染的坐标点
-        pointnum:["60","70","100","90","120",61],//画布绘制的根据这里的数字绘制曲线  自动上下居中 自动计算差值 数值为0自动跳过
+        pointnum:["0","1","0","0","0",0],//画布绘制的根据这里的数字绘制曲线  自动上下居中 自动计算差值 数值为0自动跳过
         showvalues:[],//手指点击后要显示的数值
         acreages:"",//存放绘制渐变图案的面的路径，是个字符串
         coordinateXs:["0~5","5~15","15~20","5~15","15~20"],
@@ -359,6 +359,7 @@
           function pointToD(pointarr){
             var svg_slope = 70;//变化坡度大小 可以选择0到100之间的数字
             var newpointarr = [];
+            console.log(pointarr)
             for(var i=0;i<pointarr.length;i++){
               if(pointarr[i]-0>0){
                 var max = pointarr[i]-0;
@@ -384,7 +385,7 @@
             }
             var coordinateXlength = newpointarr.length;
             var windowWidth = window.innerWidth;
-            var firstno0;
+            var firstno0 = 0;
             var lastno0;
             var result={};
             result.points=[];
@@ -396,8 +397,11 @@
 
                 result.points.push((windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160));
                 firstno0=i;
+
                 break;
+
               }
+
             }
             for(var i=firstno0+1;i<newpointarr.length;i++){
               if(newpointarr[i]>0){
@@ -424,7 +428,7 @@
           addClass(selectedbox,"selected");
 
 
-          self.updataSVG(self);//这个函数需要放在数据重置后执行，作用是更新svg曲线
+
           function addClass( elements,cName ){
             elements.className += " " + cName;
           };
@@ -441,11 +445,12 @@
     ready:function(){
       var self = this;
 
-      //updataPointNum(self,api);//获取数据，更新self.pointnum //debug
 
 
       datetools.updatecoordinateXs.month(self);//更新横坐标
       datetools.updateSedDate.month(self);//更新可以左右选择的日期的内容
+      updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+
     },
 
     route:{
@@ -456,7 +461,7 @@
 
 
 
-        self.updataSVG(self);
+
 
 
 
@@ -465,35 +470,48 @@
       }
     },
 
+
     methods:{
       selectedweek:function(id){
         var self = this;
 
-        self.pointnum = ["123",134,255,200,134,127,244];
+
+        //self.pointnum = ["123",134,255,200,134,127,244];
 
 
         datetools.updateSedDate.week(self);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
         datetools.updatecoordinateXs.week(self);//更新横坐标函数 第二个参数可以输入某一个日期例如"2015-12-10"  会自动更新横坐标 在这个日期往前推七天
 
-        self.selectcommom(id);//必须在self.pointnum重置后执行
+        self.selectcommom(id);
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+        //self.updataSVG(self);//这个函数需要放在数据重置后执行，作用是更新svg曲线
       },
       selectedmonth:function(id){
         var self = this;
-        self.pointnum = [255,282,134,127,244,300];
+
+
+
+        //self.pointnum = [255,282,134,127,244,300];
 
         datetools.updateSedDate.month(self);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
         datetools.updatecoordinateXs.month(self);//更新横坐标函数 第二个参数可以输入某一个日期例如"2015-12-10"  会自动更新横坐标 在这个日期往前推一个月
 
-        self.selectcommom(id);//必须在self.pointnum重置后执行
+        self.selectcommom(id);
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+        //self.updataSVG(self);//这个函数需要放在数据重置后执行，作用是更新svg曲线
       },
       selectedyear:function(id){
         var self = this;
-        self.pointnum = ["123",2,2,2,2,0,2,244,200,134,127,244];
+
 
         datetools.updateSedDate.year(self);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
         datetools.updatecoordinateXs.year(self) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
 
-        self.selectcommom(id);//必须在self.pointnum重置后执行
+        //self.pointnum = ["123",2,2,2,2,0,2,244,200,134,127,244];
+
+        self.selectcommom(id);
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+        //self.updataSVG(self);//这个函数需要放在数据重置后执行，作用是更新svg曲线
       },
       selectedweight:function(id){
         var self = this;
@@ -501,7 +519,7 @@
 
 
 
-
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
         self.selectcommom(id);//必须在self.pointnum重置后执行
       },
       selectedbmi:function(id){
@@ -509,15 +527,15 @@
         self.unit = " ";
 
 
-
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
         self.selectcommom(id);//必须在self.pointnum重置后执行
       },
       selectedfat:function(id){
         var self = this;
         self.unit = "%";
 
-
-        self.selectcommom(id);//必须在self.pointnum重置后执行
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+        self.selectcommom(id);
       },
       valueshow:function(num){
         var self = this;
@@ -570,7 +588,7 @@
           datetools.updatecoordinateXs.week(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
         }
 
-        self.updataSVG(self);
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
 
       },
       nextdate:function(){
@@ -586,13 +604,14 @@
         if(selectdatetype.id == "yearbox"){
 
           var newlastdate = new Date((new Date(lastdate)-0)+1000*60*60*24*366);
+
           if(newlastdate-new Date()>0){
             console.log("超过当前日期");
             document.getElementsByClassName("pointer_right")[0].style.opacity="0"
           }else{
             datetools.updateSedDate.year(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
             datetools.updatecoordinateXs.year(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
-            self.updataSVG(self);
+            updataPointNum(self,api);//获取数据，更新self.pointnum //debug
           }
 
         }else if(selectdatetype.id == "monthbox"){
@@ -603,7 +622,7 @@
           }else{
             datetools.updateSedDate.month(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
             datetools.updatecoordinateXs.month(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
-            self.updataSVG(self);
+            updataPointNum(self,api);//获取数据，更新self.pointnum //debug
           }
 
         }else if(selectdatetype.id == "weekbox"){
@@ -615,7 +634,9 @@
           }else{
             datetools.updateSedDate.week(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
             datetools.updatecoordinateXs.week(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
-            self.updataSVG(self);
+
+
+            updataPointNum(self,api);//获取数据，更新self.pointnum //debug
           }
 
         }
