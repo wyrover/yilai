@@ -156,8 +156,8 @@
               animation-delay 0s
             .path
               transition all ease 0.3s
-              stroke-dasharray 1000
-              stroke-dashoffset 1000
+              stroke-dasharray 2000
+              stroke-dashoffset 2000
               animation dash 2s ease forwards
               animation-iteration-count 1
               animation-delay 0.5s

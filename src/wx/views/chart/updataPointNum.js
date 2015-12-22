@@ -109,7 +109,7 @@ module.exports = function(self,api){//这个js的功能就是更新self.pointnum
       "year":new Date(enddate).getFullYear()+"-"+(new Date(enddate).getMonth()+1)+"-"+18
     }
     console.log(postobj)
-    api.BluetoothScale.getYearData(postobj,openid).then(function (data) {
+/*    api.BluetoothScale.getYearData(postobj,openid).then(function (data) {
       if(__DEBUG__) {
         console.log(data);
       }
@@ -118,15 +118,15 @@ module.exports = function(self,api){//这个js的功能就是更新self.pointnum
 
 
 
-      self.updataSVG(self);
-    });
+      self.updataSVG(self);//数据加载完成后更新svg曲线
+    });*/
 
-    /******************调试用假数据 start******************
+    /******************调试用假数据 start******************/
 
     self.pointnum = [1,2,1,1,5,6,7,8,9,10,9,6];
     self.updataSVG(self);
 
-    ******************调试用假数据 end******************/
+    /******************调试用假数据 end******************/
 
 
 
