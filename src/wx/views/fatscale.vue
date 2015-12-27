@@ -327,7 +327,7 @@
           tokenId:"",
           openid:""
         },
-        pageshow:false
+        pageshow:(__DEBUG__)?true:false
       };
     },
 

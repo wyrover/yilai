@@ -24,7 +24,7 @@ var configRouter = function (router) {
       component: require('./views/setting/equipment/list.vue')
     },
     // 设置页面-详情
-    '/setting/equipment/details': {
+    '/setting/equipment/:device_id': {
       component: require('./views/setting/equipment/details.vue')
     },
     // 设置页面-详情-用户

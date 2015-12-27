@@ -1,17 +1,15 @@
 <template lang="jade">
   .main-content
     ul.equipment_list
-      li
+      li(v-for="device in devices")
         .entrance
-          //a(v-link="{path: '/setting/'+equipment-id}")
-          a(v-link="{path: '/setting/equipment/details'}")
+          a(v-link="{path: '/setting/equipment/'+device.id}")
             .equipment_img
-              img(src="../../../assets/images/icon/zhifangcheng.png" width="100%" height="100%")
-            span.equipment_name 亿莱脂肪秤
+              img(v-bind:src="device.img",v-bind:width="'100%'",v-bind:height="'100%'")
+            span.equipment_name {{device.name}}
             i.more
       li
         .entrance
-          //a(v-link="{path: '/setting/'+equipment-id}")
           a(v-link="{path: '/setting/equipment/details'}")
             .equipment_img
               img(src="../../../assets/images/icon/zhifangcheng.png" width="100%" height="100%")
@@ -60,15 +58,48 @@
     components: {
       'api': api
     },
-
     data: function () {
       return {
+        getDevice_list:[
+          {
+            device_type:"dt1",
+            device_id:"001"
+          }
+        ]
 
       };
+    },
+    computed:{
+      devices:function(){
+        var getDevice_list = this.getDevice_list;
+        var deviceslist = [];
+        for(var i=0;i<getDevice_list.length;i++){
+          deviceslist.push({
+            img:"../../../assets/images/device/"+getDevice_list[i].device_id+".png",
+            name:getDevice_list[i].device_id,
+            id:getDevice_list[i].device_id
+          })
+        }
+        return deviceslist;
+      }
     },
     route:{
       data:function(){
         document.title = "设备管理";
+
+        var openid = localStorage.openid;
+        if(__DEBUG__){
+          openid = "ozEANuNXaPyykVqp6gTm2PwO404g"
+        }
+        api.device.getDevicesList(openid).then(function(data){
+          if(__DEBUG__){
+            console.log(data);
+          }
+          console.log(data.resp_msg.ret_code)
+          if(data.resp_msg.ret_code == 0){
+            console.log(data.device_list)
+          }
+        })
       }
     },
     methods: {

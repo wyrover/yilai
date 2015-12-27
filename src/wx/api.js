@@ -9,5 +9,6 @@ Vue.use(VueResource);
 
 module.exports = {
   wxmsg: require('./api/wxmsg')(Vue, Promise, config),
-  BluetoothScale: require('./api/BluetoothScale')(Vue, Promise, config)
+  BluetoothScale: require('./api/BluetoothScale')(Vue, Promise, config),
+  device: require('./api/device')(Vue, Promise, config)
 }
