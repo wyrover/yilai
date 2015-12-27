@@ -106,27 +106,27 @@ module.exports = function(self,api){//这个js的功能就是更新self.pointnum
 
   }else if(timetype=="year"){
     var postobj = {
-      "year":new Date(enddate).getFullYear()+"-"+(new Date(enddate).getMonth()+1)+"-"+18
+      "end-month":new Date(enddate).getFullYear()+"-"+(new Date(enddate).getMonth()+1),
+      "months":12
     }
-    console.log(postobj)
-/*    api.BluetoothScale.getYearData(postobj,openid).then(function (data) {
+    api.BluetoothScale.getYearData(postobj,openid).then(function (data) {
       if(__DEBUG__) {
         console.log(data);
       }
-      getdata=data.statistic;
-      toshowobjs=[12];
+      //getdata=data.statistic;
+      //toshowobjs=[12];
 
 
 
-      self.updataSVG(self);//数据加载完成后更新svg曲线
-    });*/
+      //self.updataSVG(self);//数据加载完成后更新svg曲线
+    });
 
-    /******************调试用假数据 start******************/
+    /******************调试用假数据 start******************
 
     self.pointnum = [1,2,1,1,5,6,7,8,9,10,9,6];
     self.updataSVG(self);
 
-    /******************调试用假数据 end******************/
+    ******************调试用假数据 end******************/
 
 
 

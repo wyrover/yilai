@@ -339,6 +339,7 @@
         //alert("openid不存在？正常的话这里是true："+!localStorage.openid);
         self.wxmsg.code = localStorage.code;
         if(!localStorage.openid){
+          //alert("code存在？"+self.wxmsg.code&&self.wxmsg.code!="null")
           if(self.wxmsg.code&&self.wxmsg.code!="null"){
             api.wxmsg.getWXmsg(localStorage.code).then(function (data) {
               //alert("本地openid，这个应该是没有的："+localStorage.openid)
@@ -370,18 +371,18 @@
 
         /*********************获取批量数据 取出第一条 start****************************/
 
-        //alert("是否取出最后一条数据？"+((localStorage.state-0==0)))
+
         if(__DEBUG__){
             localStorage.state = "567526C3D32169735564131C"
+            localStorage.state = 0
         }
+        //alert("是否取出最后一条数据？"+((localStorage.state==0)))
         if(localStorage.state==0){
-
+          //alert("此时的openid是："+openid)
           api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data,status){
             if(__DEBUG__){
               console.log(data)
             }
-
-
             var centerdata=data[0];
             /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
             centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100))

@@ -109,7 +109,7 @@
           "headimgurl":"",
           "gender":"male"//"female"
         },
-        pageshow:false
+        pageshow:true
 
       }
     },
