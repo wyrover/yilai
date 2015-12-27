@@ -5,11 +5,11 @@
         img
       span.user_name 拉取微信昵称
     ul
-      li.user_list
+      li.user_list(v-for="user in users")
         .user_img
           img
-        span.equipment_name 拉取微信昵称
-        input.deleteuser_button(value="DELETE",type="button",@click.prevent.stop="reconfirm")
+        span.equipment_name {{user.name}}
+        input.deleteuser_button(value="DELETE",type="button",@click.prevent.stop="reconfirm(user.openid)")
 </template>
 
 <style lang="stylus">
@@ -85,18 +85,52 @@
     },
     data: function () {
       return {
-        showModal:true
+        showModal:true,
+        //selfOpendId:(window.localStrage.openid)?window.localStrage.openid:"",
+        deviceid:window.location.href.split("setting/equipment/")[1].split("/users")[0],
+        users_openids:[],
+        users:[
+          {
+            openid:"",
+            headimgurl:"",
+            name:""
+          }
+        ]
       }
     },
     route:{
       data:function(){
         document.title = "已绑定用户";
+        var self = this;
+
+        var deviceid = self.deviceid;
+        console.log("deviceid:::::::::::"+deviceid)
+        if(__DEBUG__){
+          deviceid = "0001"
+        }
+        api.device.getDevicesUsers(deviceid).then(function(data){
+          if(__DEBUG__){
+            console.log(data);
+          }
+          self.users_openids = data.open_id
+          var openids =  data.open_id
+          for(var i=0;i<data.open_id.length;i++){
+            api.BluetoothScale.getUserInformation(openids[i]).then(function (data) {
+              if(__DEBUG__) {
+                console.log(data);
+              }
+              self.users.headimgurl = data.headimgurl;
+              self.users.name = data.name;
+            });
+          }
+
+        })
       }
     },
     methods:{
-      reconfirm:function(){
+      reconfirm:function(openid){
         if(confirm("确定删除该用户吗?")){
-          console.log(123);
+          console.log(openid);
         }
       }
     }

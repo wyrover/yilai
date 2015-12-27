@@ -66,3 +66,14 @@ module.exports = function (Vue, Promise, config) {
 
   }
 }
+
+/****************************************************
+
+
+
+    /5dba318782f34938920da2ee0eeb1440/scale/getUserDevices/openid //获取用户绑定设备列表
+/5dba318782f34938920da2ee0eeb1440/scale/getUserDevices/deviceid  //获取该设备绑定用户
+/5dba318782f34938920da2ee0eeb1440/scale/unbind/deviceid/openid/ticket //删除设备与用户绑定的关系
+
+
+******************************************************/

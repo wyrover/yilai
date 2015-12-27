@@ -5,7 +5,7 @@
         .entrance
           a(v-link="{path: '/setting/equipment/'+device.id}")
             .equipment_img
-              img(v-bind:src="device.img",v-bind:width="'100%'",v-bind:height="'100%'")
+              img(v-bind:src="'../../../assets/images/device/'+device.id+'.png'",v-bind:width="'100%'",v-bind:height="'100%'")
             span.equipment_name {{device.name}}
             i.more
       li
@@ -75,7 +75,6 @@
         var deviceslist = [];
         for(var i=0;i<getDevice_list.length;i++){
           deviceslist.push({
-            img:"../../../assets/images/device/"+getDevice_list[i].device_id+".png",
             name:getDevice_list[i].device_id,
             id:getDevice_list[i].device_id
           })

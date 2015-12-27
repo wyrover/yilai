@@ -6,7 +6,7 @@
       .device_name 亿莱脂肪秤
     .list
       .entrance.personal_information
-        a(v-link="{path: '/setting/equipment/details/users'}")
+        a(v-link="{path: '/setting/equipment/'+deviceid+'/users'}")
           span.personal_information_title 用 户
           span.personal_information_value 2人
           i.more.white
@@ -84,18 +84,46 @@
     },
     data: function () {
       return {
-        showModal:true
+        deviceid:window.location.href.split("setting/equipment/")[1].split("?")[0],
+        showModal:true,
+        usersNum:2
       }
     },
     route:{
       data:function(){
         document.title = "设备详情";
+        var self = this;
+
+        var deviceid = window.location.href.split("setting/equipment/")[1].split("?")[0];
+        console.log("deviceid:::::::::::"+deviceid)
+        if(__DEBUG__){
+          deviceid = "0001"
+        }
+        api.device.getDevicesUsers(deviceid).then(function(data){
+          if(__DEBUG__){
+            console.log(data);
+          }
+          self.usersNum = data.open_id.length
+
+
+        })
       }
     },
     methods:{
       reconfirm:function(){
         if(confirm("确定删除该设备吗?")){
           console.log(123);
+
+
+          var deviceid = window.location.href.split("setting/equipment/")[1].split("?")[0];
+          var openid = loacalStroage.openid;
+          var ticket;//获取操作凭证   这个东西很难取  参考这个http://iot.weixin.qq.com/document-3_2.html  然后搜索getWXDeviceTicket
+/*          api.device.DeviceUnbindUser(deviceid,openid,ticket).then(function(data){
+            if(__DEBUG__){
+              console.log(data);
+            }
+
+          })*/
         }
       }
     }
