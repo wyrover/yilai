@@ -85,6 +85,7 @@
     route:{
       data:function(){
         document.title = "设备管理";
+        var self = this;
 
         var openid = localStorage.openid;
         if(__DEBUG__){

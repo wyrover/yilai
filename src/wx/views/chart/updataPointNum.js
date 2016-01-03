@@ -113,8 +113,27 @@ module.exports = function(self,api){//这个js的功能就是更新self.pointnum
       if(__DEBUG__) {
         console.log(data);
       }
-      //getdata=data.statistic;
-      //toshowobjs=[12];
+      getdata=data.statistic;
+      //toshowobjs.length=postobj.days/postobj.avg_days;
+      if(datatype == "weight"){
+        for(var i=0;i<getdata.length;i++){
+          toshowobjs.push(getdata[i].weight||0);
+        }
+        self.pointnum = toshowobjs;
+      }else if(datatype == "bmi"){
+        for(var i=0;i<getdata.length;i++){
+          toshowobjs.push(getdata[i].bmi||0);
+        }
+        self.pointnum = toshowobjs;
+      }else if(datatype == "fat"){
+        for(var i=0;i<getdata.length;i++){
+          toshowobjs.push(getdata[i].fat||0);
+        }
+        self.pointnum = toshowobjs;
+      }
+
+
+      self.updataSVG(self);
 
 
 
