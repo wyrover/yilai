@@ -358,7 +358,7 @@
         }
         var openid = localStorage.openid;
         if(__DEBUG__){
-          var openid = "ozEANuNXaPyykVqp6gTm2PwO404g";
+          var openid = "ozEANuMKQsrGLWXJ4D82loulQeWs";
         }
         //alert(localStorage.openid)
 
@@ -376,7 +376,7 @@
             localStorage.state = "567526C3D32169735564131C"
             localStorage.state = 0
         }
-        alert("是否取出最后一条数据？"+((localStorage.state==0)))
+        //alert("是否取出最后一条数据？"+((localStorage.state==0)))
         if(localStorage.state==0){
           alert("此时的openid是："+openid)
           api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data,status){

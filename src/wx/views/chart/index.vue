@@ -604,9 +604,7 @@
         if(selectdatetype.id == "yearbox"){
 
           var newlastdate = new Date((new Date(lastdate)-0)+1000*60*60*24*366);
-
           if(newlastdate-new Date()>0){
-            console.log("超过当前日期");
             document.getElementsByClassName("pointer_right")[0].style.opacity="0"
           }else{
             datetools.updateSedDate.year(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
@@ -615,9 +613,9 @@
           }
 
         }else if(selectdatetype.id == "monthbox"){
-          var newlastdate = new Date((new Date(lastdate)-0)+1000*60*60*24*30);
+
+          var newlastdate = new Date((new Date(lastdate).getTime()-0)+1000*60*60*24*30);
           if(newlastdate-new Date()>0){
-            console.log("超过当前日期");
             document.getElementsByClassName("pointer_right")[0].style.opacity="0"
           }else{
             datetools.updateSedDate.month(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
@@ -627,9 +625,9 @@
 
         }else if(selectdatetype.id == "weekbox"){
 
-          var newlastdate = new Date((new Date(lastdate)-0)+1000*60*60*24*7);
+          var newlastdate = new Date(new Date(lastdate).getTime()+1000*60*60*24*7);
+
           if(newlastdate-new Date()>0){
-            console.log("超过当前日期");
             document.getElementsByClassName("pointer_right")[0].style.opacity="0"
           }else{
             datetools.updateSedDate.week(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"

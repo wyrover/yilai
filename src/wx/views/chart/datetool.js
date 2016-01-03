@@ -97,7 +97,7 @@ module.exports = {
       self.showseddate=firmonth+"月"+firday+"日~"+month+"月"+day+"日";
 
       var firstday = new Date(today.getTime()-1000*60*60*24*6)
-      setSedDateTextAttr(firstday.getFullYear()+"-"+(firstday.getMonth()+1)+"-"+firstday.getDate(),today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate());
+      setSedDateTextAttr(firstday.getFullYear()+"-"+((firstday.getMonth()+1)>9?(firstday.getMonth()+1):("0"+(firstday.getMonth()+1)))+"-"+(firstday.getDate()>9?firstday.getDate():("0"+firstday.getDate())),today.getFullYear()+"-"+((today.getMonth()+1)>9?(today.getMonth()+1):("0"+(today.getMonth()+1)))+"-"+(today.getDate()>9?today.getDate():("0"+today.getDate())));
 
 
     },
@@ -110,7 +110,7 @@ module.exports = {
       var firstday = new Date(today.getTime()-1000*60*60*24*29);
       self.showseddate = (firstday.getMonth()-0+1)+"月"+firstday.getDate()+"日~"+(today.getMonth()-0+1)+"月"+today.getDate()+"日";
 
-      setSedDateTextAttr(firstday.getFullYear()+"-"+(firstday.getMonth()+1)+"-"+firstday.getDate(),today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate());
+      setSedDateTextAttr(firstday.getFullYear()+"-"+((firstday.getMonth()+1)>9?(firstday.getMonth()+1):("0"+(firstday.getMonth()+1)))+"-"+(firstday.getDate()>9?firstday.getDate():("0"+firstday.getDate())),today.getFullYear()+"-"+(((today.getMonth()+1)>9)?(today.getMonth()+1):("0"+(today.getMonth()+1)))+"-"+((today.getDate()>9)?today.getDate():("0"+today.getDate())));
 
     },
     year:function(self,date){
@@ -127,7 +127,7 @@ module.exports = {
 
 
 
-      setSedDateTextAttr(firstyear+"-"+firstmonth+"-01",thisyear+"-"+month+"-01");
+      setSedDateTextAttr(firstyear+"-"+(firstmonth>9?firstmonth:("0"+firstmonth))+"-01",thisyear+"-"+(month>9?month:("0"+month))+"-01");
 
     }
   }
