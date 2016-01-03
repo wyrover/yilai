@@ -115,7 +115,7 @@
       reconfirm:function(){
         if(confirm("确定删除该设备吗?")){
           var deviceid = window.location.href.split("setting/equipment/")[1].split("?")[0];
-          var openid = loacalStroage.openid;
+          var openid = localStorage.openid;
           api.device.DeviceUnbindUser(deviceid,openid).then(function(status){
             if(__DEBUG__){
               console.log(status);

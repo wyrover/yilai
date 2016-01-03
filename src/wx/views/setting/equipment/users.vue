@@ -137,7 +137,7 @@
         var self = this;
         if(confirm("确定删除该用户吗?")){
           console.log(openid);
-          DeviceUnbindUser(self.deviceid,openid).then(function(status){
+          api.device.DeviceUnbindUser(self.deviceid,openid).then(function(status){
             alert(status)
           })
         }
