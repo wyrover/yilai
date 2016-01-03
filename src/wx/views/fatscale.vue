@@ -378,7 +378,6 @@
         }
         //alert("是否取出最后一条数据？"+((localStorage.state==0)))
         if(localStorage.state==0){
-          alert("此时的openid是："+openid)
           api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data,status){
             if(__DEBUG__){
               console.log(data)

@@ -120,11 +120,10 @@
 
         var self = this;
         if(__DEBUG__){
-          var openid = "ozEANuNXaPyykVqp6gTm2PwO404g";
+          var openid = "ozEANuMKQsrGLWXJ4D82loulQeWs";
         }else{
           var openid = localStorage.openid;
         }
-
         api.BluetoothScale.getUserInformation(openid).then(function (data) {
           if(__DEBUG__) {
             console.log(data);

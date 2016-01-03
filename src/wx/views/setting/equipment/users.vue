@@ -1,12 +1,12 @@
 <template lang="jade">
   .main-content.users.white
-    .self_msg
-      .user_img
+    .self_msg(v-for="user in users",v-if="user.openid == selfOpendId")
+      .user_img(v-bind:style="'background-image:url('+user.headimgurl+')'")
         img
-      span.user_name 拉取微信昵称
+      span.user_name {{user.name}}
     ul
-      li.user_list(v-for="user in users")
-        .user_img
+      li.user_list(v-for="user in users",v-if="user.openid !== selfOpendId")
+        .user_img(v-bind:style="'background-image:url('+user.headimgurl+')'")
           img
         span.equipment_name {{user.name}}
         input.deleteuser_button(value="DELETE",type="button",@click.prevent.stop="reconfirm(user.openid)")
@@ -31,8 +31,8 @@
         width 60px
         height 60px
         border-radius 50%
-        background blue
         margin 10px
+        background-size 100% 100%
       .user_name
         display inline-block
         height 60px
@@ -54,8 +54,8 @@
           width 60px
           height 60px
           border-radius 50%
-          background blue
           margin 10px
+          background-size 100% 100%
         .equipment_name
           display inline-block
           height 80px
@@ -86,14 +86,19 @@
     data: function () {
       return {
         showModal:true,
-        //selfOpendId:(window.localStrage.openid)?window.localStrage.openid:"",
+        selfOpendId:localStorage.openid,
         deviceid:window.location.href.split("setting/equipment/")[1].split("/users")[0],
         users_openids:[],
         users:[
           {
-            openid:"",
-            headimgurl:"",
-            name:"132"
+            openid:"ozEANuMKQsrGLWXJ4D82loulQeWs",
+            headimgurl:"http://v1.qzone.cc/avatar/201307/25/19/51/51f111498ed3d546.jpg!200x200.jpg",
+            name:"111"
+          },
+          {
+            openid:"ozEANuNXaPyykVqp6gTm2PwO404g",
+            headimgurl:"http://v1.qzone.cc/avatar/201505/02/16/16/554487c5b5a84624.jpg!200x200.jpg",
+            name:"222"
           }
         ]
       }
@@ -119,8 +124,8 @@
               if(__DEBUG__) {
                 console.log(data);
               }
-              self.users.headimgurl = data.headimgurl;
-              self.users.name = data.name;
+              self.users[i].headimgurl = data.headimgurl;
+              self.users[i].name = data.name;
             });
           }
 
@@ -129,6 +134,7 @@
     },
     methods:{
       reconfirm:function(openid){
+        var self = this;
         if(confirm("确定删除该用户吗?")){
           console.log(openid);
         }

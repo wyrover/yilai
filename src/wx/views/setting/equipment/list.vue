@@ -5,10 +5,10 @@
         .entrance
           a(v-link="{path: '/setting/equipment/'+device.id}")
             .equipment_img
-              img(v-bind:src="'../../../assets/images/device/'+device.id+'.png'",v-bind:width="'100%'",v-bind:height="'100%'")
+              img(v-bind:src="'http://test.xlink.cn/yilai/wx/images/'+device.id+'.png'",v-bind:width="'100%'",v-bind:height="'100%'")
             span.equipment_name {{device.name}}
             i.more
-      li
+      //-li
         .entrance
           a(v-link="{path: '/setting/equipment/details'}")
             .equipment_img
@@ -75,7 +75,7 @@
         var deviceslist = [];
         for(var i=0;i<getDevice_list.length;i++){
           deviceslist.push({
-            name:getDevice_list[i].device_id,
+            name:"亿莱脂肪秤",
             id:getDevice_list[i].device_id
           })
         }
@@ -89,15 +89,15 @@
 
         var openid = localStorage.openid;
         if(__DEBUG__){
-          openid = "ozEANuNXaPyykVqp6gTm2PwO404g"
+          openid = "ozEANuMKQsrGLWXJ4D82loulQeWs"
         }
         api.device.getDevicesList(openid).then(function(data){
           if(__DEBUG__){
             console.log(data);
           }
           console.log(data.resp_msg.ret_code)
-          if(data.resp_msg.ret_code == 0){
-            console.log(data.device_list)
+          if(data.resp_msg.ret_code == 0&&data.device_list){
+            self.getDevice_list = data.device_list;
           }
         })
       }
