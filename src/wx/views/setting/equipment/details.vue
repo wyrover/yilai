@@ -114,18 +114,14 @@
     methods:{
       reconfirm:function(){
         if(confirm("确定删除该设备吗?")){
-          console.log(123);
-
-
           var deviceid = window.location.href.split("setting/equipment/")[1].split("?")[0];
           var openid = loacalStroage.openid;
-          var ticket;//获取操作凭证   这个东西很难取  参考这个http://iot.weixin.qq.com/document-3_2.html  然后搜索getWXDeviceTicket
-/*          api.device.DeviceUnbindUser(deviceid,openid,ticket).then(function(data){
+          api.device.DeviceUnbindUser(deviceid,openid).then(function(status){
             if(__DEBUG__){
-              console.log(data);
+              console.log(status);
             }
-
-          })*/
+            alert(status)
+          })
         }
       }
     }
