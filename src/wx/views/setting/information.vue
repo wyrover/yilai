@@ -100,6 +100,7 @@
             "target_weight":self.information.target_weight*1000
           };
           if(!localStorage.openid){
+            //alert("执行这里说明有问题")
             if(__DEBUG__){console.log("本地不存在openid,")}
             if(localStorage.code&&localStorage.code!="null"){
               var openid = localStorage.openid
@@ -112,8 +113,15 @@
 
             }
           }else{
+
             //var openid = "ozEANuBTIEscOwZ6wS4UFvhK38yw"
             var openid = localStorage.openid;
+            if(__DEBUG__){
+              var openid = "ozEANuMKQsrGLWXJ4D82louIQeWs"
+            }
+            console.log("这里是设置个人信息")
+            console.log(postobj)
+            //alert(openid)
             api.BluetoothScale.setUserInformation(postobj,openid).then(function (data) {
               if(__DEBUG__) {
                 console.log(data);
@@ -138,7 +146,7 @@
               localStorage.openid=data.openid;
               var openid = localStorage.openid;
               if(__DEBUG__){
-                var openid = "ozEANuBTIEscOwZ6wS4UFvhK38yw"
+                var openid = "ozEANuMKQsrGLWXJ4D82louIQeWs"
               }
               //var openid = "ozEANuBTIEscOwZ6wS4UFvhK38yw"
 
@@ -170,11 +178,12 @@
           //var openid = "ozEANuBTIEscOwZ6wS4UFvhK38yw"
           var openid = localStorage.openid;
           if(__DEBUG__){
-            openid="ozEANuNXaPyykVqp6gTm2PwO404g"
+            openid="ozEANuMKQsrGLWXJ4D82louIQeWs"
           }
           //alert("本地已经存在openid："+openid)
           api.BluetoothScale.getUserInformation(openid).then(function (data) {
             if(__DEBUG__) {
+              console.log("这里是获取个人信息")
               console.log(data);
             }
             //alert("后端返回的体重："+data.weight);
@@ -192,6 +201,7 @@
             //console.log(self.wxmsg)
             api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data){
               if(__DEBUG__){
+                console.log("这里是获取到的最近一次数据")
                 console.log(data)
               }
               self.information.weight = data[0].weight;

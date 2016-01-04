@@ -8,7 +8,7 @@
     .entrance.personal_information
       a(v-link="{path: '/setting/information'}") 个人信息
       i.more
-    .entrance.equipment
+    //.entrance.equipment
       a(v-link="{path: '/setting/equipment'}") 设备管理
       i.more
     .entrance.entrance_last.history
@@ -120,10 +120,11 @@
 
         var self = this;
         if(__DEBUG__){
-          var openid = "ozEANuMKQsrGLWXJ4D82loulQeWs";
+          var openid = "ozEANuMKQsrGLWXJ4D82louIQeWs";
         }else{
           var openid = localStorage.openid;
         }
+        //alert(openid);
         api.BluetoothScale.getUserInformation(openid).then(function (data) {
           if(__DEBUG__) {
             console.log(data);

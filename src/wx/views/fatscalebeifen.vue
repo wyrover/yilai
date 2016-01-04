@@ -350,42 +350,154 @@
               self.wxmsg.refresh_token = data.refresh_token;
               localStorage.openid=data.openid;
 
-              /*********************获取批量数据 取出第一条 start****************************/
-              if(localStorage.state==0){
-                var openid = localStorage.openid;
-                if(__DEBUG__){
-                  var openid = "ozEANuMKQsrGLWXJ4D82louIQeWs";
-                }
-                getLastData(openid,self);
-              /*********************获取批量数据 取出第一条 end****************************/
-              }else {
-                /*********获取某id对应的一条数据 start************/
-                var state = localStorage.state;
-                getOneData(state,self)
-                /*********获取某id对应的一条数据  end************/
-              }
+
+
               //alert("请求获得openid"+localStorage.openid);
             })
           }
         }else{
           self.wxmsg.openid=localStorage.openid;
+          //alert("本地获得openid"+self.wxmsg.openid);
+        }
+        var openid = localStorage.openid;
+        if(__DEBUG__){
+          var openid = "ozEANuMKQsrGLWXJ4D82louIQeWs";
+        }
+        //alert(localStorage.openid)
 
-          /*********************获取批量数据 取出第一条 start****************************/
-          if(localStorage.state==0){
-            var openid = localStorage.openid;
-            if(__DEBUG__){
-              var openid = "ozEANuMKQsrGLWXJ4D82louIQeWs";
+        // api.wxmsg.getWXmsg("001a21c9a9db39828199293797df48aX").then(function (data) {
+        //   console.log(data)
+        //   alert("openid:"+data.openid)
+
+        //   localStorage.openid=data.openid;
+        // })
+
+        /*********************获取批量数据 取出第一条 start****************************/
+
+
+        if(__DEBUG__){
+            localStorage.state = "567526C3D32169735564131C"
+            localStorage.state = 0
+        }
+        //alert("是否取出最后一条数据？"+((localStorage.state==0)))
+
+        if(localStorage.state==0){
+          //alert("是否code存在？"+self.wxmsg.code&&self.wxmsg.code!="null");
+          if(self.wxmsg.code&&self.wxmsg.code!="null"){
+
+            if(localStorage.openid){
+              //alert("这里判断到本地存在openid，不会再重新请求一次openid")
+              var openid = localStorage.openid;
+              //alert("此时用于请求数据的openid是"+openid)
+              api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data,status){
+                if(__DEBUG__){
+                  console.log("这里是获取最近一次数据")
+                  console.log(data)
+                }
+                var centerdata=data[0];
+                /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
+                centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100))
+                var centertime = new Date(centerdata.time)
+                var date = new Date(centerdata.time).getFullYear()+"/"+(new Date(centerdata.time).getMonth()+1)+"/"+new Date(centerdata.time).getDate();
+                var hours = (new Date(centerdata.time).getHours()>9)?new Date(centerdata.time).getHours():"0"+new Date(centerdata.time).getHours()
+                var minutes = (new Date(centerdata.time).getMinutes()>9)?new Date(centerdata.time).getMinutes():"0"+new Date(centerdata.time).getMinutes();
+                centerdata.date =date+" "+hours+":"+minutes;
+
+                /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
+                /***************获取目标体重 start****************/
+                centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100));
+                api.BluetoothScale.getUserInformation(openid).then(function(data){
+                  if(__DEBUG__){
+                    console.log("这里是获取个人信息拿到的数据")
+                    console.log(data)
+                  }
+                  centerdata.target_weight = data.target_weight;
+                  self.closestState = centerdata;
+                  self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
+                  self.pageshow =true;
+                })
+                /***************获取目标体重 end****************/
+              })
+
+            }else{
+              api.wxmsg.getWXmsg(localStorage.code).then(function (data) {
+                //alert("本地openid，这个应该是没有的："+localStorage.openid)
+                //alert("获取到的openid，这个是通过接口获取的，这个错的话发送请求的参数也是错的："+data.openid)
+                self.wxmsg.openid=data.openid;
+                self.wxmsg.access_token = data.access_token;
+                self.wxmsg.expires_in = data.expires_in;
+                self.wxmsg.refresh_token = data.refresh_token;
+                localStorage.openid=data.openid;
+                var openid = localStorage.openid
+                //alert("现在用这个openid去查询数据"+data.openid);
+                api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data,status){
+                  if(__DEBUG__){
+                    console.log("这里是获取最近一次数据")
+                    console.log(data)
+                  }
+                  var centerdata=data[0];
+                  /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
+                  centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100))
+                  var centertime = new Date(centerdata.time)
+                  var date = new Date(centerdata.time).getFullYear()+"/"+(new Date(centerdata.time).getMonth()+1)+"/"+new Date(centerdata.time).getDate();
+                  var hours = (new Date(centerdata.time).getHours()>9)?new Date(centerdata.time).getHours():"0"+new Date(centerdata.time).getHours()
+                  var minutes = (new Date(centerdata.time).getMinutes()>9)?new Date(centerdata.time).getMinutes():"0"+new Date(centerdata.time).getMinutes();
+                  centerdata.date =date+" "+hours+":"+minutes;
+
+                  /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
+                  /***************获取目标体重 start****************/
+                  centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100));
+                  api.BluetoothScale.getUserInformation(openid).then(function(data){
+                    if(__DEBUG__){
+                      console.log("这里是获取个人信息拿到的数据")
+                      console.log(data)
+                    }
+                    centerdata.target_weight = data.target_weight;
+                    self.closestState = centerdata;
+                    self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
+                    self.pageshow =true;
+                  })
+                  /***************获取目标体重 end****************/
+                })
+              })
             }
-            getLastData(openid,self);
-          /*********************获取批量数据 取出第一条 end****************************/
-          }else {
-            /*********获取某id对应的一条数据 start************/
-            var state = localStorage.state;
-            getOneData(state,self)
-            /*********获取某id对应的一条数据  end************/
+
           }
 
+        /*********************获取批量数据 取出第一条 end****************************/
+        }else {
+          /*********获取某id对应的一条数据 start************/
+          //alert("已经准备根据state去取某一次的数据")
+
+          api.BluetoothScale.getOneData(localStorage.state).then(function (data) {
+            if(__DEBUG__) {
+              console.log(data);
+            }
+            localStorage.state = 0;
+            var centerdata=data;
+            /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
+            centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100))
+            var centertime = new Date(centerdata.time)
+            var date = new Date(centerdata.time).getFullYear()+"/"+(new Date(centerdata.time).getMonth()+1)+"/"+new Date(centerdata.time).getDate();
+            var hours = (new Date(centerdata.time).getHours()>9)?new Date(centerdata.time).getHours():"0"+new Date(centerdata.time).getHours()
+            var minutes = (new Date(centerdata.time).getMinutes()>9)?new Date(centerdata.time).getMinutes():"0"+new Date(centerdata.time).getMinutes();
+            centerdata.date =date+" "+hours+":"+minutes;
+
+            /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
+            self.closestState = centerdata;
+
+
+            self.closestState.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100));
+            self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
+            self.pageshow =true;
+          });
+          /*********获取某id对应的一条数据  end************/
         }
+
+
+
+
+
       }
     },
     methods:{
@@ -393,59 +505,4 @@
 
 
   };
-
-  function getOneData(state,self){
-    api.BluetoothScale.getOneData(state).then(function (data) {
-      if(__DEBUG__) {
-        console.log(data);
-      }
-      var centerdata=data;
-      /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
-      centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100))
-      var centertime = new Date(centerdata.time)
-      var date = new Date(centerdata.time).getFullYear()+"/"+(new Date(centerdata.time).getMonth()+1)+"/"+new Date(centerdata.time).getDate();
-      var hours = (new Date(centerdata.time).getHours()>9)?new Date(centerdata.time).getHours():"0"+new Date(centerdata.time).getHours()
-      var minutes = (new Date(centerdata.time).getMinutes()>9)?new Date(centerdata.time).getMinutes():"0"+new Date(centerdata.time).getMinutes();
-      centerdata.date =date+" "+hours+":"+minutes;
-
-      /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
-      self.closestState = centerdata;
-
-
-      self.closestState.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100));
-      self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
-      self.pageshow =true;
-    });
-  }
-  function getLastData(openid,self){
-    api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data,status){
-      if(__DEBUG__){
-        console.log("这里是获取最近一次数据")
-        console.log(data)
-      }
-      var centerdata=data[0];
-      /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/
-      centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100))
-      var centertime = new Date(centerdata.time)
-      var date = new Date(centerdata.time).getFullYear()+"/"+(new Date(centerdata.time).getMonth()+1)+"/"+new Date(centerdata.time).getDate();
-      var hours = (new Date(centerdata.time).getHours()>9)?new Date(centerdata.time).getHours():"0"+new Date(centerdata.time).getHours()
-      var minutes = (new Date(centerdata.time).getMinutes()>9)?new Date(centerdata.time).getMinutes():"0"+new Date(centerdata.time).getMinutes();
-      centerdata.date =date+" "+hours+":"+minutes;
-
-      /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
-      /***************获取目标体重 start****************/
-      centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100));
-      api.BluetoothScale.getUserInformation(openid).then(function(data){
-        if(__DEBUG__){
-          console.log("这里是获取个人信息拿到的数据")
-          console.log(data)
-        }
-        centerdata.target_weight = data.target_weight;
-        self.closestState = centerdata;
-        self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
-        self.pageshow =true;
-      })
-      /***************获取目标体重 end****************/
-    })
-  }
 </script>
