@@ -12,7 +12,7 @@
         .target_weight
           span.target_weight_span 目标体重
           span.target_weight_munber {{closestState.target_weight/1000||0}}kg
-      //.chart
+      .chart
         a.chart_a(v-link="{path: '/chart'}")
       .setting
         a.setting_a(v-link="{path: '/setting'}")
@@ -410,10 +410,9 @@
 
       /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
       self.closestState = centerdata;
-
-
       self.closestState.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100));
       self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
+
       self.pageshow =true;
     });
   }
@@ -441,7 +440,7 @@
         centerdata.target_weight = data.target_weight;
         centerdata.height = data.height;
         self.closestState = centerdata;
-        self.closestState.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100));
+        self.closestState.bmi = (centerdata.weight/1000)/((centerdata.height/100)*(centerdata.height/100));
         self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
         self.pageshow =true;
       })
