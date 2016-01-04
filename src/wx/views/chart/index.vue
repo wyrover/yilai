@@ -355,6 +355,10 @@
             }else{
               $("#points_path").attr("data-odd","false")
             }
+            var trigger_box = document.getElementsByClassName("trigger_box");
+            for(var i=0;i<trigger_box.length;i++){
+              trigger_box[i].style.opacity = "0";
+            }
           }
           function pointToD(pointarr){
             var svg_slope = 70;//变化坡度大小 可以选择0到100之间的数字
@@ -519,23 +523,26 @@
 
 
 
+
+        self.selectcommom(id);
         updataPointNum(self,api);//获取数据，更新self.pointnum //debug
-        self.selectcommom(id);//必须在self.pointnum重置后执行
       },
       selectedbmi:function(id){
         var self = this;
         self.unit = " ";
 
 
+
+        self.selectcommom(id);
         updataPointNum(self,api);//获取数据，更新self.pointnum //debug
-        self.selectcommom(id);//必须在self.pointnum重置后执行
       },
       selectedfat:function(id){
         var self = this;
         self.unit = "%";
 
-        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+
         self.selectcommom(id);
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
       },
       valueshow:function(num){
         var self = this;

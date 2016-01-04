@@ -12,7 +12,7 @@
         .target_weight
           span.target_weight_span 目标体重
           span.target_weight_munber {{closestState.target_weight/1000||0}}kg
-      //-.chart
+      //.chart
         a.chart_a(v-link="{path: '/chart'}")
       .setting
         a.setting_a(v-link="{path: '/setting'}")
@@ -34,10 +34,10 @@
         .bmi_pointer(v-if="closestState.bmi>23.99&&closestState.bmi<28",v-bind:style="{left:((closestState.bmi-24)*6.25+50)+'%'}")
           span(v-bind:style="{color:bmicolor.color3}") BMI {{closestState.bmi}} 超重
           i.triangle(v-bind:style="{borderTopColor:bmicolor.color3}")
-        .bmi_pointer(v-if="closestState.bmi>=28&&closestState.bmi<=32",v-bind:style="{left:((closestState.bmi-28)*3.75+75)+'%'}")
+        .bmi_pointer(v-if="closestState.bmi>=28&&closestState.bmi<=32",v-bind:style="{left:((closestState.bmi-28)*1.5+75)+'%'}")
           span(v-bind:style="{color:bmicolor.color4}") BMI {{closestState.bmi}} 肥胖
           i.triangle(v-bind:style="{borderTopColor:bmicolor.color4}")
-        .bmi_pointer(v-if="closestState.bmi>32",v-bind:style="{left:'85%'}")
+        .bmi_pointer(v-if="closestState.bmi>32",v-bind:style="{left:'81%'}")
           span(v-bind:style="{color:bmicolor.color4}") BMI {{closestState.bmi}} 肥胖
           i.triangle(v-bind:style="{borderTopColor:bmicolor.color4}")
 

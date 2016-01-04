@@ -9,7 +9,7 @@ module.exports = function(self,api){//这个js的功能就是更新self.pointnum
 
   var openid =  sessionStorage.getItem("openid")
   if(__DEBUG__){
-    openid = "ozEANuNXaPyykVqp6gTm2PwO404g";
+    openid = "ozEANuMKQsrGLWXJ4D82louIQeWs";
 
   }
 
@@ -24,33 +24,8 @@ module.exports = function(self,api){//这个js的功能就是更新self.pointnum
       if(__DEBUG__) {
         console.log(data);
       }
-      getdata=data;
-      toshowobjs=[7];
-      for(var i=0;i<toshowobjs.length;i++){
-        toshowobjs[i]={};
-      }
-      for(var i=0;i<getdata.count;i++){
-        var d_day = (new Date(enddate)-new Date(getdata.statistic[i].date))/86400000;
-        toshowobjs[6-d_day]=getdata.statistic[i];
-      }
-
-
-
-      self.pointnum = [];
-      if(datatype == "weight"){
-        for(var i=0;i<toshowobjs.length;i++){
-          self.pointnum.push(toshowobjs[i].weight||0);
-        }
-      }else if(datatype == "bmi"){
-        for(var i=0;i<toshowobjs.length;i++){
-          self.pointnum.push(toshowobjs[i].bmi||0);
-        }
-      }else if(datatype == "fat"){
-        for(var i=0;i<toshowobjs.length;i++){
-          self.pointnum.push(toshowobjs[i].fat||0);
-        }
-      }
-      self.updataSVG(self);
+      getdata=data.statistic;
+      datashow(getdata)
     });
 
     /******************调试用假数据 start******************
@@ -72,27 +47,7 @@ module.exports = function(self,api){//这个js的功能就是更新self.pointnum
       }
 
       getdata=data.statistic;
-      //toshowobjs.length=postobj.days/postobj.avg_days;
-      if(datatype == "weight"){
-        for(var i=0;i<getdata.length;i++){
-          toshowobjs.push(getdata[i].weight||0);
-        }
-        self.pointnum = toshowobjs;
-      }else if(datatype == "bmi"){
-        for(var i=0;i<getdata.length;i++){
-          toshowobjs.push(getdata[i].bmi||0);
-        }
-        self.pointnum = toshowobjs;
-      }else if(datatype == "fat"){
-        for(var i=0;i<getdata.length;i++){
-          toshowobjs.push(getdata[i].fat||0);
-        }
-        self.pointnum = toshowobjs;
-      }
-
-
-      self.updataSVG(self);
-
+      datashow(getdata)
 
     });
 
@@ -106,7 +61,7 @@ module.exports = function(self,api){//这个js的功能就是更新self.pointnum
 
   }else if(timetype=="year"){
     var postobj = {
-      "end-month":new Date(enddate).getFullYear()+"-"+(new Date(enddate).getMonth()+1),
+      "end_month":new Date(enddate).getFullYear()+"-"+(new Date(enddate).getMonth()+1),
       "months":12
     }
     api.BluetoothScale.getYearData(postobj,openid).then(function (data) {
@@ -115,28 +70,7 @@ module.exports = function(self,api){//这个js的功能就是更新self.pointnum
       }
       getdata=data.statistic;
       //toshowobjs.length=postobj.days/postobj.avg_days;
-      if(datatype == "weight"){
-        for(var i=0;i<getdata.length;i++){
-          toshowobjs.push(getdata[i].weight||0);
-        }
-        self.pointnum = toshowobjs;
-      }else if(datatype == "bmi"){
-        for(var i=0;i<getdata.length;i++){
-          toshowobjs.push(getdata[i].bmi||0);
-        }
-        self.pointnum = toshowobjs;
-      }else if(datatype == "fat"){
-        for(var i=0;i<getdata.length;i++){
-          toshowobjs.push(getdata[i].fat||0);
-        }
-        self.pointnum = toshowobjs;
-      }
-
-
-      self.updataSVG(self);
-
-
-
+      datashow(getdata)
       //self.updataSVG(self);//数据加载完成后更新svg曲线
     });
 
@@ -151,6 +85,31 @@ module.exports = function(self,api){//这个js的功能就是更新self.pointnum
 
   }
 
+  function datashow(getdata) {
+    if(datatype == "weight"){
+      for(var i=0;i<getdata.length;i++){
+        var weight = Math.round(getdata[getdata.length-i-1].weight/100)/10;
+        toshowobjs.push(weight||0);
+      }
+      self.pointnum = toshowobjs;
+    }else if(datatype == "bmi"){
+      for(var i=0;i<getdata.length;i++){
+        var bmi = Math.round(getdata[getdata.length-i-1].bmi*10)/10
+        toshowobjs.push(bmi||0);
+      }
+      self.pointnum = toshowobjs;
+    }else if(datatype == "fat"){
+      for(var i=0;i<getdata.length;i++){
+        var fat = Math.round(getdata[getdata.length-i-1].fat)
+        toshowobjs.push(fat||0);
+      }
+      self.pointnum = toshowobjs;
+    }
 
+
+    self.updataSVG(self);
+  };
 }
+
+
 
