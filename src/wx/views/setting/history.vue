@@ -128,7 +128,7 @@
 
         var postobj={"count":self.firGetCount,"offset":0};
         if(__DEBUG__){
-          localStorage.openid = "ozEANuNXaPyykVqp6gTm2PwO404g";
+          localStorage.openid = "ozEANuMKQsrGLWXJ4D82louIQeWs";
         }
 
         api.BluetoothScale.getMultiData(postobj,localStorage.openid).then(function(data,status){
@@ -193,7 +193,7 @@
             console.log(postobj.offset)
             self.offset+=postobj.count
             if(__DEBUG__){
-              localStorage.openid = "ozEANuNXaPyykVqp6gTm2PwO404g";
+              localStorage.openid = "ozEANuMKQsrGLWXJ4D82louIQeWs";
             }
 
             api.BluetoothScale.getMultiData(postobj,localStorage.openid).then(function(data,status){

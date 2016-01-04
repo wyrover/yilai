@@ -434,14 +434,14 @@
 
       /**************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 end*****************/
       /***************获取目标体重 start****************/
-      centerdata.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100));
       api.BluetoothScale.getUserInformation(openid).then(function(data){
         if(__DEBUG__){
-          console.log("这里是获取个人信息拿到的数据")
           console.log(data)
         }
         centerdata.target_weight = data.target_weight;
+        centerdata.height = data.height;
         self.closestState = centerdata;
+        self.closestState.bmi = centerdata.weight/1000/((centerdata.height/100)*(centerdata.height/100));
         self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
         self.pageshow =true;
       })
