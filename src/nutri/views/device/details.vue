@@ -23,12 +23,28 @@
 
       //- 实时结果
       .result
-        em.num {{state.weight}}
-        span.unit g
 
-      //- 表盘
-      .meter
-        .scale-mark
+        //- 表盘
+        .meter
+          .scale-mark
+            svg.svg#svg1(v-bind:width="'100%'",v-bind:height="'180px'")
+              defs
+                linearGradient#linearGradient-1(v-bind:x1="'0%'",v-bind:y1="'100%'",v-bind:x2="'100%'",v-bind:y2="'100%'")
+                  stop(v-bind:stop-color="'#f4f4d3'",v-bind:offset="'0%'")
+                  stop(v-bind:stop-color="'#87f196'",v-bind:offset="'40%'")
+                  stop(v-bind:stop-color="'#f1c587'",v-bind:offset="'78%'")
+                  stop(v-bind:stop-color="'#dbdb0b'",v-bind:offset="'100%'")
+              g#circle1
+                circle(v-bind:cx="svg.width/2",v-bind:cy="svg.height/2",v-bind:r="svg.r",stroke-width="4",v-bind:stroke="'#fff'",v-bind:fill="'none'")
+              g#circle2.circle2(v-bind:style="'transform-origin:'+svg.width/2+'px '+svg.height/2+'px'")
+                circle(v-bind:cx="svg.width/2",v-bind:cy="svg.height/2",v-bind:r="svg.r",stroke-width="6",v-bind:stroke="'#ffffa5'",v-bind:fill="'none'",v-bind:style="'stroke-dasharray:'+svg.r*2*3.14+';stroke-dashoffset:'+(svg.r*2*3.14*(1-circle.percent))")
+              g#circle3
+                circle(v-bind:cx="svg.width/2",v-bind:cy="svg.height/2",v-bind:r="8",v-bind:fill="'#ffffa5'",v-bind:style="'transform:rotate(-'+360*(1-circle.percent)+'deg) translate(0,-'+svg.r+'px);transform-origin:'+svg.width/2+'px '+svg.height/2+'px'")
+        .result_number
+          em.num {{weight}}
+          span.unit g
+
+
 
     //- 食材选择
     .food-select
@@ -143,28 +159,40 @@
 
     //- 实时结果
     .result
-      absolute left 25% top rem(50)
-      width 50%
+      width 100%
+      background red
+      position absolute
+      top 1.5rem
       text-align center
+      .meter
+        width 100%
+        height 180px
+        position absolute
+        .scale-mark
+          position absolute
+          top 0
+          left 50%
+          transform translate3d(-50%,0,0)
+          width 180px
+          height 180px
+          .svg
+            circle
+              transition all ease 0.5s
+            .circle2
+              transform rotate(-90deg)
+              transform-origin 90px 90px
+      .result_number
+        position absolute
+        top 50%
+        left 50%
+        //transform translate3d(-50%,-50%)
+        color #fff
 
-      .num
-        font-size rem(90)
+        em.num
+          color red
+        span.unit
+          color red
 
-      .unit
-        font-size rem(28)
-
-    //- 表盘
-    .meter
-      absolute left 50% bottom rem(-250)
-      size rem(500)
-      margin-left rem(-250)
-
-      .scale-mark
-        absolute left 50% top
-        size rem(250)
-        background #FFF
-        border-radius rem(300)
-        margin-left rem(-125)
 
 
   //- 食材选择
@@ -247,12 +275,28 @@
   module.exports = {
     data: function () {
       return {
+        svg:{
+          r:75,
+          width:180,
+          height:180
+        },
         showMenu: false,
-        state: deviceStore.state
+        state: deviceStore.state,
+        weight:30,
+        max_weight:250,
+        oldweigth:0
+
       }
     },
 
     computed: {
+      circle:function(){
+        var self = this;
+        return {
+          perimeter:self.svg.r*2*3.14, //周长
+          percent:self.weight/self.max_weight
+        }
+      },
       record: function () {
         var self = this;
         var ret = {};
@@ -271,7 +315,8 @@
         return ret;
       }
     },
-
+    watch:{
+    },
     ready: function () {
       var self = this;
 

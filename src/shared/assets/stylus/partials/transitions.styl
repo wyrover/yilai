@@ -17,3 +17,14 @@
   opacity 0
   height 0
   transform translate3d(0, rem(10), 0)
+
+// 从右到左出现
+.rightToLeft-transition
+  transition opacity .5s ease, height .5s ease, transform .5s ease
+  opacity 1
+  transform translate3d(0,0,0)
+
+.rightToLeft-enter
+.rightToLeft-leave
+  opacity 0
+  transform translate3d(0.4rem,0, 0)
