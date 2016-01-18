@@ -32,6 +32,10 @@ var configRouter = function (router) {
       component: require('./views/setting/equipment/users.vue')
     },
     // 设置页面-详情-帮助
+    '/setting/equipment/details/explain': {
+      component: require('./views/setting/equipment/explain.vue')
+    },
+    // 设置页面-详情-参数说明
     '/setting/equipment/details/help': {
       component: require('./views/setting/equipment/help.vue')
     },

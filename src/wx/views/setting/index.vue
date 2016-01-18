@@ -14,7 +14,7 @@
     .entrance.entrance_last.history
       a(v-link="{path: '/setting/history'}") 历史记录
       i.more
-    .loadingdiv(v-show="!pageshow" v-bind:data-pageshow = "pageshow")
+    .loadingdiv(v-if="!pageshow" v-bind:data-pageshow = "pageshow")
       loading
 
 
@@ -112,7 +112,7 @@
           "headimgurl":"",
           "gender":"male"//"female"
         },
-        pageshow:false
+        pageshow:true
 
       }
     },

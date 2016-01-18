@@ -24,7 +24,7 @@
       select.setmsg.user_msg_value.opacity#target_weight(v-bind:value="information.target_weight",v-on:change="updatetarget_weight")
         option(v-for="n in 200",v-bind:value="n") {{n}}kg
     //-.entrance.entrance_last(v-on:click="test") 测试按钮
-    .loadingdiv(v-show="!pageshow" v-bind:data-pageshow = "pageshow")
+    .loadingdiv(v-if="!pageshow" v-bind:data-pageshow = "pageshow")
       loading
 
 
@@ -92,7 +92,7 @@
           "weight":0,
           "target_weight":0
         },
-        pageshow:false,
+        pageshow:true,
         updataInformation:function(){
           var self = this;
           var postobj = {

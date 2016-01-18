@@ -43,42 +43,50 @@
 
     .constitutes
       ul
-        li.constitutes_li.fat(v-if="closestState.fat||closestState.fat==0")
+        li.constitutes_li.fat
           .logo.fatlogo
           .text
             span.constitutes_title 脂肪率
-            span {{closestState.fat/10}}%
-        li.constitutes_li.moisture(v-if="closestState.moisture||closestState.moisture==0")
+            span.sign(v-show="false") 偏重
+            span.num(v-if="closestState.fat||closestState.fat==0") {{closestState.fat/10}}%
+        li.constitutes_li.moisture
           .logo.moisturelogo
           .text
             span.constitutes_title 水分率
-            span {{closestState.moisture/10}}%
-        li.constitutes_li.bone(v-if="closestState.bone||closestState.bone==0")
-          .logo.bonelogo
-          .text
-            span.constitutes_title 骨量
-            span {{closestState.bone/10}}kg
-        li.constitutes_li.muscle(v-if="closestState.muscle||closestState.muscle==0")
+            span.sign(v-show="false") 偏重
+            span.num(v-if="closestState.moisture||closestState.moisture==0") {{closestState.moisture/10}}%
+        li.constitutes_li.muscle
           .logo.musclelogo
           .text
             span.constitutes_title 肌肉率
-            span {{closestState.muscle/10}}%
-        li.constitutes_li.organs_li(v-if="closestState.internal_fat||closestState.internal_fat==0")
+            span.sign(v-show="false") 偏重
+            span.num(v-if="closestState.muscle||closestState.muscle==0") {{closestState.muscle/10}}%
+        li.constitutes_li.bone
+          .logo.bonelogo
+          .text
+            span.constitutes_title 骨量
+            span.num(v-if="closestState.bone||closestState.bone==0") {{closestState.bone/10}}kg
+        li.constitutes_li.organs_li
           .logo.organslogo
           .text
             span.constitutes_title 内脏脂肪
-            span {{closestState.internal_fat}}
-        li.constitutes_li.internalage_li(v-if="closestState.internal_age||closestState.internal_age==0")
+            span.num(v-if="closestState.internal_fat||closestState.internal_fat==0") {{closestState.internal_fat}}
+        li.constitutes_li.internalage_li
           .logo.internalagelogo
           .text
             span.constitutes_title 体内年龄
-            span {{closestState.internal_age}}岁
-        li.constitutes_li.basal_metabolism_li(v-if="closestState.metabolism||closestState.metabolism==0")
+            span.num(v-if="closestState.internal_age||closestState.internal_age==0") {{closestState.internal_age}}岁
+        li.constitutes_li.basal_metabolism_li
           .logo.basal_metabolism_logo
           .text
             span.constitutes_title 基础代谢
-            span {{closestState.metabolism}}kcal
-    .loadingdiv(v-show="!pageshow" v-bind:data-pageshow = "pageshow")
+            span.num(v-if="closestState.metabolism||closestState.metabolism==0") {{closestState.metabolism}}kcal
+    .moreBox
+      .parameterMore(v-link="{path: '/setting/equipment/details/explain'}")
+        span 参数说明 &gt;
+      .helpMore(v-link="{path: '/setting/equipment/details/help'}")
+        span 使用帮助 &gt;
+    .loadingdiv(v-if="!pageshow" v-bind:data-pageshow = "pageshow")
       loading
   //- modal
   //-   .modal-footer
@@ -98,7 +106,7 @@
     padding-bottom 0
     .userweight
       width 100%
-      height 275px
+      height 250px
       margin 0 auto
       font-size rem(24)
       text-align center
@@ -130,7 +138,7 @@
 
       .current_weight
         width 100%
-        height 212px
+        height 182px
         position relative
         overflow hidden
         .weight_time
@@ -145,13 +153,13 @@
         .weight_number
           text-shadow 2px 2px rgba(0,0,0,0.3)
           width 100%
-          height 120px
-          line-height 120px
+          height 100px
+          line-height 90px
           margin 0 auto
           font-size 72px
           font-family Impact,Euphemia
           position absolute
-          top 70px
+          top 60px
           .weight_unit
             text-shadow 1px 1px rgba(0,0,0,0.1)
             position absolute
@@ -165,7 +173,7 @@
           width 100%
           font-size 0.65rem
           position absolute
-          top 190px
+          top 160px
           text-align center
           font-size 0.7ren
           .target_weight_span
@@ -218,26 +226,30 @@
           float right
     .constitutes
       width 100%
-      height 230px
-      overflow hidden
+      height 180px
+      overflow-x hidden
+      overflow-y auto
       ul
-        padding 5px 0
+        width 92%
+        margin 0 auto
+        box-sizing border-box
         .constitutes_li
           display inline-block
-          width 30%
-          height 70px
-          margin 0 1.5%
+          width 100%
+          height 40px
           padding 0
           position relative
           color #fff
-          border 0
+          border-bottom 1px solid #56bdd0
+          //border-bottom 1px solid red
+
           .logo
             width 30px
             height 30px
             position absolute
             top 50%
             left 5px
-            margin-top -10px
+            transform translate3d(0,-50%,0)
             background-size 100% 100%
           .fatlogo
             background-image url("../assets/images/icon/zhifang.png")
@@ -258,18 +270,49 @@
           .basal_metabolism_logo
             background-image url("../assets/images/icon/jichudaixie.png")
           .text
-            height 60px
-            float left
+            height 40px
+            width 100%
             position absolute
-            left 40px
-            top 50%
-            margin-top -20px
+            left 0
+            padding-left 40px
+            box-sizing border-box
             span
               font-size 16px
-              line-height 25px
-              display inherit
+              line-height 40px
+              float left
             .constitutes_title
-              font-size 14px
+              font-size 16px
+            .sign
+              height 20px
+              line-height 20px
+              border 1px solid #fff
+              margin 10px
+              padding 0 10px
+              border-radius 12px
+              font-size 12px
+            .num
+              float right
+              margin-right 3px
+        .constitutes_li:last-child
+          border-bottom:0
+  .moreBox
+    width 100%
+    height 50px
+    position fixed
+    bottom 0
+    line-height 50px
+    text-align center
+    color #fff
+    font-size 15px
+    border-top 1px solid #56bdd0
+    .parameterMore
+      width 50%
+      position absolute
+      left 0
+    .helpMore
+      width 50%
+      position absolute
+      left 50%
   .loadingdiv
     width 100%
     height 100%
@@ -277,7 +320,6 @@
     left 0
     top 0
     background #fff
-    transition opacity ease 0.3s
     z-index 10
     opacity 1
   [data-pageshow = true]
@@ -317,8 +359,8 @@
           "date":"200/1/1 12:00:00",
           "age":0,
           "height":0,
-          "weight":80000,
-          "bmi":30,
+          "weight":0,
+          "bmi":0,
           "fat":0,
           "moisture":0,
           "muscle":0,
@@ -331,15 +373,15 @@
           tokenId:"",
           openid:""
         },
-        pageshow:(__DEBUG__)?false:false
+        pageshow:true
       };
     },
 
     route:{
       data:function(){
-        //alert("用这个id去查询"+localStorage.state);
         var self = this;
         document.title = "健康管家";
+
         //alert("openid不存在？正常的话这里是true："+!localStorage.openid);
         self.wxmsg.code = localStorage.code;
         if(!localStorage.openid){
@@ -391,6 +433,13 @@
 
         }
       }
+    },
+    ready:function(){
+      var self = this;
+      setTimeout(function(){
+        var constitutesHeight = window.innerHeight-(document.getElementsByClassName("userweight")[0].clientHeight+document.getElementsByClassName("moreBox")[0].clientHeight);
+        document.getElementsByClassName("constitutes")[0].style.height = constitutesHeight+"px"
+      },0)
     },
     methods:{
     }
