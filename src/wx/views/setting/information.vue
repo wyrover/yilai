@@ -24,7 +24,8 @@
       select.setmsg.user_msg_value.opacity#target_weight(v-bind:value="information.target_weight",v-on:change="updatetarget_weight")
         option(v-for="n in 200",v-bind:value="n") {{n}}kg
     //-.entrance.entrance_last(v-on:click="test") 测试按钮
-    .loadingdiv(v-bind:data-pageshow = "pageshow")
+    .loadingdiv(v-show="!pageshow" v-bind:data-pageshow = "pageshow")
+      loading
 
 
 
@@ -68,10 +69,12 @@
 </style>
 <script>
   var Modal = require('../../../shared/components/modal.vue');
+  var Loading = require('../../../shared/components/loading.vue');
   var api = require('../../../wx/api');
   module.exports = {
     components: {
       'modal': Modal,
+      'loading': Loading,
       'api': api
     },
 

@@ -14,7 +14,8 @@
     .entrance.entrance_last.history
       a(v-link="{path: '/setting/history'}") 历史记录
       i.more
-    .loadingdiv(v-bind:data-pageshow = "pageshow")
+    .loadingdiv(v-show="!pageshow" v-bind:data-pageshow = "pageshow")
+      loading
 
 
 </template>
@@ -96,10 +97,12 @@
 
 </style>
 <script>
+  var Loading = require('../../../shared/components/loading.vue');
 
   var api = require('../../../wx/api');
   module.exports = {
     components: {
+      'loading': Loading,
       'api': api
     },
     data: function () {
@@ -109,7 +112,7 @@
           "headimgurl":"",
           "gender":"male"//"female"
         },
-        pageshow:true
+        pageshow:false
 
       }
     },

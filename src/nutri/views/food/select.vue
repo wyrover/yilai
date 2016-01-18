@@ -3,7 +3,7 @@
     search-bar(:key="foodName", :active="searching", @search="setFoodName", @search-activate="toggleSearching", @search-deactivate="toggleSearching", @cancel="cancelSearching")
     .search-result
       .search-result-title(v-if="searchResultTitle") {{searchResultTitle}}
-      food-list(:foods="filteredFoods | filterBy foodName in 'nameInPinyin'", @food-click="selectFood")
+      food-list(:foods="searchedfoodsList", @food-click="selectFood")
 </template>
 
 <style lang="stylus">
@@ -23,6 +23,7 @@
 <script>
   var Promise = require('promise');
   var han = require('han');
+  var Vue = require('vue');
   var FoodList = require('../../../shared/components/food-list.vue');
   var SearchBar = require('../../../shared/components/search-bar.vue');
   var deviceStore = require('../../stores/device')
@@ -58,6 +59,16 @@
     },
 
     computed: {
+      searchedfoodsList:function(){
+        var self = this;
+        var result = [];
+        if(self.filteredFoods.length>0){
+          console.log(self.foodName)
+          var filter = Vue.filter('filterBy');
+          result = filter(self.filteredFoods,self.foodName,"name","nameInPinyin");
+        }
+        return result;
+      },
       visibility: function () {
         return this.foodName.length === 0 && this.searching ? 'hot' : 'all';
       },

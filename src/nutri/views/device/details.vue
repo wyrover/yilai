@@ -3,10 +3,12 @@
     //- 营养称仪表界面
     .scale-dashboard
       //- 蓝牙状态
-      .bluetooth-status
-        span(v-if="state.status==='disconnected'") {{ $t("status.disconnected") }}
-        span(v-if="state.status==='connecting'") {{ $t("status.connecting") }}
-        span(v-if="state.status==='connected'") {{ $t("status.connected") }}
+      .device-name
+        span 营养秤
+      //- .bluetooth-status
+      //-   span(v-if="state.status==='disconnected'") {{ $t("status.disconnected") }}
+      //-   span(v-if="state.status==='connecting'") {{ $t("status.connecting") }}
+      //-   span(v-if="state.status==='connected'") {{ $t("status.connected") }}
 
       //- 历史纪录
       //- a.link-records(v-link="{path: '/records'}")
@@ -42,7 +44,7 @@
                 circle(v-bind:cx="svg.width/2",v-bind:cy="svg.height/2",v-bind:r="8",v-bind:fill="'#ffffa5'",v-bind:style="'transform:rotate(-'+360*(1-circle.percent)+'deg) translate(0,-'+svg.r+'px);transform-origin:'+svg.width/2+'px '+svg.height/2+'px'")
         .result_number
           .num {{weight}}
-          span.unit g
+          span.unit kg
 
 
 
@@ -111,7 +113,12 @@
       text-align center
       font-size rem(34)
       color #fff
-
+    .device-name
+      absolute left 25% top rem(10)
+      width 50%
+      text-align center
+      font-size rem(34)
+      color #fff
     //- 历史纪录
     .link-records
       absolute left rem(10) top rem(10)
@@ -138,7 +145,7 @@
         min-width rem(180)
         font-size rem(24)
         color #ffa96f
-        text-align center
+        text-align left
 
         .triangle
           absolute right rem(10) top rem(-29rem)
@@ -148,7 +155,7 @@
           padding rem(24)
           background #fff
           white-space nowrap
-          border-bottom 1px solid #ccc
+          border-bottom 1px solid #e1e1e1
 
           &:last-child
             border-bottom none
@@ -200,7 +207,7 @@
           top 0
           left 50%
           transform translate3d(-50%,0,0)
-          font-size 25px
+          font-size 20px
           line-height 260px
 
 

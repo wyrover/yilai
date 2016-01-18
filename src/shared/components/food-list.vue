@@ -1,6 +1,6 @@
 <template lang="jade">
   .food-list
-    .food-list-item.editing(v-for="food in foods", track-by="$index", transition="staggered", stagger="100")
+    .food-list-item.editing(v-for="food in foods", track-by="$index",  stagger="100")
       span(@click="handleClick(food, $event)") {{food.name}}
       button.del(v-if="removable") DELETE
 </template>

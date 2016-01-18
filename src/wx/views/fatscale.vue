@@ -78,7 +78,8 @@
           .text
             span.constitutes_title 基础代谢
             span {{closestState.metabolism}}kcal
-    .loadingdiv(v-bind:data-pageshow = "pageshow")
+    .loadingdiv(v-show="!pageshow" v-bind:data-pageshow = "pageshow")
+      loading
   //- modal
   //-   .modal-footer
   //-     button(@click="hide") 设置
@@ -276,15 +277,17 @@
     left 0
     top 0
     background #fff
-    transition top ease 0.3s
+    transition opacity ease 0.3s
     z-index 10
+    opacity 1
   [data-pageshow = true]
-    top -120%
+    opacity 0
 
 </style>
 
 <script>
   var Modal = require('../../shared/components/modal.vue');
+  var Loading = require('../../shared/components/loading.vue');
   var api = require('../../wx/api');
   //var wxauth = require('../../wx/assets/js/wxauth');
 
@@ -297,6 +300,7 @@
   module.exports = {
     components: {
       'modal': Modal,
+      'loading': Loading,
       //'wxauth': wxauth,
       'api': api
     },
@@ -327,7 +331,7 @@
           tokenId:"",
           openid:""
         },
-        pageshow:(__DEBUG__)?true:false
+        pageshow:(__DEBUG__)?false:false
       };
     },
 

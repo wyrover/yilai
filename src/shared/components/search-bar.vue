@@ -39,6 +39,7 @@
         border none
         font-size rem(30)
         background transparent
+        color #fff
 
     .btn-cancel
       absolute right -20% top .5rem
