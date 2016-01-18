@@ -21,10 +21,27 @@ var configRouter = function (router) {
     '/devices/:deviceId': {
       component: require('./views/device/details.vue')
     },
+    // 设备添加界面
+    '/devices/add': {
+      component: require('./views/device/add.vue')
+    },
 
     // 食物
     '/foods': {
       component: require('./views/food/list.vue')
+    },
+    // 食物
+    '/foods/add': {
+      component: require('./views/food/add.vue')
+    },
+    // 食物
+    '/foods/select': {
+      component: require('./views/food/select.vue')
+    },
+
+    // 食物
+    '/foods/edit': {
+      component: require('./views/food/edit.vue')
     },
 
 

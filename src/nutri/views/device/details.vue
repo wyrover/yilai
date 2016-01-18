@@ -41,7 +41,7 @@
               g#circle3
                 circle(v-bind:cx="svg.width/2",v-bind:cy="svg.height/2",v-bind:r="8",v-bind:fill="'#ffffa5'",v-bind:style="'transform:rotate(-'+360*(1-circle.percent)+'deg) translate(0,-'+svg.r+'px);transform-origin:'+svg.width/2+'px '+svg.height/2+'px'")
         .result_number
-          em.num {{weight}}
+          .num {{weight}}
           span.unit g
 
 
@@ -100,9 +100,10 @@
   //- 营养称仪表界面
   .scale-dashboard
     size 100% rem(450)
+    height 180px
     overflow hidden
     position relative
-
+    padding-top 1.8rem
     //- 蓝牙状态
     .bluetooth-status
       absolute left 25% top rem(10)
@@ -115,7 +116,6 @@
     .link-records
       absolute left rem(10) top rem(10)
       size rem(60)
-      background red
 
     //- 更多设置
     .more-settings
@@ -160,10 +160,9 @@
     //- 实时结果
     .result
       width 100%
-      background red
-      position absolute
-      top 1.5rem
+      box-sizing border-box
       text-align center
+      height 100%
       .meter
         width 100%
         height 180px
@@ -183,15 +182,26 @@
               transform-origin 90px 90px
       .result_number
         position absolute
-        top 50%
         left 50%
-        //transform translate3d(-50%,-50%)
-        color #fff
-
-        em.num
-          color red
+        width 160px
+        height 180px
+        line-height 180px
+        transform translate(-50%,0)
+        color #fcffa5
+        font-size 50px
+        overflow hidden
+        .num
+          width 100%
+          height 120px
+          overflow hidden
+          text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
         span.unit
-          color red
+          position absolute
+          top 0
+          left 50%
+          transform translate3d(-50%,0,0)
+          font-size 25px
+          line-height 260px
 
 
 
@@ -207,14 +217,15 @@
       font-size rem(24)
       line-height rem(60)
       color #FFF
-      border-bottom 1px solid #FFF
+      border-bottom 1px solid #6ecac9
+      border-top 1px solid #6ecac9
       background url('../../../shared/assets/images/bg/icon_rightArrow.png') no-repeat right center
       background-size rem(16) rem(25)
 
   // 食材营养列表
   .nutri-list
     ul
-      width 94%
+      width 98%
       margin 0 auto
       box-sizing border-box
       font-size 0
@@ -225,7 +236,7 @@
       width 26.3%
       margin-left 7%
       padding-left rem(50)
-      margin-bottom rem(50)
+      margin-bottom 0.8rem
       box-sizing border-box
       color #FFF
       // border 1px solid #FFF
@@ -319,11 +330,13 @@
     },
     ready: function () {
       var self = this;
+      self.weight = 0;
+
 
       // TODO: 模拟称重，待删除
-      window.setTimeout(function () {
-        deviceStore.setWeight(90);
-      }, 5000);
+      var setweight =  window.setTimeout(function () {
+        self.weight = self.max_weight;
+      }, 0);
     },
 
     methods: {
