@@ -27,7 +27,7 @@
   var FoodList = require('../../../shared/components/food-list.vue');
   var SearchBar = require('../../../shared/components/search-bar.vue');
   var deviceStore = require('../../stores/device')
-  var filters = {
+  /*var filters = {
     all: function (foods) {
       return foods.concat().sort(function (a, b) {
         return a.nameInPinyin > b.nameInPinyin;
@@ -40,7 +40,7 @@
         return b.times - a.times;
       }).splice(0, 5);
     }
-  };
+  };*/
 
   module.exports = {
     components: {
@@ -62,30 +62,26 @@
       searchedfoodsList:function(){
         var self = this;
         var result = [];
-        if(self.filteredFoods.length>0){
-          console.log(self.foodName)
-          var filter = Vue.filter('filterBy');
-          result = filter(self.filteredFoods,self.foodName,"name","nameInPinyin");
-        }
+
+        console.log(self.foodName)
+        var filter = Vue.filter('filterBy');
+        result = filter(self.foods,self.foodName,"name","nameInPinyin");
+
         return result;
       },
-      visibility: function () {
+     /* visibility: function () {
         return this.foodName.length === 0 && this.searching ? 'hot' : 'all';
-      },
+      },*/
 
-      filteredFoods: function () {
+/*      filteredFoods: function () {
         return filters[this.visibility](this.foods);
-      },
+      },*/
 
       translatedFoodName: function () {
         return han.letter(this.foodName);
       },
 
       searchResultTitle: function () {
-        if (this.visibility === 'hot') {
-          return '热门食材';
-        }
-
         if (this.foodName.length !== 0) {
           return '搜索结果';
         }
@@ -159,14 +155,17 @@
       },
 
       setFoodName: function (name) {
+        console.log("setFoodName"+name)
         this.foodName = name;
       },
 
       toggleSearching: function () {
+        console.log("toggleSearching")
         this.searching = !this.searching;
       },
 
       cancelSearching: function () {
+        console.log("cancelSearching")
         this.setFoodName('');
       },
 

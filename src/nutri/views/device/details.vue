@@ -44,7 +44,7 @@
                 circle(v-bind:cx="svg.width/2",v-bind:cy="svg.height/2",v-bind:r="8",v-bind:fill="'#ffffa5'",v-bind:style="'transform:rotate(-'+360*(1-circle.percent)+'deg) translate(0,-'+svg.r+'px);transform-origin:'+svg.width/2+'px '+svg.height/2+'px'")
         .result_number
           .num {{weight}}
-          span.unit kg
+          span.unit g
 
 
 
@@ -300,8 +300,8 @@
         },
         showMenu: false,
         state: deviceStore.state,
-        weight:30,
-        max_weight:250,
+        weight:600,
+        max_weight:3000,
         oldweigth:0
 
       }
@@ -319,17 +319,19 @@
         var self = this;
         var ret = {};
 
-        //console.log(this.state.food.name);
+        console.log(this.state.food.name);
 
         NUTRIS.forEach(function(nutri, index){
           // 这里不能直接用self.state.food.length来获取对象的长度
+          console.log(Object.keys(self.state.food).length)
           if (Object.keys(self.state.food).length) {
-            ret[nutri] = self.state.weight * self.state.food[nutri] / self.state.food.weight;
+            console.log( self.state.food[nutri])
+            ret[nutri] = self.weight * self.state.food[nutri] / self.state.food.weight;
           } else {
             ret[nutri] = 0;
           }
         });
-
+        console.log(ret)
         return ret;
       }
     },
@@ -337,12 +339,12 @@
     },
     ready: function () {
       var self = this;
+      var centerWeight = self.weight;
       self.weight = 0;
-
-
       // TODO: 模拟称重，待删除
-      var setweight =  window.setTimeout(function () {
-        self.weight = self.max_weight;
+      var setweight1 =  window.setTimeout(function () {
+        self.weight = centerWeight;
+
       }, 0);
     },
 

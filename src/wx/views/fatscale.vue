@@ -3,15 +3,16 @@
 
     .userweight
       .current_weight
-        .weight_time
+        .weight_time(v-if="!loadData")
           span.time_num.day_date {{closestState.date.split(" ")[0].split("/")[1]}}-{{closestState.date.split(" ")[0].split("/")[2]}}
           span.time_num.time_date {{closestState.date.split(" ")[1].slice(0,5)}}
         .weight_number
-          | {{closestState.weight/1000}}
-          span.weight_unit kg
+          | {{closestState.weight>=0?closestState.weight/1000:'--'}}
+          span.weight_unit {{closestState.weight>=0?'kg':''}}
         .target_weight
           span.target_weight_span 目标体重
-          span.target_weight_munber {{closestState.target_weight/1000||0}}kg
+          span.target_weight_munber(v-if="closestState.target_weight>=0") {{closestState.target_weight/1000||0}}kg
+          span.target_weight_munber(v-if="closestState.target_weight<0") --
       //.chart
         a.chart_a(v-link="{path: '/chart'}")
       .setting
@@ -47,46 +48,53 @@
           .logo.fatlogo
           .text
             span.constitutes_title 脂肪率
-            span.sign(v-show="false") 偏重
-            span.num(v-if="closestState.fat||closestState.fat==0") {{closestState.fat/10}}%
+            span.sign(v-show="sign.fat") {{sign.fat}}
+            span.num(v-if="closestState.fat>=0") {{closestState.fat/10}}%
+            span.num(v-if="closestState.fat<0") --
         li.constitutes_li.moisture
           .logo.moisturelogo
           .text
             span.constitutes_title 水分率
             span.sign(v-show="false") 偏重
-            span.num(v-if="closestState.moisture||closestState.moisture==0") {{closestState.moisture/10}}%
+            span.num(v-if="closestState.moisture>=0") {{closestState.moisture/10}}%
+            span.num(v-if="closestState.moisture<0") --
         li.constitutes_li.muscle
           .logo.musclelogo
           .text
             span.constitutes_title 肌肉率
             span.sign(v-show="false") 偏重
-            span.num(v-if="closestState.muscle||closestState.muscle==0") {{closestState.muscle/10}}%
+            span.num(v-if="closestState.muscle>=0") {{closestState.muscle/10}}%
+            span.num(v-if="closestState.muscle<0") --
         li.constitutes_li.bone
           .logo.bonelogo
           .text
             span.constitutes_title 骨量
-            span.num(v-if="closestState.bone||closestState.bone==0") {{closestState.bone/10}}kg
+            span.num(v-if="closestState.bone>=0") {{closestState.bone/10}}kg
+            span.num(v-if="closestState.bone<0") --
         li.constitutes_li.organs_li
           .logo.organslogo
           .text
             span.constitutes_title 内脏脂肪
-            span.num(v-if="closestState.internal_fat||closestState.internal_fat==0") {{closestState.internal_fat}}
+            span.num(v-if="closestState.internal_fat>=0") {{closestState.internal_fat}}
+            span.num(v-if="closestState.internal_fat<0") --
         li.constitutes_li.internalage_li
           .logo.internalagelogo
           .text
             span.constitutes_title 体内年龄
-            span.num(v-if="closestState.internal_age||closestState.internal_age==0") {{closestState.internal_age}}岁
+            span.num(v-if="closestState.internal_age>=0") {{closestState.internal_age}}岁
+            span.num(v-if="closestState.internal_age<0") --
         li.constitutes_li.basal_metabolism_li
           .logo.basal_metabolism_logo
           .text
             span.constitutes_title 基础代谢
-            span.num(v-if="closestState.metabolism||closestState.metabolism==0") {{closestState.metabolism}}kcal
+            span.num(v-if="closestState.metabolism>=0") {{closestState.metabolism}}kcal
+            span.num(v-if="closestState.metabolism<0") --
     .moreBox
       .parameterMore(v-link="{path: '/setting/equipment/details/explain'}")
         span 参数说明 &gt;
       .helpMore(v-link="{path: '/setting/equipment/details/help'}")
         span 使用帮助 &gt;
-    .loadingdiv(v-if="!pageshow" v-bind:data-pageshow = "pageshow")
+    .loadingdiv(v-if="loadData" v-bind:data-pageshow = "pageshow")
       loading
   //- modal
   //-   .modal-footer
@@ -319,7 +327,6 @@
     position fixed
     left 0
     top 0
-    background #fff
     z-index 10
     opacity 1
   [data-pageshow = true]
@@ -331,8 +338,9 @@
   var Modal = require('../../shared/components/modal.vue');
   var Loading = require('../../shared/components/loading.vue');
   var api = require('../../wx/api');
+  var Measurement_result = require('../../wx/consts/measurement_result');
   //var wxauth = require('../../wx/assets/js/wxauth');
-
+  console.log(Measurement_result.fat("male",30,15))
   var test={};
 
 
@@ -342,9 +350,8 @@
   module.exports = {
     components: {
       'modal': Modal,
-      'loading': Loading,
+      'loading': Loading
       //'wxauth': wxauth,
-      'api': api
     },
 
     data: function () {
@@ -356,27 +363,41 @@
           "color4":"#ff9d9c"
         },
         closestState:{
-          "date":"200/1/1 12:00:00",
+          "date":"2001/0/0 12:00:00",
           "age":0,
           "height":0,
-          "weight":0,
-          "bmi":0,
-          "fat":0,
-          "moisture":0,
-          "muscle":0,
-          "bone":0,
-          "metabolism":0,
-          "target_weight":0
+          "weight":-1,
+          "bmi":-1,
+          "fat":-1,
+          "moisture":-1,
+          "muscle":-1,
+          "bone":-1,
+          "metabolism":-1,
+          "target_weight":-1,
+          internal_fat:-1,
+          internal_age:-1
         },
         wxmsg:{
           code:"",
           tokenId:"",
-          openid:""
+          openid:"",
+          gender:"male"
         },
-        pageshow:true
+        pageshow:false
       };
     },
+    computed:{
+      loadData:function(){
+        return !this.pageshow
+      },
+      sign:function(){
+        var self = this;
+        return {
+          fat:Measurement_result.fat(self.wxmsg.gender,self.closestState.age,self.closestState.fat/10)
+        }
 
+      }
+    },
     route:{
       data:function(){
         var self = this;
@@ -495,6 +516,7 @@
         self.closestState = centerdata;
         self.closestState.bmi = (centerdata.weight/1000)/((centerdata.height/100)*(centerdata.height/100));
         self.closestState.bmi = Math.round(self.closestState.bmi*10)/10
+        self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";
         self.pageshow =true;
       })
       /***************获取目标体重 end****************/

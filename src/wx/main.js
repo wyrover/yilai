@@ -7,7 +7,7 @@ var VueResource = require('vue-resource');
 var i18n = require('vue-i18n');
 var router;
 var vueForm = require('vue-form');
-
+Vue.config.debug=true
 // 加载路由插件
 Vue.use(VueRouter);
 

@@ -23,7 +23,7 @@
     width:100%;
     height:100%;
     padding-top:100px;
-    background-color:#fff;
+    background:rgba(0,0,0,0.5);
   }
   .spinner {
     margin: 0 auto;
@@ -36,6 +36,7 @@
     width: 10px;
     height: 10px;
     background-color: #1d9abb;
+    background-color: #fff;
 
     border-radius: 100%;
     position: absolute;
