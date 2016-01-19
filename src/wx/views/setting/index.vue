@@ -122,10 +122,9 @@
         document.title = "设置";
 
         var self = this;
+        var openid = localStorage.openid;
         if(__DEBUG__){
           var openid = "ozEANuMKQsrGLWXJ4D82louIQeWs";
-        }else{
-          var openid = localStorage.openid;
         }
         //alert(openid);
         api.BluetoothScale.getUserInformation(openid).then(function (data) {

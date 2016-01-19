@@ -39,9 +39,9 @@
               g#circle1
                 circle(v-bind:cx="svg.width/2",v-bind:cy="svg.height/2",v-bind:r="svg.r",stroke-width="4",v-bind:stroke="'#fff'",v-bind:fill="'none'")
               g#circle2.circle2(v-bind:style="'transform-origin:'+svg.width/2+'px '+svg.height/2+'px'")
-                circle(v-bind:cx="svg.width/2",v-bind:cy="svg.height/2",v-bind:r="svg.r",stroke-width="6",v-bind:stroke="'#ffffa5'",v-bind:fill="'none'",v-bind:style="'stroke-dasharray:'+svg.r*2*3.14+';stroke-dashoffset:'+(svg.r*2*3.14*(1-circle.percent))")
+                circle(v-bind:cx="svg.width/2",v-bind:cy="svg.height/2",v-bind:r="svg.r",stroke-width="6",v-bind:stroke="'#ffffa5'",v-bind:fill="'none'",v-bind:style="'stroke-dasharray:'+svg.r*2*3.14+';stroke-dashoffset:'+(svg.r*2*3.14*(1-(circle.percent>0.96?0.96:circle.percent)))")
               g#circle3
-                circle(v-bind:cx="svg.width/2",v-bind:cy="svg.height/2",v-bind:r="8",v-bind:fill="'#ffffa5'",v-bind:style="'transform:rotate(-'+360*(1-circle.percent)+'deg) translate(0,-'+svg.r+'px);transform-origin:'+svg.width/2+'px '+svg.height/2+'px'")
+                circle(v-bind:cx="svg.width/2",v-bind:cy="svg.height/2",v-bind:r="8",v-bind:fill="'#ffffa5'",v-bind:style="'transform:rotate(-'+360*(1-(circle.percent>0.96?0.96:circle.percent))+'deg) translate(0,-'+svg.r+'px);transform-origin:'+svg.width/2+'px '+svg.height/2+'px'")
         .result_number
           .num {{weight}}
           span.unit g
