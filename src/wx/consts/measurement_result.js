@@ -39,7 +39,6 @@ module.exports = {
     }
     var toUseArr=[];
     toUseArr = selectArr(gender,age-0);
-    console.log(toUseArr)
 
     if(value>=3&&toUseArr.length==5){
       //return toUseArr.length
@@ -51,7 +50,121 @@ module.exports = {
     }else{
       return false;
     }
-    //return toUseArr.length
-    //return 111
-  }
+  },
+  moisture:function(gender,age,value){
+    var female = [
+      [57,67],
+      [47,57],
+      [42,52],
+      [37,47]
+    ];
+    var male = [
+      [58,72],
+      [53,67],
+      [47,61],
+      [42,56]
+
+    ];
+    var resultArr=["低","正常","高"];
+    function selectArr(gender,age){
+      if(gender=="female"){
+        if(age-0>=10&&age-0<=15){
+          return female[0]
+        }else if(age<=30){
+          return female[1]
+        }else if(age<=60){
+          return female[2]
+        }else if(age<80){
+          return female[3]
+        }
+      }else if(gender=="male"){
+        if(age-0>=10&&age-0<=15){
+          return male[0]
+        }else if(age<=30){
+          return male[1]
+        }else if(age<=60){
+          return male[2]
+        }else if(age<80){
+          return male[3]
+        }
+      }
+    }
+    var toUseArr=[];
+    toUseArr = selectArr(gender,age-0);
+
+    if(value>0&&toUseArr.length==2){
+      //return toUseArr.length
+      if(value<toUseArr[0]){
+        return resultArr[0]
+      }else if(value<toUseArr[1]){
+        return resultArr[1]
+      }else if(value>toUseArr[1]){
+        return resultArr[2]
+      }
+    }else{
+      return false;
+    }
+  },
+  muscle:function(gender,age,value){
+    var female = [
+      [35,56],
+      [35,58],
+      [42,58],
+      [40,56],
+      [39,55],
+      [35,51]
+    ];
+    var male = [
+      [38,56],
+      [43,64],
+      [48,69],
+      [46,62],
+      [44,59],
+      [41,58]
+
+    ];
+    var resultArr=["偏低","标准","偏高"];
+    function selectArr(gender,age){
+      if(gender=="female"){
+        if(age-0>=20&&age-0<=30){
+          return female[0]
+        }else if(age<=40){
+          return female[1]
+        }else if(age<=50){
+          return female[2]
+        }else if(age<60){
+          return female[3]
+        }else if(age>60){
+          return female[4]
+        }
+      }else if(gender=="male"){
+        if(age>=20&&age<=30){
+          return male[0]
+        }else if(age<=40){
+          return male[1]
+        }else if(age<=50){
+          return male[2]
+        }else if(age<60){
+          return male[3]
+        }else if(age>60){
+          return male[4]
+        }
+      }
+    }
+    var toUseArr=[];
+    toUseArr = selectArr(gender,age-0);
+
+    if(value>0&&toUseArr.length==2){
+      //return toUseArr.length
+      if(value<toUseArr[0]){
+        return resultArr[0]
+      }else if(value<toUseArr[1]){
+        return resultArr[1]
+      }else if(value>toUseArr[1]){
+        return resultArr[2]
+      }
+    }else{
+      return false;
+    }
+  },
 };

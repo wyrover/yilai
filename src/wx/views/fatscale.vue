@@ -49,46 +49,46 @@
           .text
             span.constitutes_title 脂肪率
             span.sign(v-show="sign.fat") {{sign.fat}}
-            span.num(v-if="closestState.fat>=0") {{closestState.fat/10}}%
-            span.num(v-if="closestState.fat<0") --
+            span.num(v-show="closestState.fat>=0") {{closestState.fat/10}}%
+            span.num(v-show="closestState.fat<0") --
         li.constitutes_li.moisture
           .logo.moisturelogo
           .text
             span.constitutes_title 水分率
-            span.sign(v-show="false") 偏重
-            span.num(v-if="closestState.moisture>=0") {{closestState.moisture/10}}%
-            span.num(v-if="closestState.moisture<0") --
+            span.sign(v-show="sign.moisture") {{sign.moisture}}
+            span.num(v-show="closestState.moisture>=0") {{closestState.moisture/10}}%
+            span.num(v-show="closestState.moisture<0") --
         li.constitutes_li.muscle
           .logo.musclelogo
           .text
             span.constitutes_title 肌肉率
-            span.sign(v-show="false") 偏重
-            span.num(v-if="closestState.muscle>=0") {{closestState.muscle/10}}%
-            span.num(v-if="closestState.muscle<0") --
+            span.sign(v-show="sign.muscle") {{sign.muscle}}
+            span.num(v-show="closestState.muscle>=0") {{closestState.muscle/10}}%
+            span.num(v-show="closestState.muscle<0") --
         li.constitutes_li.bone
           .logo.bonelogo
           .text
             span.constitutes_title 骨量
-            span.num(v-if="closestState.bone>=0") {{closestState.bone/10}}kg
-            span.num(v-if="closestState.bone<0") --
+            span.num(v-show="closestState.bone>=0") {{closestState.bone/10}}kg
+            span.num(v-show="closestState.bone<0") --
         li.constitutes_li.organs_li
           .logo.organslogo
           .text
             span.constitutes_title 内脏脂肪
-            span.num(v-if="closestState.internal_fat>=0") {{closestState.internal_fat}}
-            span.num(v-if="closestState.internal_fat<0") --
+            span.num(v-show="closestState.internal_fat>=0") {{closestState.internal_fat}}
+            span.num(v-show="closestState.internal_fat<0") --
         li.constitutes_li.internalage_li
           .logo.internalagelogo
           .text
             span.constitutes_title 体内年龄
-            span.num(v-if="closestState.internal_age>=0") {{closestState.internal_age}}岁
-            span.num(v-if="closestState.internal_age<0") --
+            span.num(v-show="closestState.internal_age>=0") {{closestState.internal_age}}岁
+            span.num(v-show="closestState.internal_age<0") --
         li.constitutes_li.basal_metabolism_li
           .logo.basal_metabolism_logo
           .text
             span.constitutes_title 基础代谢
-            span.num(v-if="closestState.metabolism>=0") {{closestState.metabolism}}kcal
-            span.num(v-if="closestState.metabolism<0") --
+            span.num(v-show="closestState.metabolism>=0") {{closestState.metabolism}}kcal
+            span.num(v-show="closestState.metabolism<0") --
     .moreBox
       .parameterMore(v-link="{path: '/setting/equipment/details/explain'}")
         span 参数说明 &gt;
@@ -340,7 +340,6 @@
   var api = require('../../wx/api');
   var Measurement_result = require('../../wx/consts/measurement_result');
   //var wxauth = require('../../wx/assets/js/wxauth');
-  console.log(Measurement_result.fat("male",30,15))
   var test={};
 
 
@@ -393,7 +392,9 @@
       sign:function(){
         var self = this;
         return {
-          fat:Measurement_result.fat(self.wxmsg.gender,self.closestState.age,self.closestState.fat/10)
+          fat:Measurement_result.fat(self.wxmsg.gender,self.closestState.age-0,self.closestState.fat/10),
+          moisture:Measurement_result.moisture(self.wxmsg.gender,self.closestState.age-0,self.closestState.moisture/10),
+          muscle:Measurement_result.muscle(self.wxmsg.gender,self.closestState.age-0,self.closestState.muscle/10)
         }
 
       }
