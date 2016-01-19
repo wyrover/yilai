@@ -21,6 +21,7 @@
                 span 体内脂肪 {{statistic.internal_fat}}
                 span 体内年龄 {{statistic.internal_age}}岁
                 span(v-bind:style="'width:80%'") 基本代谢 {{statistic.metabolism}}kcal
+    .nodata(v-if="statistics.length==0") |暂无数据
 
 
 </template>
@@ -94,6 +95,8 @@
                height auto
                .more
                  transform rotate(90deg)
+    .nodata
+      text-align center
 
 
 

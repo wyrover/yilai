@@ -1,10 +1,13 @@
 <template lang="jade">
   .main-content.white
+    //-.bug这个div是用于修复无法解释的bug  如果没有这个东西  下面的微信用户昵称将会无法正常显示 不要问为什么  我也不知道
+    .bug {{wxmsg.name}}
+    //-.bug这个div是用于修复无法解释的bug  如果没有这个东西  下面的微信用户昵称将会无法正常显示 不要问为什么  我也不知道
     .user_msg
       .user_faces
         img(v-bind:src="wxmsg.headimgurl",v-bind:width="'100%'",v-bind:height="'100%'")
       .sex(v-bind:data-sex="wxmsg.gender")
-      span.user_nackname {{wxmsg.name}}
+      .user_nackname {{wxmsg.name}}
     .entrance.personal_information
       a(v-link="{path: '/setting/information'}") 个人信息
       i.more
@@ -25,6 +28,10 @@
 
     .white
       background #fff
+    .bug
+      height 0
+      color transparent
+      opacity 0
     .user_msg
       width 100%
       height 240px
@@ -52,7 +59,6 @@
         position absolute
         left 132px
         top 139px
-        color #000
         background-size 100% 100%
         background-repeat no-repeat
       [data-sex="male"]
@@ -66,6 +72,9 @@
         color #000
         text-align center
         font-size 20px
+        display inline-block
+        min-width 10px
+        min-height 10px
     .entrance
       width 95%
       height 50px
@@ -108,15 +117,14 @@
     data: function () {
       return {
         wxmsg:{
-          "name":"",
-          "headimgurl":"",
+          "name":" ",
+          "headimgurl":" ",
           "gender":"male"//"female"
         },
         pageshow:false
 
       }
     },
-
     route:{
       data:function(){
         document.title = "设置";
@@ -132,14 +140,19 @@
             console.log(data);
           }
           self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
-          self.wxmsg.headimgurl = data.headimgurl;
-          self.wxmsg.name = data.name;
+          var headimgurl = data.headimgurl.substring(0,data.headimgurl.length-1)+"132";
+          self.wxmsg.headimgurl = headimgurl;
+          //self.wxmsg.name = data.name;
+
+          self.wxmsg.name=data.name;
           self.pageshow = true;
            //console.log(self.wxmsg)
         });
       }
     },
-
+    ready:function(){
+      document.title = "设置";
+    },
     methods:{
 
 

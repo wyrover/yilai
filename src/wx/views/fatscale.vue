@@ -3,7 +3,7 @@
 
     .userweight
       .current_weight
-        .weight_time(v-if="!loadData")
+        .weight_time(v-if="closestState.date.split(' ')[0].split('/')[1]-0>0")
           span.time_num.day_date {{closestState.date.split(" ")[0].split("/")[1]}}-{{closestState.date.split(" ")[0].split("/")[2]}}
           span.time_num.time_date {{closestState.date.split(" ")[1].slice(0,5)}}
         .weight_number
@@ -422,7 +422,7 @@
               if(localStorage.state==0){
                 var openid = localStorage.openid;
                 if(__DEBUG__){
-                  var openid = "ozEANuMKQsrGLWXJ4D82louIQeWs";
+                  var openid = "ozEANuKga5eRTYh-uKRpMqK-jIao";
                 }
                 getLastData(openid,self);
               /*********************获取批量数据 取出第一条 end****************************/
@@ -442,7 +442,7 @@
           if(localStorage.state==0){
             var openid = localStorage.openid;
             if(__DEBUG__){
-              var openid = "ozEANuMKQsrGLWXJ4D82louIQeWs";
+              var openid = "ozEANuKga5eRTYh-uKRpMqK-jIao";
             }
             getLastData(openid,self);
           /*********************获取批量数据 取出第一条 end****************************/
@@ -496,6 +496,10 @@
       if(__DEBUG__){
         console.log("这里是获取最近一次数据")
         console.log(data)
+      }
+      if(data.length==0){
+        self.pageshow =true;
+        alert("未查询到测量结果")
       }
       var centerdata=data[0];
       /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/

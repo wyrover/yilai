@@ -81,7 +81,7 @@
     data: function () {
       return {
         wxmsg:{
-          "name":"",
+          "name":" ",
           "headimgurl":"",
           "gender":"female"//"female"
         },
@@ -92,7 +92,7 @@
           "weight":0,
           "target_weight":0
         },
-        pageshow:true,
+        pageshow:false,
         updataInformation:function(){
           var self = this;
           var postobj = {
@@ -164,14 +164,18 @@
                 self.information.weight = data.weight||0;
                 self.information.target_weight = (data.target_weight/1000)||0;
                 self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
-                self.wxmsg.headimgurl = data.headimgurl
+                var headimgurl = data.headimgurl.substring(0,data.headimgurl.length-1)+"132";
+                self.wxmsg.headimgurl = headimgurl;
                 self.wxmsg.name = data.name
                 //console.log(self.wxmsg)
                 api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data){
                   if(__DEBUG__){
                     console.log(data)
                   }
-                  self.information.weight = data[0].weight;
+                  if(data.length){
+                    self.information.weight = data[0].weight;
+                  }
+
                   self.pageshow = true;
                 })
               });
@@ -189,6 +193,7 @@
               console.log("这里是获取个人信息")
               console.log(data);
             }
+
             //alert("后端返回的体重："+data.weight);
             //alert("后端返回的身高"+data.height);
             //self.information = data;
@@ -199,17 +204,23 @@
             self.information.weight = data.weight||0;
             self.information.target_weight = (data.target_weight/1000)||0;
             self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
-            self.wxmsg.headimgurl = data.headimgurl;
+            var headimgurl = data.headimgurl.substring(0,data.headimgurl.length-1)+"132";
+            self.wxmsg.headimgurl = headimgurl;
             self.wxmsg.name = data.name;
             //console.log(self.wxmsg)
+
             api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data){
               if(__DEBUG__){
-                console.log("这里是获取到的最近一次数据")
+                console.log("这里是获取到的最近一次数据?")
                 console.log(data)
               }
-              self.information.weight = data[0].weight;
+              if(data.length){
+                self.information.weight = data[0].weight;
+              }
 
               self.pageshow = true;
+
+
             })
           });
         }
