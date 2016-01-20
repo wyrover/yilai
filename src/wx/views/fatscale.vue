@@ -422,7 +422,7 @@
               if(localStorage.state==0){
                 var openid = localStorage.openid;
                 if(__DEBUG__){
-                  var openid = "ozEANuKga5eRTYh-uKRpMqK-jIao";
+                  var openid = "ozEANuMKQsrGLWXJ4D82louIQeWs";
                 }
                 getLastData(openid,self);
               /*********************获取批量数据 取出第一条 end****************************/
@@ -439,10 +439,13 @@
           self.wxmsg.openid=localStorage.openid;
 
           /*********************获取批量数据 取出第一条 start****************************/
+          if(__DEBUG__){
+            localStorage.state=0
+          }
           if(localStorage.state==0){
             var openid = localStorage.openid;
             if(__DEBUG__){
-              var openid = "ozEANuKga5eRTYh-uKRpMqK-jIao";
+              var openid = "ozEANuMKQsrGLWXJ4D82louIQeWs";
             }
             getLastData(openid,self);
           /*********************获取批量数据 取出第一条 end****************************/
@@ -499,7 +502,7 @@
       }
       if(data.length==0){
         self.pageshow =true;
-        alert("未查询到测量结果")
+        //alert("未查询到测量结果")
       }
       var centerdata=data[0];
       /***************兼容后端返回的数据只有日期没有时间，同时兼容后端返回的时间字段和文档不同 start***************/

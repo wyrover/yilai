@@ -148,6 +148,9 @@
           self.pageshow = true;
            //console.log(self.wxmsg)
         });
+        setTimeout(function(){
+          self.pageshow = true;
+        },15000)
       }
     },
     ready:function(){

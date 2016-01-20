@@ -300,7 +300,7 @@
         },
         showMenu: false,
         state: deviceStore.state,
-        weight:600,
+        weight:2000,
         max_weight:3000,
         oldweigth:0
 
@@ -364,7 +364,9 @@
       },
 
       toggleDropdown: function () {
+
         this.showMenu = !this.showMenu;
+        console.log("123"+this.showMenu)
       },
 
       closeDropdown: function () {

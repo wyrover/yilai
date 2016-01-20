@@ -111,7 +111,6 @@
                 if(__DEBUG__) {
                   console.log(data);
                 }
-
               });
 
             }
@@ -140,8 +139,10 @@
       data:function(){
         document.title = "个人信息";
         var self = this;
+        setTimeout(function(){
+          self.pageshow = true;
+        },20000)
         //alert("openid不存在？正常的话这里是true："+!localStorage.openid);
-
         if(!localStorage.openid){
             api.wxmsg.getWXmsg(localStorage.code).then(function (data) {
               //alert("本地openid，这个应该是没有的："+localStorage.openid)
@@ -152,9 +153,9 @@
                 var openid = "ozEANuMKQsrGLWXJ4D82louIQeWs"
               }
               //var openid = "ozEANuBTIEscOwZ6wS4UFvhK38yw"
-
               api.BluetoothScale.getUserInformation(openid).then(function (data) {
                 if(__DEBUG__) {
+                  console.log("获取到的个人信息")
                   console.log(data);
                 }
                 //self.information = data;
@@ -185,7 +186,7 @@
           //var openid = "ozEANuBTIEscOwZ6wS4UFvhK38yw"
           var openid = localStorage.openid;
           if(__DEBUG__){
-            openid="ozEANuMKQsrGLWXJ4D82louIQeWs"
+            openid="ozEANuKga5eRTYh-uKRpMqK-jIao"
           }
           //alert("本地已经存在openid："+openid)
           api.BluetoothScale.getUserInformation(openid).then(function (data) {
@@ -197,18 +198,19 @@
             //alert("后端返回的体重："+data.weight);
             //alert("后端返回的身高"+data.height);
             //self.information = data;
-
+            //alert(data.headimgurl)
             self.information.birth = data.birth||"2005-01-01";
             self.information.gender =(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
             self.information.height = data.height||0;
             self.information.weight = data.weight||0;
             self.information.target_weight = (data.target_weight/1000)||0;
             self.wxmsg.gender=(data.gender=="男"||data.gender=="male"||data.gender-0==1)?"male":"female";//默认是女的
+            //alert(data.headimgurl)
             var headimgurl = data.headimgurl.substring(0,data.headimgurl.length-1)+"132";
+
             self.wxmsg.headimgurl = headimgurl;
             self.wxmsg.name = data.name;
             //console.log(self.wxmsg)
-
             api.BluetoothScale.getMultiData({"count":1,"offset":0},openid).then(function(data){
               if(__DEBUG__){
                 console.log("这里是获取到的最近一次数据?")
