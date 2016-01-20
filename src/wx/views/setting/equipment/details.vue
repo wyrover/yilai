@@ -1,6 +1,8 @@
 <template lang="jade">
   .main-content.details
-    .test(@click="test")
+    .test(@click="test1") 测试按钮1
+    br
+    .test(@click="test2") 测试按钮2
     .device_msg
       .device_faces
         img(v-bind:src="'http://test.xlink.cn/yilai/wx/images/'+devicetype+'.png'" width="100%" height="100%")
@@ -18,15 +20,15 @@
     .delete_device
       input.delete_button(value="删除设备",type="button",@click.prevent.stop="reconfirm")
       //.reconfirm(v-show="showModal")
-
+    .loadingdiv(v-if="loadData" v-bind:data-pageshow = "pageshow")
+      loading
 
 </template>
 
 <style lang="stylus">
   .test
-    width 20px
-    height 20px
     background red
+    text-align center
   @import '../../../../shared/assets/stylus/common'
 
   .details
@@ -81,18 +83,26 @@
 
 <script>
 
+  var Loading = require('../../../../shared/components/loading.vue');
   var api = require('../../../api');
 
   module.exports = {
     components: {
+      'loading': Loading,
       'api': api
     },
     data: function () {
       return {
+        pageshow:false,
         deviceid:window.location.href.split("setting/equipment/")[1].split("?")[0],
         devicetype:getUrlStr("deviceType"),
         showModal:true,
         usersNum:3
+      }
+    },
+    computed:{
+      loadData:function(){
+        return !this.pageshow
       }
     },
     route:{
@@ -108,21 +118,30 @@
         }
 
 
-
+        setTimeout(function(){
+          self.pageshow=true;
+        },10000)
         api.device.getDevicesUsers(deviceid).then(function(data){
           if(__DEBUG__){
             console.log(data);
           }
-          self.usersNum = data.openid.length
+          self.usersNum = data.open_id.length
           console.log("获取到的用户个数"+self.usersNum)
 
-
+          self.pageshow=true;
         })
       }
     },
     methods:{
-      test:function(){
+      test1:function(){
         api.device.getSignature().then(function(data){
+          if(__DEBUG__){
+            console.log(data);
+          }
+        })
+      },
+      test2:function(){
+        api.device.UnbindUserDevice().then(function(data){
           if(__DEBUG__){
             console.log(data);
           }

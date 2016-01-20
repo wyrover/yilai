@@ -8,6 +8,8 @@
               img(v-bind:src="device.src",v-bind:width="'100%'",v-bind:height="'100%'")
             span.equipment_name {{device.name}}
             i.more
+    .loadingdiv(v-if="loadData" v-bind:data-pageshow = "pageshow")
+      loading
       //-li
         .entrance
           a(v-link="{path: '/setting/equipment/details'}")
@@ -52,14 +54,17 @@
 </style>
 <script>
   //var wxauth = require('../../../assets/js/wxauth');
+  var Loading = require('../../../../shared/components/loading.vue');
   var api = require('../../../api');
 
   module.exports = {
     components: {
+      'loading': Loading,
       'api': api
     },
     data: function () {
       return {
+        pageshow:false,
         getDevice_list:[
           {
             device_type:"gh_72b6b07b48cb",
@@ -70,6 +75,9 @@
       };
     },
     computed:{
+      loadData:function(){
+        return !this.pageshow
+      },
       devices:function(){
         var self = this;
         var getDevice_list = this.getDevice_list;
@@ -94,6 +102,9 @@
         if(__DEBUG__){
           openid = "ozEANuMKQsrGLWXJ4D82louIQeWs"
         }
+        setTimeout(function(){
+          self.pageshow=true;
+        },10000)
         api.device.getDevicesList(openid).then(function(data){
           if(__DEBUG__){
             console.log(data);
@@ -102,6 +113,7 @@
           if(data.resp_msg.ret_code == 0&&data.device_list){
             self.getDevice_list = data.device_list;
           }
+          self.pageshow=true;
         })
       }
     },

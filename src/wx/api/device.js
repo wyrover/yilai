@@ -109,11 +109,11 @@ module.exports = function (Vue, Promise, config) {
     getSignature:function(){
       console.log("noncestr"+noncestr)
       console.log("timestamp"+timestamp)
-      //console.log("href"+window.location.href)
+      console.log("href"+window.location.href)
       return new Promise(function(resolve, reject) {
         Vue.http.get(
-          /*config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale/urlSignature?noncestr='+noncestr+'&timestamp='+timestamp+'&signUrl='+window.location.href,*/
-          config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale/urlSignature?noncestr='+noncestr+'&timestamp='+timestamp+'&signUrl='+'http://www.baidu.com',
+          config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale_user/getSignature?noncestr='+noncestr+'&timestamp='+timestamp+'&signUrl='+window.location.href,
+          //config.apiRoot + '/5dba318782f34938920da2ee0eeb1440/scale_user/getSignature?noncestr='+noncestr+'&timestamp='+timestamp+'&signUrl='+'http://www.baidu.com',
           function(data, status, request) {
             resolve(data);
           }, {
@@ -125,9 +125,11 @@ module.exports = function (Vue, Promise, config) {
           reject(data.error);
         });
       });
+    },
+
+    UnbindUserDevice:function(deviceid,openid){
+      console.log(this.getSignature())
     }
-
-
 
   }
 }
@@ -142,6 +144,9 @@ module.exports = function (Vue, Promise, config) {
 
 
   /5dba318782f34938920da2ee0eeb1440/scale/getDevicesUsers/deviceid//获取该设备绑定用户
+
+  /5dba318782f34938920da2ee0eeb1440/scale/getDevicesUsers/deviceid//获取该设备绑定用户
+
 getDevicesUsers
 ******************************************************/
 
