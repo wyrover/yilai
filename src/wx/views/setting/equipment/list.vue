@@ -3,9 +3,9 @@
     ul.equipment_list
       li(v-for="device in devices")
         .entrance
-          a(v-link="{path: '/setting/equipment/'+device.id}")
+          a(v-link="{path: '/setting/equipment/'+device.id+'?deviceType='+device.type}")
             .equipment_img
-              img(v-bind:src="'http://test.xlink.cn/yilai/wx/images/'+device.id+'.png'",v-bind:width="'100%'",v-bind:height="'100%'")
+              img(v-bind:src="device.src",v-bind:width="'100%'",v-bind:height="'100%'")
             span.equipment_name {{device.name}}
             i.more
       //-li
@@ -62,8 +62,8 @@
       return {
         getDevice_list:[
           {
-            device_type:"dt1",
-            device_id:"001"
+            device_type:"gh_72b6b07b48cb",
+            device_id:"gh_72b6b07b48cb_6dcbc7892ccdca7f697b70aec42bde0d"
           }
         ]
 
@@ -71,12 +71,15 @@
     },
     computed:{
       devices:function(){
+        var self = this;
         var getDevice_list = this.getDevice_list;
         var deviceslist = [];
         for(var i=0;i<getDevice_list.length;i++){
           deviceslist.push({
             name:"亿莱脂肪秤",
-            id:getDevice_list[i].device_id
+            id:getDevice_list[i].device_id,
+            type:getDevice_list[i].device_type,
+            src:'http://test.xlink.cn/yilai/wx/images/'+getDevice_list[i].device_type+'.png'
           })
         }
         return deviceslist;
@@ -89,7 +92,7 @@
 
         var openid = localStorage.openid;
         if(__DEBUG__){
-          openid = "ozEANuMKQsrGLWXJ4D82loulQeWs"
+          openid = "ozEANuMKQsrGLWXJ4D82louIQeWs"
         }
         api.device.getDevicesList(openid).then(function(data){
           if(__DEBUG__){

@@ -12,8 +12,10 @@ module.exports = function(self,api){//这个js的功能就是更新self.pointnum
     openid = "ozEANuMKQsrGLWXJ4D82louIQeWs";
 
   }
-
-
+  self.pageshow=false;
+  self.timeout = setTimeout(function(){
+    self.pageshow=true;
+  },15000)
   if(timetype=="week"){
     var postobj = {
       "end_date":enddate,
@@ -105,7 +107,6 @@ module.exports = function(self,api){//这个js的功能就是更新self.pointnum
       }
       self.pointnum = toshowobjs;
     }
-
 
     self.updataSVG(self);
   };

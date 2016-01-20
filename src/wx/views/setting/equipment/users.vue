@@ -5,7 +5,7 @@
         img
       span.user_name {{user.name}}
     ul
-      li.user_list(v-for="user in users",v-if="user.openid !== selfOpendId")
+      li.user_list(v-for="user in users",v-show="user.openid !== selfOpendId")
         .user_img(v-bind:style="'background-image:url('+user.headimgurl+')'")
           img
         span.equipment_name {{user.name}}
@@ -90,7 +90,7 @@
         deviceid:window.location.href.split("setting/equipment/")[1].split("/users")[0],
         users_openids:[],
         users:[
-          {
+          /*{
             openid:"ozEANuMKQsrGLWXJ4D82loulQeWs",
             headimgurl:"http://v1.qzone.cc/avatar/201307/25/19/51/51f111498ed3d546.jpg!200x200.jpg",
             name:"111"
@@ -99,7 +99,7 @@
             openid:"ozEANuNXaPyykVqp6gTm2PwO404g",
             headimgurl:"http://v1.qzone.cc/avatar/201505/02/16/16/554487c5b5a84624.jpg!200x200.jpg",
             name:"222"
-          }
+          }*/
         ]
       }
     },
@@ -111,22 +111,36 @@
         var deviceid = self.deviceid;
         console.log("deviceid:::::::::::"+deviceid)
         if(__DEBUG__){
-          deviceid = "0001"
+          deviceid = "gh_72b6b07b48cb_6dcbc7892ccdca7f697b70aec42bde0d"
         }
         api.device.getDevicesUsers(deviceid).then(function(data){
           if(__DEBUG__){
             console.log(data);
           }
-          self.users_openids = data.open_id
-          var openids =  data.open_id
-          for(var i=0;i<data.open_id.length;i++){
-            api.BluetoothScale.getUserInformation(openids[i]).then(function (data) {
-              if(__DEBUG__) {
-                console.log(data);
-              }
-              self.users[i].headimgurl = data.headimgurl;
-              self.users[i].name = data.name;
-            });
+          self.users_openids = data.openid
+          var openids =  data.openid;
+          self.users=[];
+          for(var i=0;i<data.openid.length;i++){
+
+            (function(openid,k){
+              setTimeout(function(){
+                api.BluetoothScale.getUserInformation(openid).then(function (data) {
+                  if(__DEBUG__) {
+                    console.log(data);
+                  }
+                  if(data.headimgurl&&data.name){
+                    var centerObj = {
+                      headimgurl:data.headimgurl,
+                      name:data.name,
+                      openid:data.open_id
+                    }
+                    self.users.push(centerObj)
+                  }
+                });
+              },300*k)
+            })(openids[i],i)
+
+
           }
 
         })

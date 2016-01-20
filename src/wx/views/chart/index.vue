@@ -56,10 +56,384 @@
         li.date_type.fat#fatbutton(v-on:click.prevent.stop="selectedfat('fatbutton')",v-bind:data-name="'fat'")
           .divbotton.faticon
             span 脂肪率
+    .loadingdiv(v-show="loadData" v-bind:data-pageshow = "pageshow")
+      loading
 
 
 </template>
 
+
+<script>
+  var datetools = require('../chart/datetool');
+  var updataPointNum = require('../chart/updataPointNum');//获取数据，更新self.pointnum
+  var api = require('../../../wx/api');
+  var Loading = require('../../../shared/components/loading.vue');
+
+
+  module.exports = {
+    components: {
+      'api': api,
+      'datetool': datetools,
+      'updataPointNum': updataPointNum,
+      'loading': Loading
+    },
+    data: function () {
+      return {
+        pageshow:false,
+        d:"",//存放曲线的路径 是个字符串
+        points:[],//实际渲染的坐标点
+        pointnum:["0","1","0","0","0",0],//画布绘制的根据这里的数字绘制曲线  自动上下居中 自动计算差值 数值为0自动跳过
+        showvalues:[],//手指点击后要显示的数值
+        acreages:"",//存放绘制渐变图案的面的路径，是个字符串
+        coordinateXs:["0~5","5~15","15~20","5~15","15~20"],
+        showseddate:"",//存放当前可以左右选择的日期内容
+        unit:"kg",//存放当前的单位
+        coordinateYtexts:["1kg","7kg","3kg","4kg","5kg"],//纵坐标内容
+        post_daydate:{
+          "end_date":"2015-11-11",
+          "days":7,
+          "avg":true
+        },
+        post_monthdate:{
+           "end_date":"2015-11-11",
+           "days":30,
+           "avg_days":5
+        },
+        post_yeardate:{
+            "year":"2015"
+        },
+        updataSVG:function(self){//更新svg的内容
+
+          resetAnimation();//重置动画
+          self.d=pointToD(self.pointnum).path;//重置数值 线
+
+          self.points=pointToD(self.pointnum).points;//重置数值  点
+
+          self.acreages=pointToD(self.pointnum).acreages;//重置数值  面
+
+          function resetAnimation(){
+            var points_path = document.getElementById("points_path");
+            if(points_path.getAttribute("data-odd")=="false"){
+              points_path.setAttribute("data-odd","true")
+            }else{
+              points_path.setAttribute("data-odd","false")
+            }
+            // if($("#points_path").attr("data-odd")=="false"){
+            //   $("#points_path").attr("data-odd","true")
+            // }else{
+            //   $("#points_path").attr("data-odd","false")
+            // }
+            var trigger_box = document.getElementsByClassName("trigger_box");
+            for(var i=0;i<trigger_box.length;i++){
+              trigger_box[i].style.opacity = "0";
+            }
+          }
+          function pointToD(pointarr){
+            if(self.timeout){
+              console.log("定时器"+self.timeout)
+              clearTimeout(self.timeout)
+            }
+            self.pageshow=true;
+            var svg_slope = 70;//变化坡度大小 可以选择0到100之间的数字
+            var newpointarr = [];
+            console.log(pointarr)
+            for(var i=0;i<pointarr.length;i++){
+              if(pointarr[i]-0>0){
+                var max = pointarr[i]-0;
+                var min = pointarr[i]-0;
+                for(var i=1;i<pointarr.length;i++){
+                  if(pointarr[i]-0>0){
+                    if(max<pointarr[i]-0){max=pointarr[i]-0};
+                    if(min>pointarr[i]-0){min=pointarr[i]-0};
+                  }
+                }
+              }
+            }
+            var valueheight = max-min;
+            for(var i=0;i<pointarr.length;i++){
+              if(pointarr[i]>0){
+                newpointarr.push(((pointarr[i]-min)/valueheight*svg_slope)+(100-svg_slope)/2);
+                if(pointarr[i]==min){
+                  newpointarr[i]=(100-svg_slope)/2+1;
+                }
+              }else{
+                newpointarr.push(0);
+              }
+            }
+            var coordinateXlength = newpointarr.length;
+            var windowWidth = window.innerWidth;
+            var firstno0 = 0;
+            var lastno0;
+            var result={};
+            result.points=[];
+            result.acreages=[];
+            for(var i=0;i<newpointarr.length;i++){
+              if(newpointarr[i]>0){
+                result.path= "M"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+                result.acreages= "M"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+
+                result.points.push((windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160));
+                firstno0=i;
+
+                break;
+
+              }
+
+            }
+            for(var i=firstno0+1;i<newpointarr.length;i++){
+              if(newpointarr[i]>0){
+                result.path +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+                result.path +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160.001);//弥补只有两个点的时候不显示线段的问题
+
+                result.acreages +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
+                lastno0=i;
+                result.points.push((windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160));
+              }
+            }
+            result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*lastno0)+",185";
+            result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*firstno0)+",185";
+            result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*firstno0)+","+(-newpointarr[firstno0]+160);
+
+            return result;
+          }
+        },
+        selectcommom:function(id){ //将某id的class添加点击事件 ，添加class.selected和删除class.selected
+          var self = this;
+          var selectedbox = document.getElementById(id);
+          var parentbox = selectedbox.parentNode;
+          removeClass(parentbox.getElementsByClassName("selected")[0],"selected");
+          addClass(selectedbox,"selected");
+
+
+
+          function addClass( elements,cName ){
+            elements.className += " " + cName;
+          };
+          function removeClass( elements,cName ){
+            elements.className = elements.className.replace( new RegExp( "(\\s|^)" + cName + "(\\s|$)" )," " ); // replace方法是替换
+          };
+        }
+
+
+
+      }
+    },
+    computed:{
+      loadData:function(){
+        return !this.pageshow
+      },
+    },
+    ready:function(){
+      var self = this;
+
+
+
+      datetools.updatecoordinateXs.month(self);//更新横坐标
+      datetools.updateSedDate.month(self);//更新可以左右选择的日期的内容
+      updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+
+    },
+
+    route:{
+      data:function(){
+        document.title="曲线分析";
+        var self = this;
+
+
+
+
+
+
+
+
+
+
+      }
+    },
+
+
+    methods:{
+      selectedweek:function(id){
+        var self = this;
+
+
+        //self.pointnum = ["123",134,255,200,134,127,244];
+
+
+        datetools.updateSedDate.week(self);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+        datetools.updatecoordinateXs.week(self);//更新横坐标函数 第二个参数可以输入某一个日期例如"2015-12-10"  会自动更新横坐标 在这个日期往前推七天
+
+        self.selectcommom(id);
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+        //self.updataSVG(self);//这个函数需要放在数据重置后执行，作用是更新svg曲线
+      },
+      selectedmonth:function(id){
+        var self = this;
+
+
+
+        //self.pointnum = [255,282,134,127,244,300];
+
+        datetools.updateSedDate.month(self);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+        datetools.updatecoordinateXs.month(self);//更新横坐标函数 第二个参数可以输入某一个日期例如"2015-12-10"  会自动更新横坐标 在这个日期往前推一个月
+
+        self.selectcommom(id);
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+        //self.updataSVG(self);//这个函数需要放在数据重置后执行，作用是更新svg曲线
+      },
+      selectedyear:function(id){
+        var self = this;
+
+
+        datetools.updateSedDate.year(self);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+        datetools.updatecoordinateXs.year(self) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
+
+        //self.pointnum = ["123",2,2,2,2,0,2,244,200,134,127,244];
+
+        self.selectcommom(id);
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+        //self.updataSVG(self);//这个函数需要放在数据重置后执行，作用是更新svg曲线
+      },
+      selectedweight:function(id){
+        var self = this;
+        self.unit = "kg";
+
+
+
+
+        self.selectcommom(id);
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+      },
+      selectedbmi:function(id){
+        var self = this;
+        self.unit = " ";
+
+
+
+        self.selectcommom(id);
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+      },
+      selectedfat:function(id){
+        var self = this;
+        self.unit = "%";
+
+
+        self.selectcommom(id);
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+      },
+      valueshow:function(num){
+        var self = this;
+        var trigger_text = document.getElementsByClassName("trigger_value_number");
+        var trigger_box = document.getElementsByClassName("trigger_box");
+        var value_box = document.getElementsByClassName("value_box");
+
+        self.showvalues=[];
+        for(var i=0;i<self.pointnum.length;i++){
+          if(self.pointnum[i]>0){
+            self.showvalues.push(self.pointnum[i])
+          }
+        }
+
+        for(var i=0;i<self.showvalues.length;i++){
+          trigger_text[i].innerHTML=self.showvalues[i];
+
+        }
+
+        for(var i=0;i<trigger_box.length;i++){
+          trigger_box[i].style.opacity=0;
+          value_box[i].style.display="none";
+        }
+        trigger_box[num].style.opacity=1;
+        value_box[num].style.display="block";
+
+      },
+      prevdate:function(){
+        var self = this;
+        var pointer_left = document.getElementsByClassName("pointer_left")[0];
+        var pointer_right = document.getElementsByClassName("pointer_right")[0];
+        var selectdatetype = document.getElementsByClassName("selected")[0];
+        var sed_datetext = document.getElementsByClassName("sed_datetext")[0];
+        var firstdate = sed_datetext.getAttribute("data-firstdate");
+        var lastdate = sed_datetext.getAttribute("data-lastdate");
+        var newlastdate = new Date(new Date(firstdate)-1000*60*60*24);
+        document.getElementsByClassName("pointer_right")[0].style.opacity="1"
+        if(selectdatetype.id == "yearbox"){
+
+          datetools.updateSedDate.year(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+          datetools.updatecoordinateXs.year(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
+        }else if(selectdatetype.id == "monthbox"){
+
+          datetools.updateSedDate.month(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+          datetools.updatecoordinateXs.month(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
+        }else if(selectdatetype.id == "weekbox"){
+
+
+          datetools.updateSedDate.week(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+          datetools.updatecoordinateXs.week(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
+        }
+
+        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+
+      },
+      nextdate:function(){
+        var self = this;
+        var pointer_left = document.getElementsByClassName("pointer_left")[0];
+        var pointer_right = document.getElementsByClassName("pointer_right")[0];
+        var selectdatetype = document.getElementsByClassName("selected")[0];
+        var sed_datetext = document.getElementsByClassName("sed_datetext")[0];
+        var firstdate = sed_datetext.getAttribute("data-firstdate");
+        var lastdate = sed_datetext.getAttribute("data-lastdate");
+
+
+        if(selectdatetype.id == "yearbox"){
+
+          var newlastdate = new Date((new Date(lastdate)-0)+1000*60*60*24*366);
+          if(newlastdate-new Date()>0){
+            document.getElementsByClassName("pointer_right")[0].style.opacity="0"
+          }else{
+            datetools.updateSedDate.year(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+            datetools.updatecoordinateXs.year(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
+            updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+          }
+
+        }else if(selectdatetype.id == "monthbox"){
+
+          var newlastdate = new Date((new Date(lastdate).getTime()-0)+1000*60*60*24*30);
+          if(newlastdate-new Date()>0){
+            document.getElementsByClassName("pointer_right")[0].style.opacity="0"
+          }else{
+            datetools.updateSedDate.month(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+            datetools.updatecoordinateXs.month(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
+            updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+          }
+
+        }else if(selectdatetype.id == "weekbox"){
+
+          var newlastdate = new Date(new Date(lastdate).getTime()+1000*60*60*24*7);
+
+          if(newlastdate-new Date()>0){
+            document.getElementsByClassName("pointer_right")[0].style.opacity="0"
+          }else{
+            datetools.updateSedDate.week(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
+            datetools.updatecoordinateXs.week(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
+
+
+            updataPointNum(self,api);//获取数据，更新self.pointnum //debug
+          }
+
+        }
+
+
+      }
+
+    }
+
+
+
+
+  }
+
+</script>
 <style lang="stylus">
   @import '../../../shared/assets/stylus/common'
 
@@ -279,7 +653,10 @@
             background url("../../assets/images/icon/BMI_selected.png") no-repeat center 10px
           .faticon
             background url("../../assets/images/icon/zhifang_selected.png") no-repeat center 10px
-
+    .loadingdiv
+      .box
+        background none
+        padding-top 130px
   @keyframes dash {
 
     to {
@@ -304,356 +681,3 @@
     }
   }
 </style>
-<script>
-  var datetools = require('../chart/datetool');
-  var updataPointNum = require('../chart/updataPointNum');//获取数据，更新self.pointnum
-  var api = require('../../../wx/api');
-
-
-
-  module.exports = {
-    components: {
-      'api': api,
-      'datetool': datetools,
-      'updataPointNum': updataPointNum
-    },
-    data: function () {
-      return {
-        d:"",//存放曲线的路径 是个字符串
-        points:[],//实际渲染的坐标点
-        pointnum:["0","1","0","0","0",0],//画布绘制的根据这里的数字绘制曲线  自动上下居中 自动计算差值 数值为0自动跳过
-        showvalues:[],//手指点击后要显示的数值
-        acreages:"",//存放绘制渐变图案的面的路径，是个字符串
-        coordinateXs:["0~5","5~15","15~20","5~15","15~20"],
-        showseddate:"",//存放当前可以左右选择的日期内容
-        unit:"kg",//存放当前的单位
-        coordinateYtexts:["1kg","7kg","3kg","4kg","5kg"],//纵坐标内容
-        post_daydate:{
-          "end_date":"2015-11-11",
-          "days":7,
-          "avg":true
-        },
-        post_monthdate:{
-           "end_date":"2015-11-11",
-           "days":30,
-           "avg_days":5
-        },
-        post_yeardate:{
-            "year":"2015"
-        },
-        updataSVG:function(self){//更新svg的内容
-          resetAnimation();//重置动画
-          self.d=pointToD(self.pointnum).path;//重置数值 线
-
-          self.points=pointToD(self.pointnum).points;//重置数值  点
-
-          self.acreages=pointToD(self.pointnum).acreages;//重置数值  面
-
-          function resetAnimation(){
-            if($("#points_path").attr("data-odd")=="false"){
-              $("#points_path").attr("data-odd","true")
-            }else{
-              $("#points_path").attr("data-odd","false")
-            }
-            var trigger_box = document.getElementsByClassName("trigger_box");
-            for(var i=0;i<trigger_box.length;i++){
-              trigger_box[i].style.opacity = "0";
-            }
-          }
-          function pointToD(pointarr){
-            var svg_slope = 70;//变化坡度大小 可以选择0到100之间的数字
-            var newpointarr = [];
-            console.log(pointarr)
-            for(var i=0;i<pointarr.length;i++){
-              if(pointarr[i]-0>0){
-                var max = pointarr[i]-0;
-                var min = pointarr[i]-0;
-                for(var i=1;i<pointarr.length;i++){
-                  if(pointarr[i]-0>0){
-                    if(max<pointarr[i]-0){max=pointarr[i]-0};
-                    if(min>pointarr[i]-0){min=pointarr[i]-0};
-                  }
-                }
-              }
-            }
-            var valueheight = max-min;
-            for(var i=0;i<pointarr.length;i++){
-              if(pointarr[i]>0){
-                newpointarr.push(((pointarr[i]-min)/valueheight*svg_slope)+(100-svg_slope)/2);
-                if(pointarr[i]==min){
-                  newpointarr[i]=(100-svg_slope)/2+1;
-                }
-              }else{
-                newpointarr.push(0);
-              }
-            }
-            var coordinateXlength = newpointarr.length;
-            var windowWidth = window.innerWidth;
-            var firstno0 = 0;
-            var lastno0;
-            var result={};
-            result.points=[];
-            result.acreages=[];
-            for(var i=0;i<newpointarr.length;i++){
-              if(newpointarr[i]>0){
-                result.path= "M"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
-                result.acreages= "M"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
-
-                result.points.push((windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160));
-                firstno0=i;
-
-                break;
-
-              }
-
-            }
-            for(var i=firstno0+1;i<newpointarr.length;i++){
-              if(newpointarr[i]>0){
-                result.path +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
-                result.path +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160.001);//弥补只有两个点的时候不显示线段的问题
-
-                result.acreages +=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160);
-                lastno0=i;
-                result.points.push((windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*i)+","+(-newpointarr[i]+160));
-              }
-            }
-            result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*lastno0)+",185";
-            result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*firstno0)+",185";
-            result.acreages+=" L"+(windowWidth/coordinateXlength/2+windowWidth/coordinateXlength*firstno0)+","+(-newpointarr[firstno0]+160);
-
-            return result;
-          }
-        },
-        selectcommom:function(id){ //将某id的class添加点击事件 ，添加class.selected和删除class.selected
-          var self = this;
-          var selectedbox = document.getElementById(id);
-          var parentbox = selectedbox.parentNode;
-          removeClass(parentbox.getElementsByClassName("selected")[0],"selected");
-          addClass(selectedbox,"selected");
-
-
-
-          function addClass( elements,cName ){
-            elements.className += " " + cName;
-          };
-          function removeClass( elements,cName ){
-            elements.className = elements.className.replace( new RegExp( "(\\s|^)" + cName + "(\\s|$)" )," " ); // replace方法是替换
-          };
-        }
-
-
-
-      }
-    },
-
-    ready:function(){
-      var self = this;
-
-
-
-      datetools.updatecoordinateXs.month(self);//更新横坐标
-      datetools.updateSedDate.month(self);//更新可以左右选择的日期的内容
-      updataPointNum(self,api);//获取数据，更新self.pointnum //debug
-
-    },
-
-    route:{
-      data:function(){
-        document.title="曲线分析";
-        var self = this;
-
-
-
-
-
-
-
-
-
-
-      }
-    },
-
-
-    methods:{
-      selectedweek:function(id){
-        var self = this;
-
-
-        //self.pointnum = ["123",134,255,200,134,127,244];
-
-
-        datetools.updateSedDate.week(self);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
-        datetools.updatecoordinateXs.week(self);//更新横坐标函数 第二个参数可以输入某一个日期例如"2015-12-10"  会自动更新横坐标 在这个日期往前推七天
-
-        self.selectcommom(id);
-        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
-        //self.updataSVG(self);//这个函数需要放在数据重置后执行，作用是更新svg曲线
-      },
-      selectedmonth:function(id){
-        var self = this;
-
-
-
-        //self.pointnum = [255,282,134,127,244,300];
-
-        datetools.updateSedDate.month(self);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
-        datetools.updatecoordinateXs.month(self);//更新横坐标函数 第二个参数可以输入某一个日期例如"2015-12-10"  会自动更新横坐标 在这个日期往前推一个月
-
-        self.selectcommom(id);
-        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
-        //self.updataSVG(self);//这个函数需要放在数据重置后执行，作用是更新svg曲线
-      },
-      selectedyear:function(id){
-        var self = this;
-
-
-        datetools.updateSedDate.year(self);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
-        datetools.updatecoordinateXs.year(self) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
-
-        //self.pointnum = ["123",2,2,2,2,0,2,244,200,134,127,244];
-
-        self.selectcommom(id);
-        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
-        //self.updataSVG(self);//这个函数需要放在数据重置后执行，作用是更新svg曲线
-      },
-      selectedweight:function(id){
-        var self = this;
-        self.unit = "kg";
-
-
-
-
-        self.selectcommom(id);
-        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
-      },
-      selectedbmi:function(id){
-        var self = this;
-        self.unit = " ";
-
-
-
-        self.selectcommom(id);
-        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
-      },
-      selectedfat:function(id){
-        var self = this;
-        self.unit = "%";
-
-
-        self.selectcommom(id);
-        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
-      },
-      valueshow:function(num){
-        var self = this;
-        var trigger_text = document.getElementsByClassName("trigger_value_number");
-        var trigger_box = document.getElementsByClassName("trigger_box");
-        var value_box = document.getElementsByClassName("value_box");
-
-        self.showvalues=[];
-        for(var i=0;i<self.pointnum.length;i++){
-          if(self.pointnum[i]>0){
-            self.showvalues.push(self.pointnum[i])
-          }
-        }
-
-        for(var i=0;i<self.showvalues.length;i++){
-          trigger_text[i].innerHTML=self.showvalues[i];
-
-        }
-
-        for(var i=0;i<trigger_box.length;i++){
-          trigger_box[i].style.opacity=0;
-          value_box[i].style.display="none";
-        }
-        trigger_box[num].style.opacity=1;
-        value_box[num].style.display="block";
-
-      },
-      prevdate:function(){
-        var self = this;
-        var pointer_left = document.getElementsByClassName("pointer_left")[0];
-        var pointer_right = document.getElementsByClassName("pointer_right")[0];
-        var selectdatetype = document.getElementsByClassName("selected")[0];
-        var sed_datetext = document.getElementsByClassName("sed_datetext")[0];
-        var firstdate = sed_datetext.getAttribute("data-firstdate");
-        var lastdate = sed_datetext.getAttribute("data-lastdate");
-        var newlastdate = new Date(new Date(firstdate)-1000*60*60*24);
-        document.getElementsByClassName("pointer_right")[0].style.opacity="1"
-        if(selectdatetype.id == "yearbox"){
-
-          datetools.updateSedDate.year(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
-          datetools.updatecoordinateXs.year(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
-        }else if(selectdatetype.id == "monthbox"){
-
-          datetools.updateSedDate.month(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
-          datetools.updatecoordinateXs.month(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
-        }else if(selectdatetype.id == "weekbox"){
-
-
-          datetools.updateSedDate.week(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
-          datetools.updatecoordinateXs.week(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
-        }
-
-        updataPointNum(self,api);//获取数据，更新self.pointnum //debug
-
-      },
-      nextdate:function(){
-        var self = this;
-        var pointer_left = document.getElementsByClassName("pointer_left")[0];
-        var pointer_right = document.getElementsByClassName("pointer_right")[0];
-        var selectdatetype = document.getElementsByClassName("selected")[0];
-        var sed_datetext = document.getElementsByClassName("sed_datetext")[0];
-        var firstdate = sed_datetext.getAttribute("data-firstdate");
-        var lastdate = sed_datetext.getAttribute("data-lastdate");
-
-
-        if(selectdatetype.id == "yearbox"){
-
-          var newlastdate = new Date((new Date(lastdate)-0)+1000*60*60*24*366);
-          if(newlastdate-new Date()>0){
-            document.getElementsByClassName("pointer_right")[0].style.opacity="0"
-          }else{
-            datetools.updateSedDate.year(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
-            datetools.updatecoordinateXs.year(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
-            updataPointNum(self,api);//获取数据，更新self.pointnum //debug
-          }
-
-        }else if(selectdatetype.id == "monthbox"){
-
-          var newlastdate = new Date((new Date(lastdate).getTime()-0)+1000*60*60*24*30);
-          if(newlastdate-new Date()>0){
-            document.getElementsByClassName("pointer_right")[0].style.opacity="0"
-          }else{
-            datetools.updateSedDate.month(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
-            datetools.updatecoordinateXs.month(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
-            updataPointNum(self,api);//获取数据，更新self.pointnum //debug
-          }
-
-        }else if(selectdatetype.id == "weekbox"){
-
-          var newlastdate = new Date(new Date(lastdate).getTime()+1000*60*60*24*7);
-
-          if(newlastdate-new Date()>0){
-            document.getElementsByClassName("pointer_right")[0].style.opacity="0"
-          }else{
-            datetools.updateSedDate.week(self,newlastdate);//更新可以左右选择的日期的内容 第二个参数可以输入某一个日期例如"2015-12-10"
-            datetools.updatecoordinateXs.week(self,newlastdate) //更新横坐标函数 第二个参数可以输入某一个月份作为显示的最后一个月例如"10"  会自动更新横坐标 在这个日期往前推12个月
-
-
-            updataPointNum(self,api);//获取数据，更新self.pointnum //debug
-          }
-
-        }
-
-
-      }
-
-    }
-
-
-
-
-  }
-
-</script>

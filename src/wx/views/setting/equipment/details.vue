@@ -1,8 +1,9 @@
 <template lang="jade">
   .main-content.details
+    .test(@click="test")
     .device_msg
       .device_faces
-        img(v-bind:src="'http://test.xlink.cn/yilai/wx/images/'+deviceid+'.png'" width="100%" height="100%")
+        img(v-bind:src="'http://test.xlink.cn/yilai/wx/images/'+devicetype+'.png'" width="100%" height="100%")
       .device_name 亿莱脂肪秤
     .list
       .entrance.personal_information
@@ -22,6 +23,10 @@
 </template>
 
 <style lang="stylus">
+  .test
+    width 20px
+    height 20px
+    background red
   @import '../../../../shared/assets/stylus/common'
 
   .details
@@ -85,6 +90,7 @@
     data: function () {
       return {
         deviceid:window.location.href.split("setting/equipment/")[1].split("?")[0],
+        devicetype:getUrlStr("deviceType"),
         showModal:true,
         usersNum:3
       }
@@ -98,13 +104,16 @@
 
 
         if(__DEBUG__){
-          deviceid = "001"
+          deviceid = "gh_72b6b07b48cb_6dcbc7892ccdca7f697b70aec42bde0d"
         }
+
+
+
         api.device.getDevicesUsers(deviceid).then(function(data){
           if(__DEBUG__){
             console.log(data);
           }
-          self.usersNum = data.open_id.length
+          self.usersNum = data.openid.length
           console.log("获取到的用户个数"+self.usersNum)
 
 
@@ -112,10 +121,18 @@
       }
     },
     methods:{
+      test:function(){
+        api.device.getSignature().then(function(data){
+          if(__DEBUG__){
+            console.log(data);
+          }
+        })
+      },
       reconfirm:function(){
         if(confirm("确定删除该设备吗?")){
           var deviceid = window.location.href.split("setting/equipment/")[1].split("?")[0];
           var openid = localStorage.openid;
+
           api.device.DeviceUnbindUser(deviceid,openid).then(function(status){
             if(__DEBUG__){
               console.log(status);
@@ -127,6 +144,12 @@
     }
   }
 
-
+function getUrlStr(name){
+  var result = 0;
+  if(window.location.href.split(name+"=")[1]){
+    var result = window.location.href.split(name+"=")[1].split("&")[0];
+  }
+   return result;
+}
 
 </script>
