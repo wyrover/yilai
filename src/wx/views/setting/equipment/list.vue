@@ -3,7 +3,8 @@
     ul.equipment_list
       li(v-for="device in devices")
         .entrance
-          a(v-link="{path: '/setting/equipment/'+device.id+'?deviceType='+device.type}")
+          //- a(v-link="{path: '/setting/equipment/'+device.id+'?deviceType='+device.type}")
+          a(v-on:click="linkTo(device.id,device.type)")
             .equipment_img
               img(v-bind:src="device.src",v-bind:width="'100%'",v-bind:height="'100%'")
             span.equipment_name {{device.name}}
@@ -94,6 +95,7 @@
       }
     },
     route:{
+
       data:function(){
         document.title = "设备管理";
         var self = this;
@@ -118,7 +120,11 @@
       }
     },
     methods: {
-
+      linkTo:function(id,type){
+        console.log("id:"+id)
+        console.log("type:"+type)
+        window.location.href = window.location.origin+"/"+"deviceDetails.html?deviceType="+type+"&deviceId="+id+"&linkTo=details";
+      },
     }
   };
 </script>

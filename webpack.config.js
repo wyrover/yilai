@@ -101,6 +101,24 @@ var config = {
   }
 };
 
+var entry = {
+  app: [
+    './' + dirs.src + '/' + APP + '/main'
+  ].concat(DEV ? [
+    'webpack/hot/dev-server',
+    'webpack-dev-server/client?http://' + DEV_IP + ':' + PORT,
+  ] : [])
+};
+
+if (APP === 'wx') {
+  entry.device = [
+      './' + dirs.src + '/' + APP + '/device'
+    ].concat(DEV ? [
+      'webpack/hot/dev-server',
+      'webpack-dev-server/client?http://' + DEV_IP + ':' + PORT,
+    ] : []);
+}
+
 var webpackConfig = {
   // 开发环境启用 source-map
   devtool: DEV ? 'inline-source-map' : false,
@@ -119,14 +137,7 @@ var webpackConfig = {
   },
 
   // 入口文件
-  entry : {
-    app: [
-      './' + dirs.src + '/' + APP + '/main'
-    ].concat(DEV ? [
-      'webpack/hot/dev-server',
-      'webpack-dev-server/client?http://' + DEV_IP + ':' + PORT,
-    ] : [])
-  },
+  entry : entry,
 
   output: {
     filename: 'scripts/[name].js',
