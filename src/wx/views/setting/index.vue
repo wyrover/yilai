@@ -1,5 +1,7 @@
 <template lang="jade">
   .main-content.white
+    .text(v-link="{path: '/setting/equipment'}") 测试按钮
+
     //-.bug这个div是用于修复无法解释的bug  如果没有这个东西  下面的微信用户昵称将会无法正常显示 不要问为什么  我也不知道
     .bug {{wxmsg.name}}
     //-.bug这个div是用于修复无法解释的bug  如果没有这个东西  下面的微信用户昵称将会无法正常显示 不要问为什么  我也不知道
@@ -11,7 +13,7 @@
     .entrance.personal_information
       a(v-link="{path: '/setting/information'}") 个人信息
       i.more
-    .entrance.equipment
+    //.entrance.equipment
       a(v-link="{path: '/setting/equipment'}") 设备管理
       i.more
     .entrance.entrance_last.history
@@ -28,6 +30,11 @@
 
     .white
       background #fff
+    .text
+      position fixed
+      right 0
+      bottom 0
+      opacity 0
     .bug
       height 0
       color transparent

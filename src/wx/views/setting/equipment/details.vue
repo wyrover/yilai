@@ -1,8 +1,8 @@
 <template lang="jade">
   .main-content.details
-    .test(@click="test1") 测试按钮1
-    br
-    .test(@click="test2") 测试按钮2
+    .test(@click="test1(openid,deviceid)") 测试按钮1
+    //br
+    //.test(@click="test2") 测试按钮2
     .device_msg
       .device_faces
         img(v-bind:src="'http://test.xlink.cn/yilai/wx/images/'+devicetype+'.png'" width="100%" height="100%")
@@ -93,8 +93,10 @@
     },
     data: function () {
       return {
+
         pageshow:false,
         deviceid:window.location.href.split("setting/equipment/")[1].split("?")[0],
+        openid:localStorage.openid,
         devicetype:getUrlStr("deviceType"),
         showModal:true,
         usersNum:3
@@ -133,19 +135,24 @@
       }
     },
     methods:{
-      test1:function(){
+      test1:function(openid,deviceid){
         api.device.getSignature().then(function(data){
           if(__DEBUG__){
             console.log(data);
           }
+          if(data.status-0==200){
+            console.log(data.signature)
+            api.device.DeviceUnbindUser(openid,deviceid,data.signature).then(function(data){
+              if(__DEBUG__){
+                console.log(data)
+              }
+            })
+          }
+
         })
       },
       test2:function(){
-        api.device.UnbindUserDevice().then(function(data){
-          if(__DEBUG__){
-            console.log(data);
-          }
-        })
+        console.log(222222222222)
       },
       reconfirm:function(){
         if(confirm("确定删除该设备吗?")){
