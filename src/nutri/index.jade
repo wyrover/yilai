@@ -3,11 +3,17 @@ html
   head
     meta(charset="UTF-8")
     title
-    meta(name="viewport", content="width=device-width, initial-scale=1.0, minimum-scale=1.0 , maximum-scale=1.0, user-scalable=0")
+    //- meta(name="viewport", content="width=device-width, initial-scale=1.0, minimum-scale=1.0 , maximum-scale=1.0, user-scalable=0")
     //- meta(name="MobileOptimized", content="320")
     meta(name="apple-mobile-web-app-capable", content="yes")
-    meta(name="apple-mobile-web-app-status-bar-style", content="black")
     meta(name="format-detection", content="telephone=no")
+    //- script(src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js")
+    if __DEV__
+      script(src="assets/vendors/lib-flexible/flexible_css.debug.js")
+      script(src="assets/vendors/lib-flexible/flexible.debug.js")
+    else
+      script(src="#{basePath}assets/vendors/lib-flexible/flexible_css.js")
+      script(src="#{basePath}assets/vendors/lib-flexible/flexible.js")
     if !__DEV__
       link(href="styles/app.css", rel="stylesheet")
     link(rel="icon", href="data:;base64,iVBORw0KGgo=")
@@ -17,5 +23,9 @@ html
 
     block scripts
       //-if __DEV__
-        script(src="vue/dist/vue.min.js")
+        //- script(src="vue/dist/vue.min.js")
+      //- if __DEV__
+        //- script(src="assets/vendors/mobile-adaptation.js")
+      //- else
+        //- script(src="#{basePath}assets/vendors/mobile-adaptation.js")
       script(src="#{basePath}scripts/app.js")

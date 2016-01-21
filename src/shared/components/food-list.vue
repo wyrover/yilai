@@ -1,6 +1,6 @@
 <template lang="jade">
   .food-list
-    .food-list-item.editing(v-for="food in foods", track-by="$index",  stagger="100")
+    .food-list-item(v-for="food in foods", track-by="$index", :class="{'removable':removable}")
       span(@click="handleClick(food, $event)") {{food.name}}
       button.del(v-if="removable") DELETE
 </template>
@@ -32,7 +32,7 @@
         line-height rem(108)
         z-index 2
         color #FFF
-        font-size rem(30)
+        font-dpr 16px
         background url('../../shared/assets/images/bg/icon_rightArrow.png') no-repeat right rem(50) center
         background-size rem(16) rem(25)
 
@@ -68,11 +68,8 @@
 
     methods: {
       handleClick: function (food, evt) {
-        if (this.removable) {
-          evt.target.classList.add('editing');
-        } else {
-          this.$dispatch('food-click', food);
-        }
+        console.log(food);
+        this.$dispatch('food-click', food);
       }
     }
   };
