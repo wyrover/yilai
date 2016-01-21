@@ -1,6 +1,6 @@
 <template lang="jade">
   .main-content.white
-    .text(v-link="{path: '/setting/equipment'}") 测试按钮
+    .test(v-link="{path: '/setting/equipment'}") 测试按钮
 
     //-.bug这个div是用于修复无法解释的bug  如果没有这个东西  下面的微信用户昵称将会无法正常显示 不要问为什么  我也不知道
     .bug {{wxmsg.name}}
@@ -30,7 +30,7 @@
 
     .white
       background #fff
-    .text
+    .test
       position fixed
       right 0
       bottom 0

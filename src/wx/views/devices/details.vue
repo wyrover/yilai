@@ -1,6 +1,6 @@
 <template lang="jade">
   .main-content.details
-    .test(@click="test1(openid,deviceid)") 测试按钮1
+    //.test(@click="test1(deviceid,openid)") 测试按钮1
     //br
     //.test(@click="test2") 测试按钮2
     .device_msg
@@ -15,11 +15,11 @@
           span.personal_information_value(v-show="usersNum<0") --
           i.more.white
       .entrance.equipment
-        a
+        a(v-bind:href="'http://www.baidu.com'")
           span.personal_information_title 使用帮助
           i.more.white
     .delete_device
-      input.delete_button(value="删除设备",type="button",@click.prevent.stop="reconfirm")
+      input.delete_button(value="删除设备",type="button",@click.prevent.stop="reconfirm(deviceid,openid)")
       //.reconfirm(v-show="showModal")
     .loadingdiv(v-if="loadData" v-bind:data-pageshow = "pageshow")
       loading
@@ -162,7 +162,7 @@
       })
     },
     methods:{
-      test1:function(openid,deviceid){
+      /*test1:function(deviceid,openid){
         api.device.getSignature().then(function(data){
           if(__DEBUG__){
             console.log(data);
@@ -172,31 +172,46 @@
             api.device.DeviceUnbindUser(openid,deviceid,data.signature).then(function(data){
               if(__DEBUG__){
                 console.log(data)
+                alert(data)
               }
             })
           }
 
         })
-      },
-      test2:function(){
-        console.log(222222222222)
-      },
+      },*/
       linkTo:function(deviceid){
         console.log("deviceid"+deviceid)
-        window.location.href = window.location.origin+"/"+"deviceDetails.html?"+"deviceId="+deviceid+"&linkTo=users";
-
+        window.location.href = window.location.href.split("&linkTo=")[0]+"&linkTo=users";
       },
-      reconfirm:function(){
+      reconfirm:function(deviceid,openid){
+        var self = this;
         if(confirm("确定删除该设备吗?")){
-          var deviceid = getUrlStr("deviceId");
-          var openid = localStorage.openid;
 
-          api.device.DeviceUnbindUser(deviceid,openid).then(function(status){
+          api.device.getSignature().then(function(data){
+            if(__DEBUG__){
+              console.log(data);
+            }
+            if(data.status-0==200){
+              console.log(data.signature)
+              api.device.DeviceUnbindUser(deviceid,openid,data.signature).then(function(data){
+                if(__DEBUG__){
+                  console.log(data)
+                }
+                alert(data)
+                if(data.base_resp.errcode-0==0||data.base_resp.errmsg=="ok"){
+                  console.log("删除成功")
+                  alert("删除成功！")
+                }
+              })
+            }
+
+          })
+          /*api.device.DeviceUnbindUser(deviceid,openid).then(function(status){
             if(__DEBUG__){
               console.log(status);
             }
             alert(status)
-          })
+          })*/
         }
       }
     }

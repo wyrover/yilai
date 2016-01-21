@@ -11,13 +11,6 @@
             i.more
     .loadingdiv(v-if="loadData" v-bind:data-pageshow = "pageshow")
       loading
-      //-li
-        .entrance
-          a(v-link="{path: '/setting/equipment/details'}")
-            .equipment_img
-              img(src="../../../assets/images/icon/zhifangcheng.png" width="100%" height="100%")
-            span.equipment_name 亿莱脂肪秤
-            i.more
 </template>
 
 <style lang="stylus">
@@ -95,7 +88,6 @@
       }
     },
     route:{
-
       data:function(){
         document.title = "设备管理";
         var self = this;
@@ -123,7 +115,7 @@
       linkTo:function(id,type){
         console.log("id:"+id)
         console.log("type:"+type)
-        window.location.href = window.location.origin+"/"+"deviceDetails.html?deviceType="+type+"&deviceId="+id+"&linkTo=details";
+        window.location.href = window.location.href.split("#")[0]+"deviceDetails.html?deviceType="+type+"&deviceId="+id+"&linkTo=details";
       },
     }
   };

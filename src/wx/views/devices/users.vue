@@ -30,6 +30,8 @@
       padding-left 10px
       background #fff
       border-top 1px solid #ccc
+      box-sizing border-box
+      overflow hidden
       .user_img
         display inline-block
         width 60px
@@ -51,6 +53,8 @@
         border-bottom 1px solid #ccc
         color #000
         padding-left 10px
+        box-sizing border-box
+        overflow hidden
         &:first-child
           border-top 1px solid #ccc
         .user_img
@@ -71,7 +75,7 @@
           line-height 82px
           position absolute
           top 0px
-          right 10px
+          right 0
           background #fd3830
           border 0
           text-align center
