@@ -40,7 +40,7 @@ var configRouter = function (router) {
     },
 
     // 食物
-    '/foods/edit': {
+    '/foods/edit/:foodId': {
       component: require('./views/food/edit.vue')
     },
 

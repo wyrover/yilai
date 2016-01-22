@@ -64,7 +64,7 @@ gulp.task('json-server', function() {
 gulp.task('serve', function () {
   browserSync({
     server: {
-      baseDir: DEV ? ['./' + config.dirs.pub + '/' + config.app, 'node_modules'] : ['./' + config.dirs.dist + '/' + config.app]
+      baseDir: DEV ? ['./' + config.dirs.src + '/shared', './' + config.dirs.pub + '/' + config.app, 'node_modules'] : ['./' + config.dirs.dist + '/' + config.app]
     }
   });
 });
@@ -119,8 +119,8 @@ gulp.task('clean', function(cb) {
 
 // 资源
 gulp.task('assets', function() {
-  gulp.src('./' + config.dirs.src + '/assets/**/*.[css|js|jpg|png|gif]')
-    .pipe(gulp.dest('./' + config.dirs.dist));
+  gulp.src('./' + config.dirs.src + '/shared/assets/vendors/**/*.[css|js|jpg|png|gif]')
+    .pipe(gulp.dest('./' + config.dirs.dist + '/vendors'));
 });
 
 // 监听
